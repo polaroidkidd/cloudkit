@@ -7,13 +7,13 @@
 	import Avatar from '@components/atoms/media/avatar.svelte';
 	import TextEdit from '@components/molecues/textEdit.svelte';
 	import { editUserSchema, type EditUserSchema } from '@lib/schemas/forms';
-	import { convertFileToBase64, convertToWebP } from '@lib/utils/imageUtils';
+	import { convertFileToBase64 } from '@lib/utils/imageUtils';
 	import type { IUserRepository, UserRepositoryMethods } from '@lib/utils/RepositoryMethods';
+	import type { ActionResult } from '@sveltejs/kit';
 	import classNames from 'classnames';
+	import { writable } from 'svelte/store';
 	import type { ZodValidation } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
-	import { writable } from 'svelte/store';
-	import type { ActionResult } from '@sveltejs/kit';
 	export let editUserForm;
 	export let userData: IUserRepository[UserRepositoryMethods.FindUserById];
 	const user = writable({ ...userData, isBase64: false });

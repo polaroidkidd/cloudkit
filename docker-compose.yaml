@@ -54,5 +54,3 @@ services:
       - POSTGRES_DB=sk-db
     ports:
       - 6500:5432
-    volumes:
-      - ./sk-db-dump.sql:/docker-entrypoint-initdb.d/init.sql      

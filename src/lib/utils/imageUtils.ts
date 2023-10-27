@@ -54,9 +54,9 @@ export async function convertFileToBase64(file: File): Promise<string> {
 }
 export function convertFileToBuffer(file: File): Promise<ArrayBuffer> {
 	return new Promise((resolve, reject) => {
-	  const reader = new FileReader();
-	  reader.readAsArrayBuffer(file);
-	  reader.onload = () => resolve(reader.result as ArrayBuffer);
-	  reader.onerror = (error) => reject(error);
+		const reader = new FileReader();
+		reader.readAsArrayBuffer(file);
+		reader.onload = () => resolve(reader.result as ArrayBuffer);
+		reader.onerror = (error) => reject(error);
 	});
-  }
+}

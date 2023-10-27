@@ -1,12 +1,11 @@
 <script lang="ts">
 	import classNames from 'classnames';
 
-	import NavbarLink from '@components/atoms/nav/navbarLink.svelte';
-
 	import { enhance } from '$app/forms';
 	import SimpleButton from '@components/atoms/buttons/simpleButton.svelte';
 	import IconCheckFalse from '@components/atoms/icons/IconCheckFalse.svelte';
 	import IconMenu from '@components/atoms/icons/IconMenu.svelte';
+	import Avatar from '@components/atoms/media/avatar.svelte';
 	import type { IUserRepository, UserRepositoryMethods } from '@lib/utils/RepositoryMethods';
 	import {
 		Drawer,
@@ -16,9 +15,6 @@
 		type DrawerSettings
 	} from '@skeletonlabs/skeleton';
 	import { logInModalConfig as signInModalConfig, signUpModalConfig } from './modals/modalConfigs';
-	import Avatar from '@components/atoms/media/avatar.svelte';
-	import { goto } from '$app/navigation';
-	import { getErrorModal } from './modals/modalUtils';
 
 	const drawerStore = getDrawerStore();
 	const modalStore = getModalStore();
@@ -50,18 +46,6 @@
 	// Close the drawer:
 	function close(): void {
 		drawerStore.close();
-	}
-	async function deleteAccount() {
-		const res = await fetch('/home', {
-			method: 'DELETE'
-		});
-		if (res.ok) {
-			goto('/');
-		} else {
-			modalStore.trigger(
-				getErrorModal('Something went wrong while deleting your account. Please try again later')
-			);
-		}
 	}
 </script>
 

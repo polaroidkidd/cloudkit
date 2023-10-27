@@ -13,13 +13,13 @@ dependencies:
     version: 3.0.2(@prisma/client@5.5.2)(lucia@2.7.2)
   '@lucia-auth/adapter-session-redis':
     specifier: ^2.1.1
-    version: 2.1.1(@upstash/redis@1.24.0)(lucia@2.7.2)(redis@4.6.10)
+    version: 2.1.1(@upstash/redis@1.24.1)(lucia@2.7.2)(redis@4.6.10)
   '@prisma/client':
     specifier: ^5.5.2
     version: 5.5.2(prisma@5.5.2)
   '@upstash/redis':
     specifier: ^1.24.0
-    version: 1.24.0
+    version: 1.24.1
   classnames:
     specifier: ^2.3.2
     version: 2.3.2
@@ -1471,7 +1471,7 @@ packages:
       lucia: 2.7.2
     dev: false
 
-  /@lucia-auth/adapter-session-redis@2.1.1(@upstash/redis@1.24.0)(lucia@2.7.2)(redis@4.6.10):
+  /@lucia-auth/adapter-session-redis@2.1.1(@upstash/redis@1.24.1)(lucia@2.7.2)(redis@4.6.10):
     resolution: {integrity: sha512-RWZRr02nzCM7AxUpC9J/k4hbwdlltuMD7HV7MN98WhF2nF1WV7iF+QjWx2v52J4mDN1UyyIKeXR9TKgtM95rMQ==}
     peerDependencies:
       '@upstash/redis': ^1.20.0
@@ -1486,7 +1486,7 @@ packages:
       redis:
         optional: true
     dependencies:
-      '@upstash/redis': 1.24.0
+      '@upstash/redis': 1.24.1
       lucia: 2.7.2
       redis: 4.6.10
     dev: false
@@ -2035,8 +2035,8 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
-  /@upstash/redis@1.24.0:
-    resolution: {integrity: sha512-KV7xohxEzcJVgGzte5zC1NLvVJd7BJmwKiFxOMdc73NHKRcc8GQa5Al9sus4TkpatWYcSVrLtjAQJrOelvQitA==}
+  /@upstash/redis@1.24.1:
+    resolution: {integrity: sha512-AgVNwWZyUNW7GJX9oXPOdYyHCZn2K05p+BQ22Iiiyefk9QY1zIir0K0CLQWoY9bx3Ljj3SA8RQgusv65fNMdeQ==}
     dependencies:
       '@biomejs/biome': 1.3.1
       crypto-js: 4.2.0
@@ -2206,7 +2206,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.22.1
-      caniuse-lite: 1.0.30001554
+      caniuse-lite: 1.0.30001555
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -2343,7 +2343,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001554
+      caniuse-lite: 1.0.30001555
       electron-to-chromium: 1.4.568
       node-releases: 2.0.13
       update-browserslist-db: 1.0.13(browserslist@4.22.1)
@@ -2405,8 +2405,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /caniuse-lite@1.0.30001554:
-    resolution: {integrity: sha512-A2E3U//MBwbJVzebddm1YfNp7Nud5Ip+IPn4BozBmn4KqVX7AvluoIDFWjsv5OkGnKUXQVmMSoMKLa3ScCblcQ==}
+  /caniuse-lite@1.0.30001555:
+    resolution: {integrity: sha512-NzbUFKUnJ3DTcq6YyZB6+qqhfD112uR3uoEnkmfzm2wVzUNsFkU7AwBjKQ654Sp5cau0JxhFyRSn/tQZ+XfygA==}
     dev: true
 
   /chai@4.3.10:
