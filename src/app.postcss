@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+:root [data-theme='modern'] {
+	--theme-rounded-base: 4px;
+	--theme-rounded-container: 2px;
+	--theme-font-family-base: 'Quicksand', sans-serif;
+	--theme-font-family-heading: 'Quicksand';
+}
+/*place global styles here */
+html,
+body {
+	@apply h-full;
+}
+
+@font-face {
+	font-family: 'Quicksand';
+	src: url('/fonts/Quicksand.ttf');
+	font-display: swap;
+}

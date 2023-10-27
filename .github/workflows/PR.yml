@@ -1,0 +1,126 @@
+# This is a basic workflow to automatically build a Svelte app and deploy it to GitHub Pages
+
+name: Pull Request
+
+on: pull_request
+
+concurrency:
+  group: ${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  INSTALL:
+    name: Install Dependencies
+    environment: CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.9.2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+      - name: Install
+        run: |
+          pnpm install
+  LINT:
+    name: ESLint & SvelteKit Check
+    environment: CI
+    runs-on: ubuntu-latest
+    needs: INSTALL
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.9.2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+      - name: Install
+        run: |
+          pnpm install
+      - name: Prisma Generate
+        run: |
+          pnpm prisma:gen:prod
+      - name: Lint
+        env:
+          DATABASE_URL: postgres://admin:pass123@localhost:6500/sk-db
+          REDIS_TOKEN: ''
+          REDIS_URL: redis://default:redispw@localhost:6379
+          PUBLIC_THUMBOR_URL: http://localhost:6501
+          THUMBOR_UPLOAD_URL: http://localhost:6501/image
+          IS_CI: true
+        run: |
+          pnpm run lint
+      - name: Check
+        env:
+          DATABASE_URL: postgres://admin:pass123@localhost:6500/sk-db
+          REDIS_TOKEN: ''
+          REDIS_URL: redis://default:redispw@localhost:6379
+          PUBLIC_THUMBOR_URL: http://localhost:6501
+          THUMBOR_UPLOAD_URL: http://localhost:6501/image
+          IS_CI: true
+        run: |
+          pnpm run check
+  UNIT_TEST:
+    name: Run Unit Tests
+    environment: CI
+    runs-on: ubuntu-latest
+    needs: INSTALL
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.9.2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+      - name: Install
+        run: |
+          pnpm install
+      - name: Prisma Generate
+        run: |
+          pnpm prisma:gen:prod
+      - name: Unit Test
+        run: |
+          pnpm run test:unit
+  E2E_TEST:
+    name: Run E2E Tests
+    environment: CI
+    needs: [INSTALL]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Services
+        run: |
+          sudo docker-compose up -d
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.9.2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+      - name: Install
+        run: |
+          pnpm install
+      - name: Prisma Generate
+        run: |
+          pnpm prisma:gen:prod
+      - name: Install Playwright Browsers
+        run: |
+          pnpm playwright install-deps chromium
+      - name: Integration Test
+        env:
+          DATABASE_URL: postgres://admin:pass123@localhost:6500/sk-db
+          REDIS_TOKEN: ''
+          REDIS_URL: redis://default:redispw@localhost:6379
+          PUBLIC_THUMBOR_URL: http://localhost:6501
+          THUMBOR_UPLOAD_URL: http://localhost:6501/image
+          IS_CI: true
+        run: |
+          pnpm run test:integration:ci
