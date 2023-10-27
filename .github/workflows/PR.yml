@@ -8,6 +8,13 @@ concurrency:
   group: ${{ github.head_ref }}
   cancel-in-progress: true
 
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  REDIS_TOKEN: ${{ secrets.REDIS_TOKEN }}
+  REDIS_URL: ${{ secrets.REDIS_URL }}
+  PUBLIC_THUMBOR_URL: ${{ secrets.PUBLIC_THUMBOR_URL }}
+  THUMBOR_UPLOAD_URL: ${{ secrets.THUMBOR_UPLOAD_URL }}
+  IS_CI: true
 jobs:
   INSTALL:
     name: Install Dependencies
@@ -46,23 +53,9 @@ jobs:
         run: |
           pnpm prisma:gen:ci
       - name: Lint
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          REDIS_TOKEN: ${{ secrets.REDIS_TOKEN }}
-          REDIS_URL: ${{ secrets.REDIS_URL }}
-          PUBLIC_THUMBOR_URL: ${{ secrets.PUBLIC_THUMBOR_URL }}
-          THUMBOR_UPLOAD_URL: ${{ secrets.THUMBOR_UPLOAD_URL }}
-          IS_CI: true
         run: |
           pnpm lint
       - name: Check
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          REDIS_TOKEN: ${{ secrets.REDIS_TOKEN }}
-          REDIS_URL: ${{ secrets.REDIS_URL }}
-          PUBLIC_THUMBOR_URL: ${{ secrets.PUBLIC_THUMBOR_URL }}
-          THUMBOR_UPLOAD_URL: ${{ secrets.THUMBOR_UPLOAD_URL }}
-          IS_CI: true
         run: |
           pnpm check
   UNIT_TEST:
@@ -121,12 +114,5 @@ jobs:
         run: |
           pnpm psql:seed
       - name: Integration Test
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          REDIS_TOKEN: ${{ secrets.REDIS_TOKEN }}
-          REDIS_URL: ${{ secrets.REDIS_URL }}
-          PUBLIC_THUMBOR_URL: ${{ secrets.PUBLIC_THUMBOR_URL }}
-          THUMBOR_UPLOAD_URL: ${{ secrets.THUMBOR_UPLOAD_URL }}
-          IS_CI: true
         run: |
           pnpm run test:integration:ci
