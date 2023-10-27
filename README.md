@@ -10,3 +10,5 @@ This is a complete Sveltekit Template designed to help you release you SvelteKit
     - SWA-Adapter configuration
     - Image hosting using thumbor
     - (prod) Neon.Tech integration with SWA Edge Functions & Prisma
+
+This is a commit to test the PR workflow

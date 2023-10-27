@@ -6,10 +6,6 @@
 	export let height = 196;
 	let clazz: string = '';
 	export { clazz as class };
-	type Sizes = {
-		maxWidth: number;
-		widthSlot: number;
-	}[];
 </script>
 
 {#if src !== null}

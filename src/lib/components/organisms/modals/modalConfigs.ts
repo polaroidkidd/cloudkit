@@ -9,6 +9,3 @@ export const signUpModalConfig: ModalSettings = {
 	type: 'component',
 	component: 'signUp'
 };
-
-
-
