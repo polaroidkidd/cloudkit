@@ -5,9 +5,6 @@ import { v4 as uuid } from 'uuid';
 import fetch from 'node-fetch';
 import { faker } from '@faker-js/faker';
 import sharp from 'sharp';
-import { BlobServiceClient } from '@azure/storage-blob';
-
-console.info('process.env.DATABASE_URL: ', process.env.DATABASE_URL);
 const db = new PrismaClient({
 	datasources: {
 		db: {
@@ -37,21 +34,21 @@ const auth = lucia({
 
 async function createImageSet(type) {
 	const id = uuid();
-	const imgXL = await fetch('https://picsum.photos/736')
+	const image = await fetch('https://picsum.photos/736')
 		.then((response) => response.arrayBuffer())
 		.then((buffer) => sharp(buffer).webp({ quality: 80 }).toBuffer());
 
-	const path = `${type}/${id}.webp`;
-	await fetch(`${process.env.THUMBOR_URL}/${path}`, {
+	const path = `${type}/${id}`;
+	await fetch(`${process.env.THUMBOR_UPLOAD_URL}/${path}`, {
 		method: 'PUT',
 		headers: {
 			'Content-Type': 'image/webp',
 			Slug: `${id}.webp`
 		},
-		body: imgXL
+		body: image
 	});
 
-	return { path: `${process.env.THUMBOR_URL}/${type}/${id}`, id: id };
+	return { path: `${process.env.THUMBOR_UPLOAD_URL}/${type}/${id}`, id: id };
 }
 
 async function freshInit() {
@@ -69,11 +66,11 @@ async function freshInit() {
 	await auth.createUser({
 		key: {
 			providerId: 'username',
-			providerUserId: 'admin@test.com',
+			providerUserId: 'admin@dle.dev',
 			password: 'adminadmin'
 		},
 		attributes: {
-			email: 'admin@test.com',
+			email: 'admin@dle.dev',
 			firstName: 'Svelte',
 			lastName: 'Kit',
 			bio: "I'm a full-stack web developer.",
@@ -85,8 +82,8 @@ async function freshInit() {
 		}
 	});
 
-	// Create 100 users
-	for (let i = 0; i < 100; i++) {
+	// Create 10 users
+	for (let i = 0; i < 10; i++) {
 		const { path, id } = await createImageSet('avatars');
 		const image = await db.image.create({
 			data: {

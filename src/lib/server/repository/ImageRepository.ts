@@ -1,6 +1,4 @@
-import {
-	THUMBOR_UPLOAD_URL
-} from '$env/static/private';
+import { THUMBOR_UPLOAD_URL } from '$env/static/private';
 import { v4 as uuid } from 'uuid';
 import { db } from './prismaClient';
 class ImageRepository {

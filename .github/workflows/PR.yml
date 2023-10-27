@@ -8,6 +8,13 @@ concurrency:
   group: ${{ github.head_ref }}
   cancel-in-progress: true
 
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  REDIS_TOKEN: ${{ secrets.REDIS_TOKEN }}
+  REDIS_URL: ${{ secrets.REDIS_URL }}
+  PUBLIC_THUMBOR_URL: ${{ secrets.PUBLIC_THUMBOR_URL }}
+  THUMBOR_UPLOAD_URL: ${{ secrets.THUMBOR_UPLOAD_URL }}
+  IS_CI: true
 jobs:
   INSTALL:
     name: Install Dependencies
@@ -20,7 +27,7 @@ jobs:
           version: 8.9.2
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
       - name: Install
         run: |
@@ -37,34 +44,20 @@ jobs:
           version: 8.9.2
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
       - name: Install
         run: |
           pnpm install
       - name: Prisma Generate
         run: |
-          pnpm prisma:gen:prod
+          pnpm prisma:gen:ci
       - name: Lint
-        env:
-          DATABASE_URL: postgres://admin:pass123@localhost:6500/sk-db
-          REDIS_TOKEN: ''
-          REDIS_URL: redis://default:redispw@localhost:6379
-          PUBLIC_THUMBOR_URL: http://localhost:6501
-          THUMBOR_UPLOAD_URL: http://localhost:6501/image
-          IS_CI: true
         run: |
-          pnpm run lint
+          pnpm lint
       - name: Check
-        env:
-          DATABASE_URL: postgres://admin:pass123@localhost:6500/sk-db
-          REDIS_TOKEN: ''
-          REDIS_URL: redis://default:redispw@localhost:6379
-          PUBLIC_THUMBOR_URL: http://localhost:6501
-          THUMBOR_UPLOAD_URL: http://localhost:6501/image
-          IS_CI: true
         run: |
-          pnpm run check
+          pnpm check
   UNIT_TEST:
     name: Run Unit Tests
     environment: CI
@@ -77,17 +70,17 @@ jobs:
           version: 8.9.2
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
       - name: Install
         run: |
           pnpm install
       - name: Prisma Generate
         run: |
-          pnpm prisma:gen:prod
+          pnpm prisma:gen:dev
       - name: Unit Test
         run: |
-          pnpm run test:unit
+          pnpm test:unit
   E2E_TEST:
     name: Run E2E Tests
     environment: CI
@@ -103,24 +96,23 @@ jobs:
           version: 8.9.2
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'pnpm'
       - name: Install
         run: |
           pnpm install
       - name: Prisma Generate
         run: |
-          pnpm prisma:gen:prod
+          pnpm prisma:gen:ci
+      - name: Prisma Push
+        run: |
+          pnpm prisma:push:dev
       - name: Install Playwright Browsers
         run: |
           pnpm playwright install-deps chromium
+      - name: Seed Database
+        run: |
+          pnpm psql:seed
       - name: Integration Test
-        env:
-          DATABASE_URL: postgres://admin:pass123@localhost:6500/sk-db
-          REDIS_TOKEN: ''
-          REDIS_URL: redis://default:redispw@localhost:6379
-          PUBLIC_THUMBOR_URL: http://localhost:6501
-          THUMBOR_UPLOAD_URL: http://localhost:6501/image
-          IS_CI: true
         run: |
           pnpm run test:integration:ci

@@ -2,21 +2,21 @@
 </script>
 
 <script lang="ts">
+	import Text from '@components/atoms/forms/text.svelte';
 	import type { SuperValidated, ZodValidation } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
-	import Text from '@components/atoms/forms/text.svelte';
 
 	import { FileDropzone, getModalStore } from '@skeletonlabs/skeleton';
 
-	import classNames from 'classnames';
-	import { signUpSchema, type SignUpSchema } from '@lib/schemas/forms';
 	import SimpleButton from '@components/atoms/buttons/simpleButton.svelte';
 	import IconLoading from '@components/atoms/icons/IconLoading.svelte';
-	import type { ActionResult } from '@sveltejs/kit';
-	import { getErrorModal } from './modalUtils';
-	import { convertFileToBase64, convertToWebP } from '@lib/utils/imageUtils';
 	import IconUpload from '@components/atoms/icons/IconUpload.svelte';
+	import { signUpSchema, type SignUpSchema } from '@lib/schemas/forms';
+	import { convertFileToBase64 } from '@lib/utils/imageUtils';
+	import type { ActionResult } from '@sveltejs/kit';
+	import classNames from 'classnames';
 	import { onMount } from 'svelte';
+	import { getErrorModal } from './modalUtils';
 
 	export let formData: SuperValidated<SignUpSchema>;
 	const modalStore = getModalStore();
