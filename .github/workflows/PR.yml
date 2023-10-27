@@ -47,21 +47,21 @@ jobs:
           pnpm prisma:gen:ci
       - name: Lint
         env:
-          DATABASE_URL: postgres://admin:pass123@localhost:6500/sk-db
-          REDIS_TOKEN: ''
-          REDIS_URL: redis://default:redispw@localhost:6379
-          PUBLIC_THUMBOR_URL: http://localhost:6501
-          THUMBOR_UPLOAD_URL: http://localhost:6501/image
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          REDIS_TOKEN: ${{ secrets.REDIS_TOKEN }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
+          PUBLIC_THUMBOR_URL: ${{ secrets.PUBLIC_THUMBOR_URL }}
+          THUMBOR_UPLOAD_URL: ${{ secrets.THUMBOR_UPLOAD_URL }}
           IS_CI: true
         run: |
           pnpm lint
       - name: Check
         env:
-          DATABASE_URL: postgres://admin:pass123@localhost:6500/sk-db
-          REDIS_TOKEN: ''
-          REDIS_URL: redis://default:redispw@localhost:6379
-          PUBLIC_THUMBOR_URL: http://localhost:6501
-          THUMBOR_UPLOAD_URL: http://localhost:6501/image
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          REDIS_TOKEN: ${{ secrets.REDIS_TOKEN }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
+          PUBLIC_THUMBOR_URL: ${{ secrets.PUBLIC_THUMBOR_URL }}
+          THUMBOR_UPLOAD_URL: ${{ secrets.THUMBOR_UPLOAD_URL }}
           IS_CI: true
         run: |
           pnpm check
@@ -122,11 +122,11 @@ jobs:
           pnpm psql:seed
       - name: Integration Test
         env:
-          DATABASE_URL: postgres://admin:pass123@localhost:6500/sk-db
-          REDIS_TOKEN: ''
-          REDIS_URL: redis://default:redispw@localhost:6379
-          PUBLIC_THUMBOR_URL: http://localhost:6501
-          THUMBOR_UPLOAD_URL: http://localhost:6501/image
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          REDIS_TOKEN: ${{ secrets.REDIS_TOKEN }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
+          PUBLIC_THUMBOR_URL: ${{ secrets.PUBLIC_THUMBOR_URL }}
+          THUMBOR_UPLOAD_URL: ${{ secrets.THUMBOR_UPLOAD_URL }}
           IS_CI: true
         run: |
           pnpm run test:integration:ci
