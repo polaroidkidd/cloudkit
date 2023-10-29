@@ -34,15 +34,43 @@ Becase PR.yaml action uses docker containers, you'll have to configure the follo
 
 ## Running this in Production
 
-In order to run this in prod you'll need a couple of services. These are
+You'll need to configure some services and environment variables in the Github Actions to run this in Prod.
 
-- [Cloudflare Pages](https://pages.cloudflare.com/) - There is a free tier but even the paid tier isn't very expensive
+### Services
+
+- [Cloudflare Pages](https://pages.cloudflare.com/) - There is a free tier but even the paid tier isn't very expensive.
 - [Cloudflare Images](https://www.cloudflare.com/developer-platform/cloudflare-images/) - This one is paid only. It's 5 USD / Month / 100'000 Image served with 20 configured variations (the variations do not count to the 100'000 image limit). Delivering images is 1 USD for every 100'000 images. There's also a enterprise version. Check out the details [here](https://developers.cloudflare.com/images/pricing/)
 - [Neon.Tech](https://neon.tech/) Database - I've been using their free tier for ages without hitting any limits so far. The only reason I went ahead and upgraded was because you can only have one project on the free tier. They don't charge you for a month if the bill is under 50 Cent. It's very affordable for what you're getting. Seriously, [check them out](https://neon.tech/pricing)
 - [Upstash](https://upstash.com/) - They have a generous free tier. Personally, I use the "Pay As You Go" option and set a low budget limit. Check out their pricing [here](https://upstash.com/pricing)
 - [Prisma Cloud](https://cloud.prisma.io/) - This you will not be able to hack your way around because prisma's edge client doesn't allow connecting to a database directly. They have a generous free tier and that's the only thing I use them for. Create a project [here](https://cloud.prisma.io/), create the Connection String and use this. Their DataExplorer will then be linked to the production database, which can be quite handy as well.
 
-## Good-To-Knows about Prisma
+### Github Actions Environemnts
+
+I've configured the actions using a `CI` and a `PREVIEW` environment. The Variables keys for both are the same (see `.env.example`).
+The `CI` environment values should use the same values as in the `.env.example` file, as these are used to run the e2e tests against the docker containers.
+The `PREVIEW` values need to be set values from the relevant services.
+
+In addition to these you'll have to configure `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` to enable preview & production publishing. You can optain the `CLOUDFLARE_API_TOKEN` in the cloudflare dashboard. Create a new token which allows editing for Cloudflare Pages. Then set up a Pages Project. The Github Action should then deply accordingly. You can also assign it to a domain if you use cloudlfare to manage your domains (I highly reccomend this, it makes life so much easier).
+
+## Notes about this Project
+
+I've collected some information I think you might find useful when working with this template.
+
+### Scripts
+
+I've included a lot of scripts in the `package.json` file. The mostly depend on each other. The naming follows this pattern in general
+
+`[WHAT]:[ACTION]:[ENV]`.
+
+For example, If I want to generate my prisma schema for local development I would run `pnpm prisma:gen:dev`. 
+
+Here are some useful scripts
+
+- `pnpm psql:dump` - Dumps the content of the current database into a `sk-db-dump.sql` file. You can mout this as a volume in the `docker-compose.yaml` file in the `psql` section with this path `- ./sk-db-dump.sql:/docker-entrypoint-initdb.d/init.sql` which will initialize the psql container with those contents on start up every time.
+- `pnpm psql:restore` - Restores from the latest `sk-db-dump.sql` file, if it exists.
+- `pnpm test:e2e:dev` - Runs the sveltekit development server and Playwright in UI mode. This way you can code and verify your tests at the same time.
+- `pnpm clean` - Deletes the `./playwright-report`, `./.wrangler` and  `./.svelte-kit` folders for a clean slate
+- `pnpm prep` - If your docker containers are running, this will generate the prisma schema, push it to the psql container and seed the database
 
 ### Data Proxy
 
