@@ -7,7 +7,7 @@
 	import Avatar from '@components/atoms/media/avatar.svelte';
 	import TextEdit from '@components/molecues/textEdit.svelte';
 	import { editUserSchema, type EditUserSchema } from '@lib/schemas/forms';
-	import { convertFileToBase64 } from '@lib/utils/imageUtils';
+	import { convertFileToBase64 } from '@lib/utils/bufferUtils';
 	import type { IUserRepository, UserRepositoryMethods } from '@lib/utils/RepositoryMethods';
 	import type { ActionResult } from '@sveltejs/kit';
 	import classNames from 'classnames';

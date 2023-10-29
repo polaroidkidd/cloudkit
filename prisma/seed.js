@@ -1,10 +1,10 @@
+import { faker } from '@faker-js/faker';
+import { prisma } from '@lucia-auth/adapter-prisma';
 import { PrismaClient } from '@prisma/client';
 import { lucia } from 'lucia';
-import { prisma } from '@lucia-auth/adapter-prisma';
 import { v4 as uuid } from 'uuid';
-import fetch from 'node-fetch';
-import { faker } from '@faker-js/faker';
-import sharp from 'sharp';
+import { createImage, userAttributes } from './seedUtils.js';
+
 const db = new PrismaClient({
 	datasources: {
 		db: {
@@ -18,44 +18,15 @@ const auth = lucia({
 
 	env: 'DEV',
 
-	getUserAttributes: (data) => {
-		return {
-			firstName: data.firstName,
-			lastName: data.lastName,
-			email: data.email,
-			bio: data.bio,
-			avatar: data.avatar,
-			createdAt: data.createdAt,
-			updatedAt: data.updatedAt,
-			verified: data.verified
-		};
-	}
+	getUserAttributes: (data) => userAttributes(data)
 });
-
-async function createImageSet(type) {
-	const id = uuid();
-	const image = await fetch('https://picsum.photos/736')
-		.then((response) => response.arrayBuffer())
-		.then((buffer) => sharp(buffer).webp({ quality: 80 }).toBuffer());
-
-	const path = `${type}/${id}`;
-	await fetch(`${process.env.THUMBOR_UPLOAD_URL}/${path}`, {
-		method: 'PUT',
-		headers: {
-			'Content-Type': 'image/webp',
-			Slug: `${id}.webp`
-		},
-		body: image
-	});
-
-	return { path: `${process.env.THUMBOR_UPLOAD_URL}/${type}/${id}`, id: id };
-}
 
 async function freshInit() {
 	await db.user.deleteMany({});
 	await db.image.deleteMany({});
 
-	const { path, id } = await createImageSet('avatars');
+	// CREATE ADMIN USER
+	const { path, id } = await createImage('avatars');
 	const image = await db.image.create({
 		data: {
 			id: id,
@@ -67,11 +38,11 @@ async function freshInit() {
 		key: {
 			providerId: 'username',
 			providerUserId: 'admin@dle.dev',
-			password: 'adminadmin'
+			password: 'admin@dle.dev'
 		},
 		attributes: {
 			email: 'admin@dle.dev',
-			firstName: 'Svelte',
+			firstName: 'Daniel',
 			lastName: 'Kit',
 			bio: "I'm a full-stack web developer.",
 			avatarId: image.id,
@@ -82,9 +53,9 @@ async function freshInit() {
 		}
 	});
 
-	// Create 10 users
+	// CREATE RANDOM USERS
 	for (let i = 0; i < 10; i++) {
-		const { path, id } = await createImageSet('avatars');
+		const { path, id } = await createImage('avatars');
 		const image = await db.image.create({
 			data: {
 				id: id,

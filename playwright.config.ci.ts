@@ -2,7 +2,7 @@ import { devices, type PlaywrightTestConfig } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
 	webServer: {
-		command: 'pnpm preview',
+		command: 'pnpm dev',
 		port: 4000
 	},
 	retries: 1,

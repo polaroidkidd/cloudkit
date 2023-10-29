@@ -5,54 +5,122 @@ import { db } from '@lib/server/repository/prismaClient';
 import { error, redirect } from '@sveltejs/kit';
 import { sveltekit } from 'lucia/middleware';
 
-import { IS_CI, REDIS_TOKEN, REDIS_URL } from '$env/static/private';
-import { Redis as prodRedisClient } from '@upstash/redis';
-import { createClient as devRedisClient } from 'redis';
 import { dev } from '$app/environment';
+import { REDIS_TOKEN, REDIS_URL } from '$env/static/private';
 import { redis, upstash } from '@lucia-auth/adapter-session-redis';
-function createSessionConfiguration() {
-	if (dev || IS_CI === 'true') {
-		const redisClient = devRedisClient({
-			url: REDIS_URL
-		});
+import type { Auth as LuciaAuth, Configuration } from 'lucia';
 
-		redisClient.connect();
-		redisClient.on('error', (err) => console.log('Redis Client Error', err));
-		redisClient.on('ready', () => console.log('Redis Client Ready'));
-		return redis(redisClient);
-	}
-	return upstash(
-		new prodRedisClient({
-			url: REDIS_URL,
-			token: REDIS_TOKEN
-		})
-	);
-}
-
-export const auth = lucia({
-	adapter: {
-		user: prisma(db),
-		session: createSessionConfiguration()
-	},
-
-	env: dev ? 'DEV' : 'PROD',
-	middleware: sveltekit(),
-
-	getUserAttributes: (data) => {
-		return {
-			firstName: data.firstName,
-			lastName: data.lastName,
-			email: data.email,
-			bio: data.bio,
-			avatarId: data.avatarId,
-			createdAt: data.createdAt,
-			updatedAt: data.updatedAt,
-			verified: data.verified
+type ProdAuth = LuciaAuth<
+	Configuration & {
+		adapter: {
+			user: ReturnType<typeof prisma>;
+			session: ReturnType<typeof upstash>;
 		};
+		env: 'DEV' | 'PROD';
+		middleware: ReturnType<typeof sveltekit>;
+		getUserAttributes: (data: unknown) => {
+			firstName: string;
+			lastName: string;
+			email: string;
+			bio: string;
+			avatarId: string;
+			createdAt: Date;
+			updatedAt: Date;
+			verified: boolean;
+		};
+	}
+>;
+
+type DevAuth = LuciaAuth<
+	Configuration & {
+		adapter: {
+			user: ReturnType<typeof prisma>;
+			session: ReturnType<typeof redis>;
+		};
+		env: 'DEV' | 'PROD';
+		middleware: ReturnType<typeof sveltekit>;
+		getUserAttributes: (data: unknown) => {
+			firstName: string;
+			lastName: string;
+			email: string;
+			bio: string;
+			avatarId: string;
+			createdAt: Date;
+			updatedAt: Date;
+			verified: boolean;
+		};
+	}
+>;
+export const eventualAuth: Promise<ProdAuth | DevAuth> = new Promise((resolve) => {
+	if (dev) {
+		import('redis').then((Redis) => {
+			console.info('Using dev redis');
+			const redisClient = Redis.createClient({
+				url: REDIS_URL
+			});
+
+			redisClient.connect();
+			redisClient.on('error', (err) => console.log('Redis Client Error', err));
+			redisClient.on('ready', () => console.log('Redis Client Ready'));
+
+			const auth = lucia({
+				adapter: {
+					user: prisma(db),
+					session: redis(redisClient)
+				},
+				env: dev ? 'DEV' : 'PROD',
+				middleware: sveltekit(),
+				getUserAttributes: (data) => {
+					return {
+						firstName: data.firstName,
+						lastName: data.lastName,
+						email: data.email,
+						bio: data.bio,
+						avatarId: data.avatarId,
+						createdAt: data.createdAt,
+						updatedAt: data.updatedAt,
+						verified: data.verified
+					};
+				}
+			});
+			resolve(auth as DevAuth);
+		});
+	} else {
+		import('@upstash/redis/cloudflare').then((Redis) => {
+			console.info('Using prod redis');
+			const auth = lucia({
+				adapter: {
+					user: prisma(db),
+					session: upstash(
+						new Redis.Redis({
+							url: REDIS_URL,
+							token: REDIS_TOKEN
+						})
+					)
+				},
+				env: dev ? 'DEV' : 'PROD',
+				middleware: sveltekit(),
+				getUserAttributes: (data) => {
+					return {
+						firstName: data.firstName,
+						lastName: data.lastName,
+						email: data.email,
+						bio: data.bio,
+						avatarId: data.avatarId,
+						createdAt: data.createdAt,
+						updatedAt: data.updatedAt,
+						verified: data.verified
+					};
+				}
+			});
+			resolve(auth as ProdAuth);
+		});
 	}
 });
 
-export type Auth = typeof auth;
+export const auth = await eventualAuth;
+
+export type AuthType = Awaited<typeof auth>;
 
 /**
  *

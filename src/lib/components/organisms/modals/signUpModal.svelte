@@ -12,7 +12,7 @@
 	import IconLoading from '@components/atoms/icons/IconLoading.svelte';
 	import IconUpload from '@components/atoms/icons/IconUpload.svelte';
 	import { signUpSchema, type SignUpSchema } from '@lib/schemas/forms';
-	import { convertFileToBase64 } from '@lib/utils/imageUtils';
+	import { convertFileToBase64 } from '@lib/utils/bufferUtils';
 	import type { ActionResult } from '@sveltejs/kit';
 	import classNames from 'classnames';
 	import { onMount } from 'svelte';

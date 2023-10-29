@@ -8,7 +8,7 @@ import { auth } from '@lib/server/auth/lucia';
 import { setError } from 'sveltekit-superforms/server';
 
 import { ImageRepository } from '@lib/server/repository/ImageRepository';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@prisma/client/edge';
 import { LuciaError } from 'lucia';
 import { v4 as uuidv4 } from 'uuid';
 import { UserRepository } from '@lib/server/repository/UserRepository';
