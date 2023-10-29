@@ -15,7 +15,6 @@
 	import { convertFileToBase64 } from '@lib/utils/bufferUtils';
 	import type { ActionResult } from '@sveltejs/kit';
 	import classNames from 'classnames';
-	import { onMount } from 'svelte';
 	import { getErrorModal } from './modalUtils';
 
 	export let formData: SuperValidated<SignUpSchema>;
@@ -51,13 +50,6 @@
 				document?.body.classList.remove('overflow-hidden');
 			}
 		}
-	});
-	onMount(() => {
-		($form.firstName = 'admin@test.com'),
-			($form.lastName = 'admin@test.com'),
-			($form.email = 'admin@test.com'),
-			($form.password = 'admin@test.com'),
-			($form.confirmPassword = 'admin@test.com');
 	});
 
 	function closeModal() {
