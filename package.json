@@ -22,7 +22,7 @@
 		"test:e2e:ci": "playwright test --project=chromium --config ./playwright.config.ci.ts",
 		"prisma:gen:dev": "dotenv -e .env.development -- prisma generate --schema ./prisma/dev.schema.prisma",
 		"prisma:gen:ci": "dotenv -e .env.ci -- prisma generate --schema ./prisma/dev.schema.prisma",
-		"prisma:gen:prod": "dotenv -e .env.production -p DATA_PROXY  -- prisma generate --no-engine --schema ./prisma/prod.schema.prisma",
+		"prisma:gen:prod": "dotenv -e .env.production -- prisma generate --no-engine --schema ./prisma/prod.schema.prisma",
 		"prisma:push:dev": "dotenv -e .env.development -- prisma db push --schema ./prisma/dev.schema.prisma",
 		"prisma:push:prod": "dotenv -e .env.production -- prisma db push --schema ./prisma/prod.schema.prisma",
 		"prisma:studio": "dotenv -e .env.development -- prisma studio --schema ./prisma/schema.prisma",
