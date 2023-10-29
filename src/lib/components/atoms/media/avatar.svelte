@@ -9,7 +9,7 @@
 	export let isBase64 = false;
 	let url = isBase64
 		? (src as string)
-		: `${PUBLIC_CLOUDFLARE_IMAGE_DELIVERY}/${src}/${isLarge ? 'public' : 'public'}`;
+		: `${PUBLIC_CLOUDFLARE_IMAGE_DELIVERY}/${src}/${isLarge ? 'public' : 'small'}`;
 </script>
 
 {#if src !== null}

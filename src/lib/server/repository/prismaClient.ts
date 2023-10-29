@@ -6,7 +6,7 @@ import { dev } from '$app/environment';
 const prismaConfiguration = {
 	datasources: {
 		db: {
-			url: !dev ? DATABASE_URL : DATA_PROXY
+			url: dev ? DATABASE_URL : DATA_PROXY
 		}
 	}
 };
