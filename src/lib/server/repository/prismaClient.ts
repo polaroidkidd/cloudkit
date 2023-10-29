@@ -1,12 +1,20 @@
-import { DATABASE_URL } from '$env/static/private';
-import { Prisma, PrismaClient } from '@prisma/client/edge';
+import { DATABASE_URL, DATA_PROXY } from '$env/static/private';
+import { Prisma as PrismaEdge, PrismaClient as PrismaClientEdge } from '@prisma/client/edge';
+import { Prisma as PrismaNode, PrismaClient as PrismaClientNode } from '@prisma/client';
+import { dev } from '$app/environment';
 
-export const db = new PrismaClient({
+const prismaConfiguration = {
 	datasources: {
 		db: {
-			url: DATABASE_URL
+			url: dev ? DATABASE_URL : DATA_PROXY
 		}
 	}
-});
+};
 
-export const PrismaClientKnownRequestError = Prisma.PrismaClientKnownRequestError;
+export const db = dev
+	? new PrismaClientNode(prismaConfiguration)
+	: new PrismaClientEdge(prismaConfiguration);
+
+export const PrismaClientKnownRequestError = dev
+	? PrismaNode.PrismaClientKnownRequestError
+	: PrismaEdge.PrismaClientKnownRequestError;
