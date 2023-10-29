@@ -19,7 +19,7 @@ env:
 
 jobs:
   PUBLISH:
-    name: Publish to Feature Branch
+    name: Publish to Production
     environment: PREVIEW
     runs-on: ubuntu-latest
     steps:
