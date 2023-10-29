@@ -7,14 +7,14 @@ import { sveltekit } from 'lucia/middleware';
 
 import { dev } from '$app/environment';
 import { IS_CI, REDIS_TOKEN, REDIS_URL } from '$env/static/private';
-import { redis as devRedis, upstash as prodRedis } from '@lucia-auth/adapter-session-redis';
+import { redis, upstash } from '@lucia-auth/adapter-session-redis';
 import type { Auth as LuciaAuth, Configuration } from 'lucia';
 
 type ProdAuth = LuciaAuth<
 	Configuration & {
 		adapter: {
 			user: ReturnType<typeof prisma>;
-			session: ReturnType<typeof prodRedis>;
+			session: ReturnType<typeof upstash>;
 		};
 		env: 'DEV' | 'PROD';
 		middleware: ReturnType<typeof sveltekit>;
@@ -35,7 +35,7 @@ type DevAuth = LuciaAuth<
 	Configuration & {
 		adapter: {
 			user: ReturnType<typeof prisma>;
-			session: ReturnType<typeof devRedis>;
+			session: ReturnType<typeof redis>;
 		};
 		env: 'DEV' | 'PROD';
 		middleware: ReturnType<typeof sveltekit>;
@@ -53,8 +53,9 @@ type DevAuth = LuciaAuth<
 >;
 export const eventualAuth: Promise<ProdAuth | DevAuth> = new Promise((resolve) => {
 	if (dev || IS_CI === 'true') {
-		import('redis').then(({ createClient }) => {
-			const redisClient = createClient({
+		import('redis').then((Redis) => {
+			console.info('Using dev redis');
+			const redisClient = Redis.createClient({
 				url: REDIS_URL
 			});
 
@@ -65,7 +66,7 @@ export const eventualAuth: Promise<ProdAuth | DevAuth> = new Promise((resolve) =
 			const auth = lucia({
 				adapter: {
 					user: prisma(db),
-					session: devRedis(redisClient)
+					session: redis(redisClient)
 				},
 				env: dev ? 'DEV' : 'PROD',
 				middleware: sveltekit(),
@@ -86,10 +87,11 @@ export const eventualAuth: Promise<ProdAuth | DevAuth> = new Promise((resolve) =
 		});
 	} else {
 		import('@upstash/redis/cloudflare').then((Redis) => {
+			console.info('Using prod redis');
 			const auth = lucia({
 				adapter: {
 					user: prisma(db),
-					session: prodRedis(
+					session: upstash(
 						new Redis.Redis({
 							url: REDIS_URL,
 							token: REDIS_TOKEN
