@@ -6,7 +6,7 @@ import { error, redirect } from '@sveltejs/kit';
 import { sveltekit } from 'lucia/middleware';
 
 import { dev } from '$app/environment';
-import { IS_CI, REDIS_TOKEN, REDIS_URL } from '$env/static/private';
+import { REDIS_TOKEN, REDIS_URL } from '$env/static/private';
 import { redis, upstash } from '@lucia-auth/adapter-session-redis';
 import type { Auth as LuciaAuth, Configuration } from 'lucia';
 
@@ -52,7 +52,7 @@ type DevAuth = LuciaAuth<
 	}
 >;
 export const eventualAuth: Promise<ProdAuth | DevAuth> = new Promise((resolve) => {
-	if (dev || IS_CI === 'true') {
+	if (dev) {
 		import('redis').then((Redis) => {
 			console.info('Using dev redis');
 			const redisClient = Redis.createClient({

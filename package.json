@@ -11,7 +11,7 @@
 		"build:prod": "pnpm clean && pnpm prisma:gen:prod && vite build  --mode production",
 		"build:ci": "pnpm clean && pnpm prisma:gen:ci && vite build --mode ci",
 		"preview": "pnpm build:ci && vite preview",
-		"preview:cf": "pnpm build:prod && wrangler pages dev ./.svelte-kit/cloudflare",
+		"preview:cf": "pnpm build:ci && wrangler pages dev ./.svelte-kit/cloudflare",
 		"test:integration:debug": "playwright test --debug",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
