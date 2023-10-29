@@ -5,21 +5,25 @@ import { db } from '@lib/server/repository/prismaClient';
 import { error, redirect } from '@sveltejs/kit';
 import { sveltekit } from 'lucia/middleware';
 
-import { IS_CI, REDIS_TOKEN, REDIS_URL } from '$env/static/private';
-import { Redis as prodRedisClient } from '@upstash/redis';
-import { createClient as devRedisClient } from 'redis';
 import { dev } from '$app/environment';
-import { redis, upstash } from '@lucia-auth/adapter-session-redis';
+import { IS_CI, REDIS_TOKEN, REDIS_URL } from '$env/static/private';
+import { upstash } from '@lucia-auth/adapter-session-redis';
+
+// PROD
+import { Redis as prodRedisClient } from '@upstash/redis/cloudflare';
+
+// DEV or CI
+// import { createClient as devRedisClient } from 'redis';
 function createSessionConfiguration() {
 	if (dev || IS_CI === 'true') {
-		const redisClient = devRedisClient({
-			url: REDIS_URL
-		});
-
-		redisClient.connect();
-		redisClient.on('error', (err) => console.log('Redis Client Error', err));
-		redisClient.on('ready', () => console.log('Redis Client Ready'));
-		return redis(redisClient);
+		// const redisClient = devRedisClient({
+		// url: REDIS_URL
+		// });
+		//
+		// redisClient.connect();
+		// redisClient.on('error', (err) => console.log('Redis Client Error', err));
+		// redisClient.on('ready', () => console.log('Redis Client Ready'));
+		// return redis(redisClient);
 	}
 	return upstash(
 		new prodRedisClient({

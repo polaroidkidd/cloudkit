@@ -5,6 +5,7 @@ import { v4 as uuid } from 'uuid';
 import fetch from 'node-fetch';
 import { faker } from '@faker-js/faker';
 import sharp from 'sharp';
+
 const db = new PrismaClient({
 	datasources: {
 		db: {
@@ -83,7 +84,7 @@ async function freshInit() {
 	});
 
 	// Create 10 users
-	for (let i = 0; i < 10; i++) {
+	for (let i = 0; i < 2; i++) {
 		const { path, id } = await createImageSet('avatars');
 		const image = await db.image.create({
 			data: {

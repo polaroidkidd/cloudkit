@@ -1,5 +1,5 @@
 import type { UserRepository } from '@lib/server/repository/UserRepository';
-import type { Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client/edge';
 
 export enum UserRepositoryMethods {
 	FindUserById = 'FindUserById',

@@ -12,6 +12,14 @@ export default defineConfig({
 	preview: {
 		port: 4000
 	},
+	optimizeDeps: {
+		esbuildOptions: {
+			target: 'esnext'
+		}
+	},
+	build: {
+		target: 'es2020'
+	},
 	test: {
 		include: ['tests/unit/**/*.{test,spec}.{js,ts}']
 	}

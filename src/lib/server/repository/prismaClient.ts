@@ -1,5 +1,5 @@
 import { DATABASE_URL } from '$env/static/private';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client/edge';
 
 export const db = new PrismaClient({
 	datasources: {

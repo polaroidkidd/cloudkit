@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { PUBLIC_THUMBOR_URL } from '$env/static/public';
+	import { PUBLIC_CLOUDFLARE_IMAGE_DELIVERY } from '$env/static/public';
 	import { Avatar } from '@skeletonlabs/skeleton';
 	export let width = '';
 	export let src: string | null | undefined;
@@ -9,7 +9,7 @@
 	export let isBase64 = false;
 	$: url = isBase64
 		? (src as string)
-		: `${PUBLIC_THUMBOR_URL}/unsafe/${isLarge ? '500x500' : '64x64'}/${encodeURI(`${src}`)}`;
+		: `${PUBLIC_CLOUDFLARE_IMAGE_DELIVERY}/${src}/${isLarge ? 'public' : 'public'}`;
 </script>
 
 {#if src !== null}
