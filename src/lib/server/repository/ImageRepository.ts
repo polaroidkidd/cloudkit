@@ -1,4 +1,4 @@
-import { CLOUDFLARE_IMAGE_API } from '$env/static/private';
+import { IMAGE_API } from '$env/static/private';
 import { v4 as uuid } from 'uuid';
 import { db } from './prismaClient';
 class ImageRepository {
@@ -22,7 +22,7 @@ class ImageRepository {
 		const id = uuid();
 
 		const path = `${type}/${id}`;
-		await fetch(`${CLOUDFLARE_IMAGE_API}/${path}`, {
+		await fetch(`${IMAGE_API}/${path}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'image/webp',
@@ -56,7 +56,7 @@ class ImageRepository {
 	}
 
 	deleteFromCDN(id: string) {
-		fetch(`${CLOUDFLARE_IMAGE_API}/${id}`, {
+		fetch(`${IMAGE_API}/${id}`, {
 			method: 'DELETE'
 		});
 	}

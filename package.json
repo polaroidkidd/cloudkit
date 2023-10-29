@@ -4,7 +4,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"prep": "docker-compose up -d && pnpm prisma:push:dev && pnpm psql:seed",
+		"prep": "pnpm prisma:gen:dev && pnpm prisma:push:dev && pnpm psql:seed",
 		"dev": "pnpm prisma:gen:dev && vite dev",
 		"dev:prod": "pnpm prisma:gen:prod && vite dev",
 		"clean": "rimraf playwright-report && rimraf ./build && rimraf ./.svelte-kit",

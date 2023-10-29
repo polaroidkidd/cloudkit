@@ -7,26 +7,26 @@ import { sveltekit } from 'lucia/middleware';
 
 import { dev } from '$app/environment';
 import { IS_CI, REDIS_TOKEN, REDIS_URL } from '$env/static/private';
-import { upstash } from '@lucia-auth/adapter-session-redis';
-
+import { upstash as prodRedis, redis as devRedis } from '@lucia-auth/adapter-session-redis';
 // PROD
-import { Redis as prodRedisClient } from '@upstash/redis/cloudflare';
-
+import { Redis as createProdRedisClient } from '@upstash/redis/cloudflare';
 // DEV or CI
-// import { createClient as devRedisClient } from 'redis';
+import { createClient as createLocalRedisClient } from 'redis';
+
 function createSessionConfiguration() {
 	if (dev || IS_CI === 'true') {
-		// const redisClient = devRedisClient({
-		// url: REDIS_URL
-		// });
-		//
-		// redisClient.connect();
-		// redisClient.on('error', (err) => console.log('Redis Client Error', err));
-		// redisClient.on('ready', () => console.log('Redis Client Ready'));
-		// return redis(redisClient);
+		console.info('Using local redis client');
+		const redisClient = createLocalRedisClient({
+			url: REDIS_URL
+		});
+
+		redisClient.connect();
+		redisClient.on('error', (err) => console.log('Redis Client Error', err));
+		redisClient.on('ready', () => console.log('Redis Client Ready'));
+		return devRedis(redisClient);
 	}
-	return upstash(
-		new prodRedisClient({
+	return prodRedis(
+		new createProdRedisClient({
 			url: REDIS_URL,
 			token: REDIS_TOKEN
 		})

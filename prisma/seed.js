@@ -1,10 +1,9 @@
+import { faker } from '@faker-js/faker';
+import { prisma } from '@lucia-auth/adapter-prisma';
 import { PrismaClient } from '@prisma/client';
 import { lucia } from 'lucia';
-import { prisma } from '@lucia-auth/adapter-prisma';
 import { v4 as uuid } from 'uuid';
-import fetch from 'node-fetch';
-import { faker } from '@faker-js/faker';
-import sharp from 'sharp';
+import { createImage, userAttributes } from './seedUtils.js';
 
 const db = new PrismaClient({
 	datasources: {
@@ -19,56 +18,15 @@ const auth = lucia({
 
 	env: 'DEV',
 
-	getUserAttributes: (data) => {
-		return {
-			firstName: data.firstName,
-			lastName: data.lastName,
-			email: data.email,
-			bio: data.bio,
-			avatar: data.avatar,
-			createdAt: data.createdAt,
-			updatedAt: data.updatedAt,
-			verified: data.verified
-		};
-	}
+	getUserAttributes: (data) => userAttributes(data)
 });
-
-async function createImageInService(type) {
-	const id = uuid();
-	const image = await fetch('https://picsum.photos/736')
-		.then((response) => response.arrayBuffer())
-		.then((buffer) => sharp(buffer).webp({ quality: 80 }).toBuffer());
-
-	const path = `${type}/${id}`;
-
-	const form = new FormData();
-	form.append('file', new Blob([image]), id);
-	form.append('id', path);
-
-	await fetch(process.env.CLOUDFLARE_IMAGE_API, {
-		method: 'POST',
-		headers: {
-			Authorization: `Bearer ${process.env.CLOUDFLARE_IMAGE_API_TOKEN}`
-		},
-		body: form
-	});
-	// await fetch(`${process.env.THUMBOR_UPLOAD_URL}/${path}`, {
-	// 	method: 'PUT',
-	// 	headers: {
-	// 		'Content-Type': 'image/webp',
-	// 		Slug: `${id}.webp`
-	// 	},
-	// 	body: image
-	// });
-
-	return { path, id };
-}
 
 async function freshInit() {
 	await db.user.deleteMany({});
 	await db.image.deleteMany({});
 
-	const { path, id } = await createImageInService('avatars');
+	// CREATE ADMIN USER
+	const { path, id } = await createImage('avatars');
 	const image = await db.image.create({
 		data: {
 			id: id,
@@ -95,9 +53,9 @@ async function freshInit() {
 		}
 	});
 
-	// Create 10 users
+	// CREATE RANDOM USERS
 	for (let i = 0; i < 10; i++) {
-		const { path, id } = await createImageInService('avatars');
+		const { path, id } = await createImage('avatars');
 		const image = await db.image.create({
 			data: {
 				id: id,
