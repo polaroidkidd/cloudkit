@@ -1,6 +1,11 @@
-import { IMAGE_API } from '$env/static/private';
+import { IMAGE_API, IMAGE_API_TOKEN } from '$env/static/private';
 import { v4 as uuid } from 'uuid';
 import { db } from './prismaClient';
+import { dev } from '$app/environment';
+
+/**
+ * A repository for handling image uploads, retrieval, and deletion.
+ */
 class ImageRepository {
 	static _instanceCache: ImageRepository;
 
@@ -12,6 +17,13 @@ class ImageRepository {
 		return this._instanceCache;
 	}
 
+	/**
+	 * Uploads an image to the server and returns the image URL.
+	 * @param image - The image file to upload.
+	 * @param type - The type of the image.
+	 * @returns A Promise that resolves to the image URL.
+	 * @throws An error if the path starts or ends with a slash.
+	 */
 	async handleImageUpload(image: File, type: string) {
 		if (type.startsWith('/')) {
 			throw new Error('Path cannot start with /');
@@ -22,14 +34,30 @@ class ImageRepository {
 		const id = uuid();
 
 		const path = `${type}/${id}`;
-		await fetch(`${IMAGE_API}/${path}`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'image/webp',
-				Slug: `${id}`
-			},
-			body: image
-		});
+
+		if (dev) {
+			// Upload to local thumbor instance
+			await fetch(`${IMAGE_API}/${path}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'image/webp',
+					Slug: `${id}`
+				},
+				body: image
+			});
+		} else {
+			// Upload to Cloudflare Image Service
+			const form = new FormData();
+			form.append('file', new Blob([image]), id);
+			form.append('id', path);
+			await fetch(IMAGE_API, {
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${IMAGE_API_TOKEN}`
+				},
+				body: form
+			});
+		}
 		return db.image.create({
 			data: {
 				id: id,
@@ -38,6 +66,12 @@ class ImageRepository {
 			}
 		});
 	}
+
+	/**
+	 * Finds an image by its ID.
+	 * @param id - The ID of the image to find.
+	 * @returns A Promise that resolves to the image object, or null if not found.
+	 */
 	findImageById(id: string) {
 		return db.image.findUnique({
 			where: {
@@ -46,6 +80,11 @@ class ImageRepository {
 		});
 	}
 
+	/**
+	 * Deletes an image from the database and the CDN by its ID.
+	 * @param id - The ID of the image to delete.
+	 * @returns A Promise that resolves when the image has been deleted from the database.
+	 */
 	async deleteById(id: string) {
 		this.deleteFromCDN(id);
 		return db.image.delete({
@@ -55,9 +94,16 @@ class ImageRepository {
 		});
 	}
 
+	/**
+	 * We can include the bearer token here since in the dev environment
+	 * it'll be ignored and in prod it will be consumed by
+	 * the Cloudflare Image API
+	 * @param id The id of the image to delete
+	 */
 	deleteFromCDN(id: string) {
 		fetch(`${IMAGE_API}/${id}`, {
-			method: 'DELETE'
+			method: 'DELETE',
+			headers: { Authorization: `Bearer ${IMAGE_API_TOKEN}` }
 		});
 	}
 }
