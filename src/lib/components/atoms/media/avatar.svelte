@@ -7,7 +7,7 @@
 	export let initials = '';
 	export let border = '';
 	export let isBase64 = false;
-	$: url = isBase64
+	let url = isBase64
 		? (src as string)
 		: `${PUBLIC_CLOUDFLARE_IMAGE_DELIVERY}/${src}/${isLarge ? 'public' : 'public'}`;
 </script>

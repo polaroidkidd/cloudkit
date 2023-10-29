@@ -33,30 +33,42 @@ const auth = lucia({
 	}
 });
 
-async function createImageSet(type) {
+async function createImageInService(type) {
 	const id = uuid();
 	const image = await fetch('https://picsum.photos/736')
 		.then((response) => response.arrayBuffer())
 		.then((buffer) => sharp(buffer).webp({ quality: 80 }).toBuffer());
 
 	const path = `${type}/${id}`;
-	await fetch(`${process.env.THUMBOR_UPLOAD_URL}/${path}`, {
-		method: 'PUT',
-		headers: {
-			'Content-Type': 'image/webp',
-			Slug: `${id}.webp`
-		},
-		body: image
-	});
 
-	return { path: `${process.env.THUMBOR_UPLOAD_URL}/${type}/${id}`, id: id };
+	const form = new FormData();
+	form.append('file', new Blob([image]), id);
+	form.append('id', path);
+
+	await fetch(process.env.CLOUDFLARE_IMAGE_API, {
+		method: 'POST',
+		headers: {
+			Authorization: `Bearer ${process.env.CLOUDFLARE_IMAGE_API_TOKEN}`
+		},
+		body: form
+	});
+	// await fetch(`${process.env.THUMBOR_UPLOAD_URL}/${path}`, {
+	// 	method: 'PUT',
+	// 	headers: {
+	// 		'Content-Type': 'image/webp',
+	// 		Slug: `${id}.webp`
+	// 	},
+	// 	body: image
+	// });
+
+	return { path, id };
 }
 
 async function freshInit() {
 	await db.user.deleteMany({});
 	await db.image.deleteMany({});
 
-	const { path, id } = await createImageSet('avatars');
+	const { path, id } = await createImageInService('avatars');
 	const image = await db.image.create({
 		data: {
 			id: id,
@@ -68,11 +80,11 @@ async function freshInit() {
 		key: {
 			providerId: 'username',
 			providerUserId: 'admin@dle.dev',
-			password: 'adminadmin'
+			password: 'admin@dle.dev'
 		},
 		attributes: {
 			email: 'admin@dle.dev',
-			firstName: 'Svelte',
+			firstName: 'Daniel',
 			lastName: 'Kit',
 			bio: "I'm a full-stack web developer.",
 			avatarId: image.id,
@@ -84,8 +96,8 @@ async function freshInit() {
 	});
 
 	// Create 10 users
-	for (let i = 0; i < 2; i++) {
-		const { path, id } = await createImageSet('avatars');
+	for (let i = 0; i < 10; i++) {
+		const { path, id } = await createImageInService('avatars');
 		const image = await db.image.create({
 			data: {
 				id: id,
