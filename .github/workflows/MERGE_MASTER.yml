@@ -6,7 +6,8 @@ on:
   push:
     branches:
       - master
-
+  schedule:
+    - cron: '0 5 * * *'
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   DATA_PROXY: ${{ secrets.DATA_PROXY }}
