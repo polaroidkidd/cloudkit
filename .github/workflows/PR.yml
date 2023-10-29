@@ -115,9 +115,9 @@ jobs:
       - name: Seed Database
         run: |
           pnpm psql:seed
-      - name: Integration Test
+      - name: e2e Test
         run: |
-          pnpm run test:integration:ci
+          pnpm run test:e2e:ci
   PUBLISH:
     name: Publish to Feature Branch
     environment: PREVIEW
