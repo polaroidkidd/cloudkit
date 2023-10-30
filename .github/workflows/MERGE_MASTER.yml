@@ -21,7 +21,7 @@ env:
 jobs:
   PUBLISH:
     name: Publish to Production
-    environment: PREVIEW
+    environment: PRODUCTION
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
