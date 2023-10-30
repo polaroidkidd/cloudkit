@@ -33,7 +33,7 @@
 		"psql:restore": "docker exec -i sk-db /bin/bash -c \"PGPASSWORD=pass123 psql --username admin sk-db\" < /sk-db-dump.sql",
 		"psql:seed": "pnpm prisma:gen:dev && dotenv -e .env.development -- node prisma/seed.js",
 		"psql:seed:prod": "dotenv -e .env.production -- node prisma/seed.js",
-		"cloudflare:init": "dotenv -e .env.production -- node create createCloudflareProject.js"
+		"cloudflare:init": "dotenv -e .env.production -- node createCloudflareProject.js"
 	},
 	"prisma": {
 		"seed": "node prisma/seed.js"
