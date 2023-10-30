@@ -11,14 +11,6 @@ import { ImageRepository } from '@lib/server/repository/ImageRepository';
 import { Prisma } from '@prisma/client/edge';
 import { LuciaError } from 'lucia';
 import { v4 as uuidv4 } from 'uuid';
-import { UserRepository } from '@lib/server/repository/UserRepository';
-import type { PageServerLoad } from './$types';
-
-export const load = (async () => {
-	return {
-		streamed: { users: UserRepository.findAll() }
-	};
-}) satisfies PageServerLoad;
 
 export const actions: Actions = {
 	signUp: async ({ request, locals }) => {
