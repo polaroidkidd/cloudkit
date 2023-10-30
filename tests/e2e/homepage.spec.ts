@@ -7,7 +7,7 @@ const USER = {
 	CONFIRM_PASSWORD: 'password123'
 };
 it('should render a couple of existing users', async ({ page, baseURL }) => {
-	await page.goto(baseURL as string, { waitUntil: 'networkidle' });
+	await page.goto(`${baseURL as string}/users`, { waitUntil: 'networkidle' });
 
 	const links = page.getByTestId('user-container');
 	await expect(links).toBeVisible();
