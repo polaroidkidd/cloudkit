@@ -6,7 +6,9 @@
 </script>
 
 {#await data.streamed.users}
-	<IconLoading />
+	<div class="flex flex-grow w-full justify-center py-24">
+		<IconLoading />
+	</div>
 {:then users}
 	<UserCardList {users} />
 {/await}
