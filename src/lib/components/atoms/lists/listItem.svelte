@@ -1,15 +1,12 @@
 <script lang="ts">
 	export let titel: string;
 	export let description: string;
-	export let badge = '💀';
 </script>
 
-<dev class="list max-w-md w-full mt-0">
-	<div>
-		<span class="badge bg-primary-500">{badge}</span>
-		<span class="flex-auto">
-			<dt class="text-2xl my-3">{titel}</dt>
-			<dd class="text-xl">{description}</dd>
-		</span>
-	</div>
-</dev>
+<div class="flex flex-grow flex-col m-5 max-w-lg mx-auto">
+	<slot name="badge">
+		<span class="badge bg-primary-500">💀</span>
+	</slot>
+	<div class="text-2xl my-3 text-center">{titel}</div>
+	<div class="text-xl mt-auto h-full">{description}</div>
+</div>

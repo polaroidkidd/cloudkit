@@ -15,6 +15,7 @@
 		type DrawerSettings
 	} from '@skeletonlabs/skeleton';
 	import { logInModalConfig as signInModalConfig, signUpModalConfig } from './modals/modalConfigs';
+	import NavbarLink from '@components/atoms/nav/navbarLink.svelte';
 
 	const drawerStore = getDrawerStore();
 	const modalStore = getModalStore();
@@ -69,6 +70,7 @@
 	)}
 >
 	{#if user === undefined}
+		<NavbarLink target="/users" text="Demo Users" />
 		<SimpleButton on:click={openLogInModal} class="ml-auto">Sign In</SimpleButton>
 		<SimpleButton on:click={openSignUpModal} class="ml-5">Sign Up</SimpleButton>
 		<LightSwitch class="ml-5" />
@@ -81,6 +83,7 @@
 				src={user.avatar.url}
 			/>
 		</a>
+		<NavbarLink target="/users" text="Demo Users" />
 
 		<LightSwitch class="ml-auto" />
 		<button on:click={open}><IconMenu /></button>

@@ -70,7 +70,7 @@
 </script>
 
 <form
-	action="?/signUp"
+	action="/?/signUp"
 	use:enhance
 	method="POST"
 	enctype="multipart/form-data"

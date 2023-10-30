@@ -9,8 +9,8 @@
 	xmlns="http://www.w3.org/2000/svg"
 	x="0px"
 	y="0px"
-	width="24px"
-	height="24px"
+	width="50px"
+	height="50px"
 	viewBox="0 0 100 100"
 	enable-background="new 0 0 100 100"
 	class={clazz}
