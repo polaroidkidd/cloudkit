@@ -46,7 +46,7 @@ class UserRepository {
 	 * @returns A promise that resolves when the user is deleted.
 	 */
 	async deleteById(userId: string) {
-		const user = await db.user.findUnique({
+		const deletedUser = await db.user.delete({
 			where: {
 				id: userId
 			},
@@ -55,12 +55,7 @@ class UserRepository {
 			}
 		});
 
-		ImageRepository.deleteFromCDN(user?.avatar.url as string);
-		return db.user.delete({
-			where: {
-				id: userId
-			}
-		});
+		await ImageRepository.deleteById(deletedUser?.avatar.id);
 	}
 
 	/**

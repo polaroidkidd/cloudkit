@@ -1,7 +1,8 @@
 import { IMAGE_API, IMAGE_API_TOKEN } from '$env/static/private';
+import type { Image } from '@lib/utils/RepositoryMethods';
+import { isDev } from '@lib/utils/general';
 import { v4 as uuid } from 'uuid';
 import { db } from './prismaClient';
-import { dev } from '$app/environment';
 
 /**
  * A repository for handling image uploads, retrieval, and deletion.
@@ -35,7 +36,7 @@ class ImageRepository {
 
 		const path = `${type}/${id}`;
 
-		if (dev) {
+		if (isDev) {
 			// Upload to local thumbor instance
 			await fetch(`${IMAGE_API}/${path}`, {
 				method: 'PUT',
@@ -86,7 +87,8 @@ class ImageRepository {
 	 * @returns A Promise that resolves when the image has been deleted from the database.
 	 */
 	async deleteById(id: string) {
-		this.deleteFromCDN(id);
+		const image = await db.image.findUniqueOrThrow({ where: { id: id } });
+		await this.deleteFromCDN(image);
 		return db.image.delete({
 			where: {
 				id: id
@@ -100,8 +102,8 @@ class ImageRepository {
 	 * the Cloudflare Image API
 	 * @param id The id of the image to delete
 	 */
-	deleteFromCDN(id: string) {
-		fetch(`${IMAGE_API}/${id}`, {
+	async deleteFromCDN(image: NonNullable<Image>) {
+		await fetch(`${IMAGE_API}/${image.url}`, {
 			method: 'DELETE',
 			headers: { Authorization: `Bearer ${IMAGE_API_TOKEN}` }
 		});

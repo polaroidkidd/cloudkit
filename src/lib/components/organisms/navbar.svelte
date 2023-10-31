@@ -95,10 +95,10 @@
 					<button class="ml-auto" on:click={close}><IconCheckFalse /></button>
 				</div>
 
-				<form action="home/?/signOut" use:enhance method="POST">
+				<form action="home?/signOut" use:enhance method="POST">
 					<SimpleButton class="w-full">Sign Out</SimpleButton>
 				</form>
-				<form action="home/?/deleteAccount" class="mt-auto" method="POST">
+				<form action="home?/deleteAccount" class="mt-auto" method="POST">
 					<SimpleButton class="w-full variant-soft-error" ariaLabel="Delete Account"
 						>Delete Account</SimpleButton
 					>

@@ -26,7 +26,10 @@ export const actions: Actions = {
 
 		try {
 			const avatar = formData.get('avatar');
-			const image = await ImageRepository.handleImageUpload(avatar as File, 'avatars');
+			const image = await ImageRepository.handleImageUpload(
+				avatar as File,
+				'cloudkit/users/avatars'
+			);
 			const user = await auth.createUser({
 				key: {
 					providerId: 'username',

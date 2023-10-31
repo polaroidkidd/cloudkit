@@ -3,12 +3,6 @@ import { z } from 'zod';
 const ALLOWED_STRINGS =
 	/^[ !?_"+.,():;&#@%ÀÁÂÃÄÅǍĀĄÆÇČĆÈÉÊËĚĒĘǦÌÍÎÏĪÐĐĎĹĽŁÑŇŃÒÓÔÕÖŌ×ØŘŔŠŚŤÙÚÛÜŮŪÝΫŽŻŹÞßàáâãäåǎāąæçčćďđèéêëěēęǧìíîïīðĺľłñňńòóôõöō÷øřŕšśťùúûüůūýþÿžżźa-zA-Z0-9-\u0027\u2019ŐőŰűĞğİıŞş¡¿ªº£¢€§]*$/;
 const ERROR_MESSAGE = 'This field may only contain letters or numbers';
-export const contactSchema = z.object({
-	firstName: z.string().min(1).max(32).regex(ALLOWED_STRINGS, ERROR_MESSAGE),
-	lastName: z.string().min(1).max(32).regex(ALLOWED_STRINGS, ERROR_MESSAGE),
-	text: z.string().min(10).max(300),
-	email: z.string().email().min(3)
-});
 
 export const signUpSchema = z.object({
 	firstName: z.string().min(1).max(32).regex(ALLOWED_STRINGS, ERROR_MESSAGE),
@@ -42,29 +36,6 @@ export const editUserSchema = z.object({
 		.or(z.string().optional())
 });
 
-export const createOrUpdateCommunitySchema = z.object({
-	name: z.string().min(1).max(100).regex(ALLOWED_STRINGS, ERROR_MESSAGE),
-	description: z.string().min(1).max(200).regex(ALLOWED_STRINGS, ERROR_MESSAGE),
-	place: z.string().min(1).max(100).regex(ALLOWED_STRINGS, ERROR_MESSAGE),
-	placeId: z.number(),
-	imgVariations: z.array(z.string()),
-	tags: z.array(z.string()).optional(),
-	id: z.string().optional()
-});
-
-export const createEventSchema = z.object({
-	title: z.string().min(1).max(100).regex(ALLOWED_STRINGS, ERROR_MESSAGE),
-	description: z.string().min(1).max(100).regex(ALLOWED_STRINGS, ERROR_MESSAGE),
-	location: z.string().min(1).max(100).regex(ALLOWED_STRINGS, ERROR_MESSAGE),
-	dateAndTime: z.string(),
-	imgVariations: z.array(z.string()),
-	maxAttendees: z.number().optional(),
-	sponsors: z.array(z.string().min(1).max(100).regex(ALLOWED_STRINGS, ERROR_MESSAGE)).optional(),
-	communityId: z.string()
-});
 export type EditUserSchema = typeof editUserSchema;
-export type ContactSchema = typeof contactSchema;
 export type SignUpSchema = typeof signUpSchema;
 export type SignInSchema = typeof signInSchema;
-export type CreateCommunitySchema = typeof createOrUpdateCommunitySchema;
-export type CreateEventSchema = typeof createEventSchema;

@@ -30,18 +30,15 @@ export const load = (async ({ locals }) => {
 
 export const actions: Actions = {
 	deleteAccount: async ({ locals }) => {
-		await locals.auth.validate();
 		const session = await locals.auth.validate();
 		if (session) {
-			const { userId } = await getUserSession(locals);
-			locals.auth.invalidate();
 			await auth.invalidateSession(session.sessionId);
 			locals.auth.setSession(null);
-			await UserRepository.deleteById(userId);
-			return new Response('Account Deleted', { status: 200 });
-		} else {
-			throw fail(500, { message: 'Account Not Deleted' });
+
+			await UserRepository.deleteById(session.user.userId);
+			throw redirect(302, '/');
 		}
+		return new Response('Error Deleting Account', { status: 500 });
 	},
 	signOut: async ({ locals }) => {
 		const session = await locals.auth.validate();
@@ -65,7 +62,7 @@ export const actions: Actions = {
 			const user = await UserRepository.findUserById(userId);
 			const avatar = formData.get('avatar');
 			if (avatar instanceof File) {
-				const image = await ImageRepository.handleImageUpload(avatar, 'avatars');
+				const image = await ImageRepository.handleImageUpload(avatar, 'cloudkit/users/avatars');
 				await auth.updateUserAttributes(userId, {
 					email: editUserForm.data.email.toLowerCase(),
 					firstName: editUserForm.data.firstName.trim(),
