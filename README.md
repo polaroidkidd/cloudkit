@@ -1,3 +1,4 @@
+[![Pull Request](https://github.com/polaroidkidd/cloudkit/actions/workflows/PR.yml/badge.svg)](https://github.com/polaroidkidd/cloudkit/actions/workflows/PR.yml) [![Merge to Master](https://github.com/polaroidkidd/cloudkit/actions/workflows/MERGE_MASTER.yml/badge.svg)](https://github.com/polaroidkidd/cloudkit/actions/workflows/MERGE_MASTER.yml)
 # SvelteKit Cloudflare Template
 
 This is a complete Sveltekit Template designed to help you release you SvelteKit App on Cloudflare Pages using the following services:
