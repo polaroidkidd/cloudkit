@@ -26,7 +26,7 @@ async function freshInit() {
 	await db.image.deleteMany({});
 
 	// CREATE ADMIN USER
-	const { path, id } = await createImage('avatars');
+	const { path, id } = await createImage('cloudkit/users/avatars');
 	const image = await db.image.create({
 		data: {
 			id: id,
@@ -55,7 +55,7 @@ async function freshInit() {
 
 	// CREATE RANDOM USERS
 	for (let i = 0; i < 10; i++) {
-		const { path, id } = await createImage('avatars');
+		const { path, id } = await createImage('cloudkit/users/avatars');
 		const image = await db.image.create({
 			data: {
 				id: id,

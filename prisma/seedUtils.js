@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
 const dev = process.env.SEED_DEV === 'true';
 
 export async function createImage(type) {
-	const image = await fetch('https://picsum.photos/736')
+	const image = await fetch('https://picsum.photos/736/736.webp')
 		.then((response) => response.arrayBuffer())
 		.then((buffer) => sharp(buffer).webp({ quality: 80 }).toBuffer());
 

@@ -50,7 +50,7 @@
 </script>
 
 <form
-	action="/?/signIn"
+	action="?/signIn"
 	use:enhance
 	method="POST"
 	class={classNames(

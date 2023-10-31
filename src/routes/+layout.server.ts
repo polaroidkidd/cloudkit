@@ -2,23 +2,18 @@ import type { LayoutServerLoad } from './$types';
 
 import { superValidate } from 'sveltekit-superforms/server';
 
-import type { SuperValidated } from 'sveltekit-superforms';
 import {
+	signInSchema,
 	signUpSchema,
 	type SignInSchema,
-	type SignUpSchema,
-	signInSchema,
-	type CreateCommunitySchema,
-	createOrUpdateCommunitySchema,
-	type CreateEventSchema,
-	createEventSchema
+	type SignUpSchema
 } from '@lib/schemas/forms';
 import { UserRepository } from '@lib/server/repository/UserRepository';
+import type { SuperValidated } from 'sveltekit-superforms';
 
 let signUp: SuperValidated<SignUpSchema> | null = null;
 let logIn: SuperValidated<SignInSchema> | null = null;
-let createCommunity: SuperValidated<CreateCommunitySchema> | null = null;
-let createEvent: SuperValidated<CreateEventSchema> | null = null;
+
 export const load = (async ({ url, locals }) => {
 	if (signUp === null) {
 		signUp = await superValidate(signUpSchema);
@@ -28,16 +23,10 @@ export const load = (async ({ url, locals }) => {
 		logIn = await superValidate(signInSchema);
 	}
 
-	if (createCommunity === null) {
-		createCommunity = await superValidate(createOrUpdateCommunitySchema);
-	}
-	if (createEvent === null) {
-		createEvent = await superValidate(createEventSchema);
-	}
 	const { pathname } = url;
 
 	const session = await locals.auth.validate();
-	if (!session) {
+	if (session === null) {
 		return {
 			signUp: signUp,
 			logIn: logIn,
@@ -48,10 +37,6 @@ export const load = (async ({ url, locals }) => {
 
 	return {
 		user,
-		signUp,
-		logIn,
-		createCommunity,
-		createEvent,
 		pathname
 	};
 }) satisfies LayoutServerLoad;

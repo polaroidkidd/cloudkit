@@ -1,3 +1,4 @@
+import type { ImageRepository } from '@lib/server/repository/ImageRepository';
 import type { UserRepository } from '@lib/server/repository/UserRepository';
 import type { Prisma } from '@prisma/client/edge';
 
@@ -25,3 +26,5 @@ export interface IUserRepository {
 export type User = Prisma.UserGetPayload<{
 	select: { firstName: true; lastName: true; avatar: true; id: true };
 }>;
+
+export type Image = Prisma.PromiseReturnType<typeof ImageRepository.findImageById>;
