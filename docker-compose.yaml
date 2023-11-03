@@ -43,14 +43,14 @@ services:
     ports:
       - '6379:6379'
     command: redis-server --loglevel warning
-  sk-db:
+  cloudkit-db:
     image: postgres:15
-    container_name: sk-db
+    container_name: cloudkit-db
     networks:
       - sk-net
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=pass123
-      - POSTGRES_DB=sk-db
+      - POSTGRES_DB=cloudkit-db
     ports:
       - 6500:5432

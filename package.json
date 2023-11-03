@@ -29,8 +29,8 @@
 		"prisma:push:prod": "dotenv -e .env.production -- prisma db push --schema ./prisma/prod.schema.prisma",
 		"prisma:studio": "dotenv -e .env.development -- prisma studio --schema ./prisma/dev.schema.prisma",
 		"prisma:studio:prod": "dotenv -e .env.production -- prisma studio --schema ./prisma/prod.schema.prisma",
-		"psql:dump": "docker exec -i sk-db /bin/bash -c \"PGPASSWORD=pass123 pg_dump --username admin sk-db\" > ./sk-db-dump.sql",
-		"psql:restore": "docker exec -i sk-db /bin/bash -c \"PGPASSWORD=pass123 psql --username admin sk-db\" < /sk-db-dump.sql",
+		"psql:dump": "docker exec -i cloudkit-db /bin/bash -c \"PGPASSWORD=pass123 pg_dump --username admin cloudkit-db\" > ./cloudkit-db-dump.sql",
+		"psql:restore": "docker exec -i cloudkit-db /bin/bash -c \"PGPASSWORD=pass123 psql --username admin cloudkit-db\" < /cloudkit-db-dump.sql",
 		"psql:seed": "pnpm prisma:gen:dev && dotenv -e .env.development -- node prisma/seed.js",
 		"psql:seed:prod": "dotenv -e .env.production -- node prisma/seed.js",
 		"cloudflare:init": "dotenv -e .env.production -- node createCloudflareProject.js"
