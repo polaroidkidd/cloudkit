@@ -1,14 +1,23 @@
-/// <reference types="svelte-adapter-azure-swa" />
+/// <reference types="lucia" />
 declare global {
 	namespace App {
 		interface Locals {
 			auth: import('lucia').AuthRequest;
 		}
+		interface Platform {
+			env: {
+				CLOUDKIT_KV: KVNamespace;
+			};
+			context: {
+				waitUntil(promise: Promise<unknown>): void;
+			};
+			caches: CacheStorage & { default: Cache };
+		}
 	}
-}
 
-/// <reference types="lucia" />
-declare global {
+	interface Locals {
+		auth: import('lucia').AuthRequest;
+	}
 	namespace Lucia {
 		type Auth = import('$lib/server/auth/lucia').Auth;
 		type DatabaseUserAttributes = {
@@ -25,5 +34,4 @@ declare global {
 	}
 }
 
-// THIS IS IMPORTANT!!!
 export {};

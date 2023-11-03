@@ -1,0 +1,7 @@
+name = "cloudkit"
+account_id = "2db6966ce8cb9a6aebb318ab0d2e4d4c"
+
+
+kv_namespaces = [
+    { binding = "CLOUDKIT_KV", id = "60b23700997c4340b6a94a8f017643fb", preview_id = "60b23700997c4340b6a94a8f017643fb" },
+]
