@@ -4,15 +4,6 @@ declare global {
 		interface Locals {
 			auth: import('lucia').AuthRequest;
 		}
-		interface Platform {
-			env: {
-				CLOUDKIT_KV: KVNamespace;
-			};
-			context: {
-				waitUntil(promise: Promise<unknown>): void;
-			};
-			caches: CacheStorage & { default: Cache };
-		}
 	}
 
 	interface Locals {
