@@ -1,19 +1,21 @@
-import { DATABASE_URL, DATA_PROXY, IS_CI } from '$env/static/private';
-import { Prisma as PrismaEdge, PrismaClient as PrismaClientEdge } from '@prisma/client/edge';
-import { Prisma as PrismaNode, PrismaClient as PrismaClientNode } from '@prisma/client';
 import { dev } from '$app/environment';
+import { DATABASE_URL } from '$env/static/private';
+import { isDev } from '@lib/utils/general';
+import { PrismaClient as PrismaClientNode, Prisma as PrismaNode } from '@prisma/client';
+import { PrismaClient as PrismaClientEdge, Prisma as PrismaEdge } from '@prisma/client/edge';
+import { withAccelerate } from '@prisma/extension-accelerate';
 
 const prismaConfiguration = {
 	datasources: {
 		db: {
-			url: dev || IS_CI === 'true' ? DATABASE_URL : DATA_PROXY
+			url: DATABASE_URL
 		}
 	}
 };
 
-export const db = dev
-	? new PrismaClientNode(prismaConfiguration)
-	: new PrismaClientEdge(prismaConfiguration);
+export const db = isDev
+	? new PrismaClientNode(prismaConfiguration).$extends(withAccelerate())
+	: new PrismaClientEdge(prismaConfiguration).$extends(withAccelerate());
 
 export const PrismaClientKnownRequestError = dev
 	? PrismaNode.PrismaClientKnownRequestError

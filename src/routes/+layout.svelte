@@ -9,7 +9,6 @@
 		type ModalComponent
 	} from '@skeletonlabs/skeleton';
 	import '../app.postcss';
-
 	import Typography from '@components/atoms/typography/typography.svelte';
 	import IconDle from '@components/icons/IconDle.svelte';
 	import ErrorModal from '@components/organisms/modals/errorModal.svelte';
