@@ -16,8 +16,8 @@ env:
   IMAGE_API_TOKEN: ${{ secrets.IMAGE_API_TOKEN }}
   IMAGE_API: ${{ secrets.IMAGE_API }}
   PUBLIC_IMAGE_DELIVERY: ${{ secrets.PUBLIC_IMAGE_DELIVERY }}
-  CLOUDFLARE_PROJECT_NAME: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
   IS_CI: true
+
 jobs:
   INSTALL:
     name: Install Dependencies
