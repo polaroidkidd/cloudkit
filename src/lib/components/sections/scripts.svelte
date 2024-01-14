@@ -16,9 +16,10 @@
 			<div class="flex flex-col gap-3">
 				<code>pnpm psql:dump</code>
 				<div>
-					Dumps the content of the current database into a <code>sk-db-dump.sql</code> file. You can
-					<code>./sk-db-dump.sql:/docker-entrypoint-initdb.d/init.sql</code> which will initialize the
-					psql container with those contents on start up every time.
+					Dumps the content of the current database into a <code>cloudkit-db-dump.sql</code> file.
+					You can
+					<code>./cloudkit-db-dump.sql:/docker-entrypoint-initdb.d/init.sql</code> which will initialize
+					the psql container with those contents on start up every time.
 				</div>
 			</div>
 		</div>
@@ -28,7 +29,7 @@
 			<div class="flex flex-col gap-3">
 				<code>pnpm psql:restore</code>
 				<div>
-					Restores from the latest <code>sk-db-dump.sql</code> file, if it exists.
+					Restores from the latest <code>cloudkit-db-dump.sql</code> file, if it exists.
 				</div>
 			</div>
 		</div>

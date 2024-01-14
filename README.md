@@ -1,4 +1,5 @@
 [![Pull Request](https://github.com/polaroidkidd/cloudkit/actions/workflows/PR.yml/badge.svg)](https://github.com/polaroidkidd/cloudkit/actions/workflows/PR.yml) [![Merge to Master](https://github.com/polaroidkidd/cloudkit/actions/workflows/MERGE_MASTER.yml/badge.svg)](https://github.com/polaroidkidd/cloudkit/actions/workflows/MERGE_MASTER.yml)
+
 # SvelteKit Cloudflare Template
 
 This is a complete Sveltekit Template designed to help you release you SvelteKit App on Cloudflare Pages using the following services:
@@ -69,8 +70,8 @@ For example, If I want to generate my prisma schema for local development I woul
 
 Here are some useful scripts
 
-- `pnpm psql:dump` - Dumps the content of the current database into a `sk-db-dump.sql` file. You can mout this as a volume in the `docker-compose.yaml` file in the `psql` section with this path `- ./sk-db-dump.sql:/docker-entrypoint-initdb.d/init.sql` which will initialize the psql container with those contents on start up every time.
-- `pnpm psql:restore` - Restores from the latest `sk-db-dump.sql` file, if it exists.
+- `pnpm psql:dump` - Dumps the content of the current database into a `cloudkit-db-dump.sql` file. You can mout this as a volume in the `docker-compose.yaml` file in the `psql` section with this path `- ./cloudkit-db-dump.sql:/docker-entrypoint-initdb.d/init.sql` which will initialize the psql container with those contents on start up every time.
+- `pnpm psql:restore` - Restores from the latest `cloudkit-db-dump.sql` file, if it exists.
 - `pnpm test:e2e:dev` - Runs the sveltekit development server and Playwright in UI mode. This way you can code and verify your tests at the same time.
 - `pnpm clean` - Deletes the `./playwright-report`, `./.wrangler` and `./.svelte-kit` folders for a clean slate
 - `pnpm prep` - If your docker containers are running, this will generate the prisma schema, push it to the psql container and seed the database
@@ -128,3 +129,9 @@ The Github PR.yaml action triggers on every opened PR and on fresh pushes to tha
   - Runs e2e tests
     - Playwright CI test we have a headless configuration - `playwright.config.ci.ts`
     - Note that these tests can be slow and might incur charges on your github account. You can always run them locally instead.
+
+## Roadmap
+
+- Update to the latest SvelteKit version
+- Update the project initialization on cloudflare
+- Include generation of the Image Resolver Worker in the project initialization
