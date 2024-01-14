@@ -1,14 +1,14 @@
-/// <reference types="svelte-adapter-azure-swa" />
+/// <reference types="lucia" />
 declare global {
 	namespace App {
 		interface Locals {
 			auth: import('lucia').AuthRequest;
 		}
 	}
-}
 
-/// <reference types="lucia" />
-declare global {
+	interface Locals {
+		auth: import('lucia').AuthRequest;
+	}
 	namespace Lucia {
 		type Auth = import('$lib/server/auth/lucia').Auth;
 		type DatabaseUserAttributes = {
@@ -25,5 +25,4 @@ declare global {
 	}
 }
 
-// THIS IS IMPORTANT!!!
 export {};

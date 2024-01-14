@@ -129,3 +129,9 @@ The Github PR.yaml action triggers on every opened PR and on fresh pushes to tha
   - Runs e2e tests
     - Playwright CI test we have a headless configuration - `playwright.config.ci.ts`
     - Note that these tests can be slow and might incur charges on your github account. You can always run them locally instead.
+
+## Roadmap
+
+- Update to the latest SvelteKit version
+- Update the project initialization on cloudflare
+- Include generation of the Image Resolver Worker in the project initialization

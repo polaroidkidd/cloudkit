@@ -23,8 +23,8 @@ async function getConfiguration() {
 		});
 
 		redisClient.connect();
-		redisClient.on('error', (err) => console.log('Redis Client Error', err));
-		redisClient.on('ready', () => console.log('Redis Client Ready'));
+		redisClient.on('error', (err) => console.error('Redis Client Error', err));
+		redisClient.on('ready', () => console.info('Redis Client Ready'));
 
 		return lucia({
 			adapter: {

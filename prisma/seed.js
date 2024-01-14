@@ -22,7 +22,7 @@ const auth = lucia({
 });
 
 async function freshInit() {
-	await db.user.deleteMany({});
+	await db.user.deleteMany({});wis
 	await db.image.deleteMany({});
 
 	// CREATE ADMIN USER
@@ -70,7 +70,7 @@ async function freshInit() {
 			key: {
 				providerId: 'username',
 				providerUserId: email,
-				password: 'admin'
+				password: 'adminadmin'
 			},
 			attributes: {
 				email: email,
