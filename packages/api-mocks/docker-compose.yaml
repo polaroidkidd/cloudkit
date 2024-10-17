@@ -1,11 +1,9 @@
-version: '3'
-
 networks:
   cloudkit-net:
-    driver: bridge
-    name: cloudkit-net
+    labels:
+      - cloudkit-net
 services:
-  cloudkit-img:
+  img:
     image: ghcr.io/minimalcompact/thumbor
     container_name: cloudkit-img
     environment:
@@ -33,18 +31,18 @@ services:
     networks:
       - cloudkit-net
     ports:
-     - "6501:6501"
-   
-  cloudkit-auth-cache:
-    image: redis:6.2
-    container_name: cloudkit-auth-cache
-    networks:
-      - cloudkit-net
-    ports:
-      - '6379:6379'
-    command: redis-server --loglevel warning
-  cloudkit-db:
-    image: postgres:15
+      - '6501:6501'
+
+  # redis:
+  #   image: redis:6.2
+  #   container_name: cloudkit-auth-cache
+  #   networks:
+  #     - cloudkit-net
+  #   ports:
+  #     - '6379:6379'
+  #   command: redis-server --loglevel warning
+  db:
+    image: postgres:latest
     container_name: cloudkit-db
     networks:
       - cloudkit-net

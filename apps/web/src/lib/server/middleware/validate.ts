@@ -1,4 +1,4 @@
-import { CollectionSchema } from '@cloudkit/ui-core';
+import { UserSchema } from '@cloudkit/db-schema';
 import { type Cookies } from '@sveltejs/kit';
 import { z } from 'zod';
 import { auth } from '../auth/lucia';
@@ -8,13 +8,12 @@ import {
 	InvalidSessionError,
 	ResourceNotFoundError
 } from '../errors';
-import { CollectionService } from '../services/user-service';
 
 function getSchema(request: Request): z.AnyZodObject | z.ZodOptional<z.AnyZodObject> {
 	switch (request.method) {
 		// TODO Implement switch case for all API routes
 		case 'POST':
-			return CollectionSchema;
+			return UserSchema;
 		default:
 			return z.object({});
 	}
@@ -50,26 +49,6 @@ class Validation {
 		}
 	}
 
-	//TODO Remove with implementation of zen stack
-	async validateAccessToCollection({
-		collectionId = '',
-		sessionCookieValue = ''
-	}: {
-		collectionId?: string;
-		sessionCookieValue?: string;
-	}) {
-		const { user } = await auth.validateSession(sessionCookieValue);
-		if (user) {
-			const belongsToUser = await CollectionService.isUserOwnerOfCollection({
-				userId: user.id,
-				collectionId
-			});
-			if (!belongsToUser) {
-				throw new AccessDeniedError(collectionId);
-			}
-		}
-	}
-
 	/**
 	 *
 	 * @param cookies
@@ -87,19 +66,12 @@ class Validation {
 
 	async validateRequest<T = z.AnyZodObject | z.ZodOptional<z.AnyZodObject>>({
 		cookies,
-		params,
 		request
 	}: {
 		cookies?: Cookies;
 		params?: Partial<Record<string, string>>;
 		request?: Request;
 	}) {
-		if (params) {
-			await this.validateAccessToCollection({
-				collectionId: params.id,
-				sessionCookieValue: cookies?.get(auth.sessionCookieName)
-			});
-		}
 		let seessionValudation;
 		let bodyValidation;
 		if (cookies) {

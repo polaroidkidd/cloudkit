@@ -1,8 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import forms from '@tailwindcss/forms';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 import typography from '@tailwindcss/typography';
 import { join } from 'path';
 import type { Config } from 'tailwindcss';
@@ -20,7 +16,7 @@ const config = {
 		join(require.resolve('@skeletonlabs/skeleton'), '../**/*.{html,js,svelte,ts}'),
 		join(
 			require.resolve('@skeletonlabs/skeleton'),
-			'../../../packages/ui-core/src/**/*.{html,js,svelte,ts}'
+			'../../packages/ui-core/src/**/*.{html,js,svelte,ts}'
 		)
 	],
 	theme: {

@@ -17,6 +17,7 @@ export const registerModalConfig: ModalSettings = {
 	component: MODAL_PUBLIC.REGISTER
 };
 
+
 export function getErrorModal(errorMessage: string): ModalSettings {
 	return {
 		type: 'alert',
@@ -60,3 +61,4 @@ export function openConfirmationModal({
 		})
 	);
 }
+

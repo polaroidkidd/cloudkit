@@ -1,7 +1,9 @@
 <script lang="ts">
-	import { isDevOrCi } from '@cloudkit/ui-core';
-	import type { Image } from '@cloudkit/ui-core';
+	import { dev } from '$app/environment';
 
+	
+	
+	import type { Image } from '@cloudkit/db-schema';
 	import classNames from 'classnames';
 	import { twMerge } from 'tailwind-merge';
 	export let image: Partial<Image> | undefined | null = undefined;
@@ -14,7 +16,7 @@
 	let clazz: string = '';
 	export { clazz as class };
 
-	let url = `${image?.url}${isDevOrCi ? '' : `/${variant}`}?${Date.parse(new Date(image!.updatedAt!).toISOString() ?? '')}`;
+	let url = `${image?.url}${dev ? '' : `/${variant}`}?${Date.parse(new Date(image!.updatedAt!).toISOString() ?? '')}`;
 	type Sizes = {
 		maxWidth: number;
 		widthSlot: number;
@@ -31,7 +33,7 @@
 	bind:this={image}
 	{width}
 	{height}
-	srcset={isDevOrCi
+	srcset={dev
 		? url
 		: [`${url}/xs`, `${url}/sm`, `${url}/md`, `${url}/lg`, `${url}/xl`].join(', ')}
 	sizes={sizes

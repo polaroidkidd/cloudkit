@@ -3,9 +3,13 @@
 
 	import classNames from 'classnames';
 
-	import { Button, Typography } from '@cloudkit/ui-core';
-	import { isDevOrCi } from '@cloudkit/ui-core';
-	import { registerModalConfig, authenticateModalConfig } from '@cloudkit/ui-core';
+	import {
+		authenticateModalConfig,
+		Button,
+		isDevOrCi,
+		registerModalConfig,
+		Typography
+	} from '@cloudkit/ui-core';
 
 	const modalStore = getModalStore();
 

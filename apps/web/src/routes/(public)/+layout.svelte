@@ -1,6 +1,5 @@
 <script lang="ts">
 	import ErrorModal from '@components/organisms/modals/error-modal.svelte';
-
 	import PublicNavbar from '@components/organisms/navbar/public-navbar.svelte';
 	import {
 		getDrawerStore,
