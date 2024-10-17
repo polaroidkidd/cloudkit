@@ -1,3 +1,3 @@
 export const STORE_CONTEXTS = {
-	User: 'user',
+	User: 'user'
 } as const;

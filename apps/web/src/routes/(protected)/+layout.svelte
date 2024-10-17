@@ -12,12 +12,7 @@
 		offset,
 		shift
 	} from '@floating-ui/dom';
-	import {
-		getDrawerStore,
-		initializeStores,
-		storePopup,
-		Toast
-	} from '@skeletonlabs/skeleton';
+	import { getDrawerStore, initializeStores, storePopup, Toast } from '@skeletonlabs/skeleton';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
 	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
 
@@ -34,7 +29,6 @@
 		})
 	});
 
-
 	const queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
@@ -43,7 +37,6 @@
 		}
 	});
 	const drawerStore = getDrawerStore();
-
 
 	$: if (data.pathname) {
 		drawerStore.close();
@@ -54,7 +47,6 @@
 	<ProtectedNavbar />
 
 	<slot />
-
 
 	<Toast position="b" rounded="rounded-full" />
 	<SvelteQueryDevtools />

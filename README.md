@@ -41,11 +41,12 @@ Becase PR.yaml action uses docker containers, you'll have to configure the follo
 You'll need to configure some services and environment variables in the Github Actions to run this in Prod.
 
 ### Services
-
+- [Storybook](https://storybook.js.org/) - Storybook is a tool for building UI components and pages in isolation. It allows you to develop components in isolation, and publish them separately for use in different projects.
+- [Swagger-UI](https://swagger.io/tools/swagger-ui/) - Swagger UI is a collection of HTML, JavaScript, and CSS assets that dynamically generate beautiful documentation from a Swagger-compliant API.
+- [OpenAPI](https://swagger.io/specification/) - OpenAPI is a specification for machine-readable interface files based on the JSON-Schema standard. This template uses ZOD to generate the OpenAPI specification.
 - [Cloudflare Pages](https://pages.cloudflare.com/) - There is a free tier but even the paid tier isn't very expensive.
 - [Cloudflare Images](https://www.cloudflare.com/developer-platform/cloudflare-images/) - This one is paid only. It's 5 USD / Month / 100'000 Image served with 20 configured variations (the variations do not count to the 100'000 image limit). Delivering images is 1 USD for every 100'000 images. There's also a enterprise version. Check out the details [here](https://developers.cloudflare.com/images/pricing/)
 - [Neon.Tech](https://neon.tech/) Database - I've been using their free tier for ages without hitting any limits so far. The only reason I went ahead and upgraded was because you can only have one project on the free tier. They don't charge you for a month if the bill is under 50 Cent. It's very affordable for what you're getting. Seriously, [check them out](https://neon.tech/pricing)
-- [Upstash](https://upstash.com/) - They have a generous free tier. Personally, I use the "Pay As You Go" option and set a low budget limit. Check out their pricing [here](https://upstash.com/pricing)
 - [Prisma Cloud](https://cloud.prisma.io/) - You will not be able to hack your way around this one because prisma's edge client doesn't allow connecting to a database directly. They have a generous free tier and that's the only thing I use them for. Create a project [here](https://cloud.prisma.io/), create the Connection String and use this. Their DataExplorer will then be linked to the production database, which can be quite handy as well.
 
 ### Github Actions Environemnts

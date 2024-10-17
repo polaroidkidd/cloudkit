@@ -4,8 +4,6 @@ import { Lucia } from 'lucia';
 
 /**
  * Returns a Lucia instance with the appropriate adapter and middleware based on the environment.
- * If the environment is development, it uses a Redis session adapter with a local Redis instance.
- * If the environment is production, it uses a Redis session adapter with an Upstash Redis instance.
  */
 async function getConfiguration() {
 	const adapter = new PrismaAdapter(db.session, db.user);
