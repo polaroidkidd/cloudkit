@@ -1,6 +1,8 @@
 <script lang="ts">
-	import { IconEdit, IconLoading } from '@cloudkit/ui-core';
-	import {Typography }from '@cloudkit/ui-core';
+	import { IconEdit, IconLoading } from "../icons";
+	import Typography from "../typography/typography.svelte";
+
+	
 
 	export let value = '';
 	export let name: string;

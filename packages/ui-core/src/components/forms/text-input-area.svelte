@@ -1,7 +1,7 @@
 <script lang="ts">
 	import classNames from 'classnames';
+	import Typography from '../typography/typography.svelte';
 
-	import {Typography }from '@cloudkit/ui-core';
 
 	export let fieldName: string;
 	export let value: string;

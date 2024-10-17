@@ -1,8 +1,8 @@
 import { isDevOrCi } from '@cloudkit/ui-core';
 import { generateId } from 'lucia';
 
-import { Prisma } from '@prisma/client';
 import type { Image, User, UserApiPost } from '@cloudkit/ui-core';
+import { Prisma } from '@prisma/client';
 import { ImageRepository } from './image-repository';
 import { db } from './prisma-client';
 
@@ -81,7 +81,6 @@ class UserRepository {
 		return true;
 	}
 
-
 	async create(data: UserApiPost & { avatar: File }): Promise<User> {
 		const id = generateId(31);
 		if (!data.avatar) {
@@ -118,7 +117,6 @@ class UserRepository {
 				lastName: true,
 				email: true,
 				avatar: true,
-				collections: true,
 				createdAt: true,
 				updatedAt: true,
 				hashedPassword: true

@@ -1,14 +1,11 @@
 import {
 	type ImageOptionalDefaults,
 	type ImageOptionalDefaultsWithRelations,
-
 	type UserOptionalDefaults,
 	type UserOptionalDefaultsWithRelations
 } from '@cloudkit/db-schema';
 
-
 import type { SetRequired } from 'type-fest';
-
 
 export type Image = SetRequired<ImageOptionalDefaults, 'id' | 'createdAt' | 'updatedAt'>;
 export type ImageWithRelations = SetRequired<

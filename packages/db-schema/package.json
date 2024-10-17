@@ -17,12 +17,13 @@
 	},
 	"scripts": {
 		"gen": "prisma generate --schema ./prisma/schema.prisma && pnpm format",
-		"push:": "prisma db push --schema ./prisma/schema.prisma && pnpm format",
+		"push": "prisma db push --schema ./prisma/schema.prisma && pnpm format",
+		"push:manual": "dotenv -e ../../.env.development -- prisma db push --schema ./prisma/schema.prisma && pnpm format",
 		"studio:": "prisma studio --schema ./prisma/schema.prisma && pnpm format",
 		"format": "prettier --config ../../.prettierrc --write ."
 	},
 	"dependencies": {
-		"@prisma/client": "5.19.1",
+		"@prisma/client": "5.21.0",
 		"@cloudkit/eslint-config": "workspace:^",
 		"prisma": "^5.19.1",
 		"zod": "^3.23.8",

@@ -44,6 +44,7 @@
 		"@tanstack/svelte-query-devtools": "^5.55.1",
 		"@cloudkit/eslint-config": "workspace:^",
 		"@cloudkit/ui-core": "workspace:^",
+		"@cloudkit/db-schema": "workspace:^",
 		"axios": "^1.7.7",
 		"browser-image-compression": "^2.0.2",
 		"classnames": "^2.5.1",

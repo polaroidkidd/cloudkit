@@ -1,47 +1,15 @@
 <script lang="ts">
-	import { Drawer, type DrawerSettings, getDrawerStore, LightSwitch } from '@skeletonlabs/skeleton';
 	import { Avatar, Button, FORM_ACTIONS, IconMenu, PATHS } from '@cloudkit/ui-core';
+	import { Drawer, type DrawerSettings, getDrawerStore, LightSwitch } from '@skeletonlabs/skeleton';
 	import classNames from 'classnames';
 
 	import { enhance } from '$app/forms';
 	import { getUserStore } from '@lib/stores';
-	import { getModalStore } from '@skeletonlabs/skeleton';
 
 	import { NavigationButton, Typography } from '@cloudkit/ui-core';
 
-	import {
-		getConfirmationModalConfig,
-		getOnboardingModalConfig,
-		IconLoading
-	} from '@cloudkit/ui-core';
+	import { IconLoading } from '@cloudkit/ui-core';
 
-	const modalStore = getModalStore();
-	function modalClosed(r: unknown) {
-		if (!r) {
-			modalStore.trigger(
-				getConfirmationModalConfig({
-					title: 'Confirm',
-					body: 'Are you sure you want to close the tutorial? You can start it again at any time from the menu.',
-					callback: async (r: unknown) => {
-						if (!r) {
-							modalStore.trigger(getOnboardingModalConfig(modalClosed));
-						} else {
-							await fetch(FORM_ACTIONS.ONBOARDING_COMPLETED, {
-								method: 'POST',
-								body: new FormData()
-							});
-							document?.body.classList.remove('overflow-hidden');
-						}
-					}
-				})
-			);
-		}
-	}
-
-	export function openOnboardingModal() {
-		document?.body.classList.add('overflow-hidden');
-		modalStore.trigger(getOnboardingModalConfig(modalClosed));
-	}
 	const drawerStore = getDrawerStore();
 
 	const drawerSettings: DrawerSettings = {
@@ -97,9 +65,7 @@
 				<NavigationButton variant="tertiary" fill="ghost" href={PATHS.COLLECTIONS}>
 					Collctions
 				</NavigationButton>
-				<Button class="w-full" variant="tertiary" fill="ghost" on:click={openOnboardingModal}>
-					Show Tutorial
-				</Button>
+
 				<form
 					class="mt-auto"
 					action={FORM_ACTIONS.SIGN_OUT}

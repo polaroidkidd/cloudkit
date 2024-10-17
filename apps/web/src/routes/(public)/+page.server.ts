@@ -35,8 +35,7 @@ export const actions: Actions = {
 						firstName: signUp.data.firstName,
 						lastName: signUp.data.lastName,
 						hashedPassword: hashedPassword,
-						createdAt: new Date(),
-						updatedAt: new Date(),
+
 						avatar: avatar,
 						verified: false,
 						firstTime: true

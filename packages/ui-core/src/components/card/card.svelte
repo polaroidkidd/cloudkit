@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { IconKebabMenu } from '@cloudkit/ui-core';
-	import {Typography} from '@cloudkit/ui-core';
-	import type { Actions } from '@cloudkit/ui-core';
+	import type { Actions } from './../../model/';
+
 	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
 	import classNames from 'classnames';
 	import { onMount } from 'svelte';
 	import { twMerge } from 'tailwind-merge';
 	import { v4 as uuid } from 'uuid';
+	import { IconKebabMenu } from '../icons';
+	import Typography from '../typography/typography.svelte';
 
 	export let actions: Actions = [];
 	export let title = '';

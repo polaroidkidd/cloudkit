@@ -6,8 +6,8 @@
 		type PopupSettings
 	} from '@skeletonlabs/skeleton';
 	import { createEventDispatcher } from 'svelte';
+	import Typography from '../typography/typography.svelte';
 
-	import {Typography }from '@cloudkit/ui-core';
 
 	const dispatch = createEventDispatcher();
 

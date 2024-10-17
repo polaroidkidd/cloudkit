@@ -9,7 +9,7 @@
 	export let updatedAt: Date;
 	$: url = isBase64
 		? src
-		: `${src}${src.includes('img.cloudkit.dle.dev') ? (isLarge ? '/lg' : '/sm') : ''}`;
+		: `${src}${src.includes('img.cloudkit.fyi') ? (isLarge ? '/lg' : '/sm') : ''}`;
 </script>
 
 {#if src !== null}
