@@ -13,7 +13,6 @@ class UserService {
 		return this._instanceCache;
 	}
 
-
 	async createUser(data: User): Promise<User> {
 		return UserRepository.create(data);
 	}
@@ -24,8 +23,6 @@ class UserService {
 		return UserRepository.deleteById(data.id);
 	}
 }
-
-
 
 const repo = Object.freeze(new UserService());
 export { repo as UserService };

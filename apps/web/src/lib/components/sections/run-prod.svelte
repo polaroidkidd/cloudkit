@@ -15,13 +15,13 @@
 					convenience I've included the <code>cloudflare:init</code>
 					script. You'll have to set up the
 					<code>.env.production</code>
-					 file.
+					file.
 				</p>
 				<p>
 					<strong>Note:</strong>
 					If you look at
 					<code>createCloudflareProject.js</code>
-					 you'll see that the build & publishing configuration is disabled. This is because the Github
+					you'll see that the build & publishing configuration is disabled. This is because the Github
 					Action will take care of that.
 				</p>
 			</div>
@@ -64,24 +64,9 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="text-xl pb-2 flex gap-2">
 			<span class="badge-icon p-4 variant-soft-primary mr-5">4.</span>
-			<div class="flex flex-col gap-3">
-				<a class="anchor" href="https://upstash.com/">Upstash</a>
-				<div>
-					They have a generous free tier. Personally, I use the "Pay As You Go" option and set a low
-					budget limit. Check out their pricing <a
-						class="anchor"
-						href="htttps://upstash.com/pricing"
-					>
-						here
-					</a>
-					.
-				</div>
-			</div>
-		</div>
-		<div class="text-xl pb-2 flex gap-2">
-			<span class="badge-icon p-4 variant-soft-primary mr-5">5.</span>
 			<div class="flex flex-col gap-3">
 				<a class="anchor" href="https://cloud.prisma.io/">Prisma Cloud</a>
 				<div>
