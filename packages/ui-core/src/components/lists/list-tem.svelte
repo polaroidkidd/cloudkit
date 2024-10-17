@@ -8,5 +8,5 @@
 		<span class="badge bg-primary-500">💀</span>
 	</slot>
 	<div class="text-2xl my-3 text-center">{titel}</div>
-	<div class="text-xl mt-auto h-full">{description}</div>
+	<div class="text-xl mt-auto h-full">{@html description}</div>
 </div>
