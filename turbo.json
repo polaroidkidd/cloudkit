@@ -1,0 +1,66 @@
+{
+	"$schema": "https://turborepo.org/schema.json",
+	"daemon": false,
+	"globalDependencies": [".env.development", "tsconfig-base.json", "pnpm-lock.yaml"],
+	"globalEnv": [
+		"DATABASE_URL",
+		"IMAGE_API",
+		"IMAGE_API_TOKEN",
+		"IMAGE_API_ACCOUNT_IDENTIFIER",
+		"IS_CI",
+		"SEED_DEV"
+	],
+	"tasks": {
+		"@cloudkit/web#dev": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["@cloudkit/db-schema#push:dev"],
+			"passThroughEnv": ["DATABASE_URL"]
+		},
+		"@cloudkit/db-schema#push:dev": {
+			"cache": false,
+			"dependsOn": ["@cloudkit/swagger-ui#sync"]
+		},
+		"@cloudkit/db-schema#gen:dev": {
+			"outputs": [
+				" ./../../node_modules/.pnpm/@prisma+client@5.19.1_prisma@5.20.0/node_modules/@prisma/client"
+			],
+			"inputs": ["./prisma/dev.schema.prisma", "./prisma/prod.schema.prisma", "./src/utils/form-schemas.ts"],
+			"dependsOn": []
+		},
+		"@cloudkit/api-mocks#start": {
+			"cache": false,
+			"dependsOn": []
+		},
+		"@cloudkit/web#check": {
+			"cache": false,
+			"dependsOn": ["@cloudkit/db-schema#gen:dev"]
+		},
+		"@cloudkit/service-contract#build": {
+			"outputs": ["./dist"],
+			"inputs": ["./src/index.ts", "./src/models.ts"],
+			"dependsOn": ["@cloudkit/db-schema#gen:dev"]
+		},
+		"@cloudkit/swagger-ui#dev": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["@cloudkit/service-contract#build"]
+		},
+		"@cloudkit/swagger-ui#build": {
+			"outputs": ["./svelte-kit"],
+			"dependsOn": ["@cloudkit/service-contract#build"]
+		},
+		"@cloudkit/styleguide#storybook": {
+			"cache": false,
+			"dependsOn": ["@cloudkit/web#sync", "@cloudkit/swagger-ui#sync"]
+		},
+		"@cloudkit/web#sync": {
+			"outputs": ["./.svelte-kit"],
+			"dependsOn": []
+		},
+		"@cloudkit/swagger-ui#sync": {
+			"cache": false,
+			"outputs": ["./svelte-kit"]
+		}
+	}
+}

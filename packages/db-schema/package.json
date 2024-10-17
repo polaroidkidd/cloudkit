@@ -1,0 +1,34 @@
+{
+	"name": "@cloudkit/db-schema",
+	"version": "1.0.0",
+	"description": "",
+	"type": "module",
+	"main": "./src/generated/index.ts",
+	"types": "./src/generated/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/generated/index.ts",
+			"default": "./src/generated/index.ts"
+		},
+		"./form": {
+			"types": "./src/utils/index.ts",
+			"default": "./src/utils/index.ts"
+		}
+	},
+	"scripts": {
+		"gen": "prisma generate --schema ./prisma/schema.prisma && pnpm format",
+		"push:": "prisma db push --schema ./prisma/schema.prisma && pnpm format",
+		"studio:": "prisma studio --schema ./prisma/schema.prisma && pnpm format",
+		"format": "prettier --config ../../.prettierrc --write ."
+	},
+	"dependencies": {
+		"@prisma/client": "5.19.1",
+		"@cloudkit/eslint-config": "workspace:^",
+		"prisma": "^5.19.1",
+		"zod": "^3.23.8",
+		"zod-prisma-types": "^3.1.8"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
+}

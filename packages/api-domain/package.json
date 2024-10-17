@@ -1,0 +1,24 @@
+{
+	"name": "@cloudkit/api-domain",
+	"version": "1.0.0",
+	"description": "Types for cloudkit's API",
+	"main": "index.js",
+	"scripts": {
+		"gen": "tsx ./src/index.ts"
+	},
+	"keywords": [
+		"cloudkit",
+		"api",
+		"types"
+	],
+	"author": "Daniel Einars",
+	"license": "ISC",
+	"dependencies": {
+		"@asteasolutions/zod-to-openapi": "^7.1.1",
+		"@cloudkit/db-schema": "workspace:^",
+		"@cloudkit/eslint-config": "workspace:^",
+		"tsx": "^4.19.0",
+		"yaml": "^2.5.1",
+		"zod": "^3.23.8"
+	}
+}

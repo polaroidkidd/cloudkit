@@ -1,0 +1,8 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"$app/*": [".svelte-kit/dev/runtime/app/*"]
+		}
+	}
+}
