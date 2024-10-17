@@ -1,0 +1,39 @@
+{
+	"name": "@cloudkit/eslint-config",
+	"version": "0.0.1",
+	"main": "./index.cjs",
+	"module": "./dist/index.mjs",
+	"author": "Daniel Einars",
+	"description": "Eslint config for cloudkit",
+	"exports": {
+		".": {
+			"import": "./dist/index.mjs",
+			"require": "./index.cjs"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/polaroidkidd/cloudkit.dle.dev.git"
+	},
+	"scripts": {
+		"build": "vite build"
+	},
+	"keywords": [
+		"cloudkit"
+	],
+	"license": "ISC",
+	"dependencies": {
+		"@typescript-eslint/eslint-plugin": "^7.17.0",
+		"@typescript-eslint/parser": "^7.17.0",
+		"eslint": "^8.57.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-config-turbo": "^2.1.2",
+		"eslint-plugin-simple-import-sort": "^12.1.1",
+		"eslint-plugin-svelte": "^2.43.0",
+		"eslint-plugin-unused-imports": "^3.2.0",
+		"eslint-plugin-yml": "^1.14.0",
+		"prettier": "3.3.3",
+		"prettier-plugin-svelte": "^3.2.6",
+		"yaml-eslint-parser": "^1.2.3"
+	}
+}
