@@ -8,5 +8,6 @@
 		<span class="badge bg-primary-500">💀</span>
 	</slot>
 	<div class="text-2xl my-3 text-center">{titel}</div>
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 	<div class="text-xl mt-auto h-full">{@html description}</div>
 </div>
