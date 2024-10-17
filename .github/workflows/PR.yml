@@ -11,8 +11,6 @@ concurrency:
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
   DATA_PROXY: ${{ secrets.DATA_PROXY }}
-  REDIS_TOKEN: ${{ secrets.REDIS_TOKEN }}
-  REDIS_URL: ${{ secrets.REDIS_URL }}
   IMAGE_API_TOKEN: ${{ secrets.IMAGE_API_TOKEN }}
   IMAGE_API: ${{ secrets.IMAGE_API }}
   PUBLIC_IMAGE_DELIVERY: ${{ secrets.PUBLIC_IMAGE_DELIVERY }}
