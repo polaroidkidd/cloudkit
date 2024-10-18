@@ -27,18 +27,17 @@ jobs:
           version: 9.1.1
       - uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '22'
       - uses: actions/cache@v3
         id: cache-pnpm
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', './prisma/dev.schema.prisma', './prisma/prod.schema.prisma') }}
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
       - name: Install
         if: steps.cache-pnpm.outputs.cache-hit != 'true'
         run: |
           pnpm i --frozen-lockfile
-          pnpm prisma:gen:ci
-
+          pnpm sync
   LINT:
     name: Lint
     runs-on: ubuntu-latest
@@ -51,7 +50,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', './prisma/dev.schema.prisma', './prisma/prod.schema.prisma') }}
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
       - name: Lint
         run: |
           pnpm lint
@@ -66,11 +65,11 @@ jobs:
           version: 9.1.1
       - uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '22'
       - uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', './prisma/dev.schema.prisma', './prisma/prod.schema.prisma') }}
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
       - name: Check
         run: |
           pnpm check
@@ -85,16 +84,16 @@ jobs:
           version: 9.1.1
       - uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '22'
       - uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', './prisma/dev.schema.prisma', './prisma/prod.schema.prisma') }}
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
       - name: Unit Test
         run: |
-          pnpm test:unit
-  PUBLISH_WEBAPP:
-    name: Publish to Feature Branch
+          pnpm test
+  BUILD:
+    name: Build Apps
     environment: PREVIEW
     runs-on: ubuntu-latest
     needs: INSTALL
@@ -105,43 +104,50 @@ jobs:
           version: 9.1.1
       - uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '22'
       - uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', './prisma/dev.schema.prisma', './prisma/prod.schema.prisma') }}
-      - name: Install
-        run: |
-          pnpm install
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
       - name: Build
         env:
           IS_CI: false
         run: |
-          pnpm build:prod
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+          pnpm build
+
+  ################ PUBLISH #################
+  PUBLISH_WEBAPP:
+    name: Publish WebApp to Feature Branch
+    environment: PREVIEW
+    runs-on: ubuntu-latest
+    needs: [INSTALL, BUILD, LINT, VERIFY, UNIT_TEST]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9.12.1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+      - name: Publish WebApp to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: cloudkit
-          directory: ./apps/web/.svelte-kit/cloudflare
-          # Optional: Enable this if you want to have GitHub Deployments triggered
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          # Optional: Switch what branch you are publishing to.
-          # By default this will be the branch which triggered this workflow
-          branch: ${{ github.head_ref }}
-          # Optional: Change the working directory
-          # workingDirectory: my-site
-          # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
+          packageManager: pnpm
+          workingDirectory: ./apps/web/
+          command: pages deploy .svelte-kit/cloudflare --project-name=cloudkit
           wranglerVersion: '3'
-
-          
 
   PUBLISH_SWAGGER_UI:
-    name: Publish to Feature Branch
+    name: Publish Swagger UI to Feature Branch
     environment: PREVIEW
     runs-on: ubuntu-latest
-    needs: INSTALL
+    needs: [INSTALL, BUILD, LINT, VERIFY, UNIT_TEST]
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
@@ -149,35 +155,50 @@ jobs:
           version: 9.1.1
       - uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '22'
       - uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', './prisma/dev.schema.prisma', './prisma/prod.schema.prisma') }}
-      - name: Install
-        run: |
-          pnpm install
-      - name: Build
-        env:
-          IS_CI: false
-        run: |
-          pnpm build:prod:api
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+      - name: Publish
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: cloudkit-api
-          directory: ./apps/swagger-ui/.svelte-kit/cloudflare
-          # Optional: Enable this if you want to have GitHub Deployments triggered
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          # Optional: Switch what branch you are publishing to.
-          # By default this will be the branch which triggered this workflow
-          branch: ${{ github.head_ref }}
-          # Optional: Change the working directory
-          # workingDirectory: my-site
-          # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
+          packageManager: pnpm
+          workingDirectory: ./apps/swagger-ui/
+          command: pages deploy .svelte-kit/cloudflare --project-name=cloudkit-api
           wranglerVersion: '3'
+  
+  PUBLISH_STORYBOOK:
+    name: Publish Storybook to Feature Branch
+    environment: PREVIEW
+    runs-on: ubuntu-latest
+    needs: [INSTALL, BUILD, LINT, VERIFY, UNIT_TEST]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9.1.1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+      - name: Publish
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          packageManager: pnpm
+          workingDirectory: ./apps/styleguide/
+          command: pages deploy storybook-static --project-name=cloudkit-styleguide
+          wranglerVersion: '3'
+          
+
+
   # Disable until I can figure out a way to deal with the flaky tests
   # E2E_TEST:
   #   name: Run E2E Tests
@@ -195,12 +216,12 @@ jobs:
   #         version: 9.1.1
   #     - uses: actions/setup-node@v3
   #       with:
-  #         node-version: '20'
+  #         node-version: '22'
   #         cache: 'pnpm'
   #     - uses: actions/cache@v3
   #       with:
   #         path: ./node_modules
-  #         key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', './prisma/dev.schema.prisma', './prisma/prod.schema.prisma') }}
+  #         key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
   #     - name: Prisma Generate
   #       run: |
   #         pnpm prisma:gen:dev

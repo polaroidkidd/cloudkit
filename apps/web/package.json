@@ -8,7 +8,7 @@
 		"dev": "vite dev",
 		"clean": "rimraf ./playwright-report && rimraf ./.wrangler && rimraf ./.svelte-kit",
 		"run-ci": "pnpm clean && dotenv -e .env.development -- prisma generate --schema ./prisma/dev.schema.prisma &&  dotenv -e .env.ci -- vite build --mode ci && vite preview",
-		"build:prod": "pnpm clean && pnpm prisma:gen:prod && vite build --mode production",
+		"build": "vite build --mode production",
 		"build:ci": "dotenv -e .env.ci -- pnpm clean && pnpm prisma:gen:ci && vite build --mode ci",
 		"preview": "pnpm build:ci && vite preview",
 		"preview:cf": "pnpm build:prod && wrangler pages dev ./.svelte-kit/cloudflare",
