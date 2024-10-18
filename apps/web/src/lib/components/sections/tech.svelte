@@ -78,7 +78,7 @@
 		</ListItem>
 		<ListItem
 			titel="Storybook Integration"
-			description="Up and running storybook, including basic example with mock stores. Have a look <a href='https://storybook.cloudkit.dle.dev' class='anchor'>here!</a>"
+			description="Up and running storybook, including basic example with mock stores. Have a look <a href='https://storybook.cloudkit.dle.dev' target='_blank' class='anchor'>here!</a>"
 		>
 			<div slot="badge" class="w-full pb-4">
 				<svg
@@ -114,7 +114,7 @@
 		</ListItem>
 		<ListItem
 			titel="Swagger-UI"
-			description="Integrated Swagger-UI for easy testing of your API endpoints. Check out this template's API <a href='https://swagger.cloudkit.dle.dev' class='anchor'>here!</a>"
+			description="Integrated Swagger-UI for easy testing of your API endpoints. Check out this template's API <a href='https://api.cloudkit.dle.dev' target='_blank' class='anchor'>here!</a>"
 		>
 			<div slot="badge" class="w-full pb-4">
 				<svg
