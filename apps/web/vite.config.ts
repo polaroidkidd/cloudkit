@@ -1,9 +1,12 @@
 import { sveltekit } from '@sveltejs/kit/vite';
+import { fileURLToPath } from 'node:url';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
-import { fileURLToPath } from 'node:url';
+
+import { svelteTesting } from '@testing-library/svelte/vite';
+
 export default defineConfig({
-	plugins: [tsconfigPaths(), sveltekit()],
+	plugins: [tsconfigPaths(), sveltekit(), svelteTesting()],
 	server: {
 		port: 4000
 	},
@@ -19,7 +22,15 @@ export default defineConfig({
 		target: 'es2020'
 	},
 	test: {
-		include: ['tests/unit/**/*.{test,spec}.{js,ts}']
+		environment: 'jsdom',
+		setupFiles: ['./vitest-setup.ts']
+	},
+	css: {
+		preprocessorOptions: {
+			scss: {
+				api: 'modern'
+			}
+		}
 	},
 	define: {
 		SUPERFORMS_LEGACY: true

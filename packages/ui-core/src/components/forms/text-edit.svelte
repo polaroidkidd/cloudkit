@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { IconEdit, IconLoading } from "../icons";
-	import Typography from "../typography/typography.svelte";
-
-	
+	import { IconEdit, IconLoading } from '../icons';
+	import Typography from '../typography/typography.svelte';
 
 	export let value = '';
 	export let name: string;

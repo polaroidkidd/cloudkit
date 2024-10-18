@@ -22,7 +22,7 @@
 					Dumps the content of the current database into a <code>cloudkit-db-dump.sql</code>
 					file. You can
 					<code>./cloudkit-db-dump.sql:/docker-entrypoint-initdb.d/init.sql</code>
-					 which will initialize the psql container with those contents on start up every time.
+					which will initialize the psql container with those contents on start up every time.
 				</div>
 			</div>
 		</div>
@@ -33,7 +33,7 @@
 				<code>pnpm psql:restore</code>
 				<div>
 					Restores from the latest <code>cloudkit-db-dump.sql</code>
-					 file, if it exists.
+					file, if it exists.
 				</div>
 			</div>
 		</div>
@@ -57,7 +57,7 @@
 					<code>./.wrangler</code>
 					and
 					<code>./.svelte-kit</code>
-					 folders for a clean slate
+					folders for a clean slate
 				</div>
 			</div>
 		</div>

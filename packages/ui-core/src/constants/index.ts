@@ -11,9 +11,6 @@ export const UPLOAD_FILTERS = {
 	allowedFileTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
 } as const;
 
-
-
-
 export const isDevOrCi = dev || import.meta.env.MODE === 'ci';
 
 export const UPLOAD_OPTIONS = {

@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-
 export const ALLOWED_STRINGS =
 	/^[ !?_"+.,():;&#@%ÀÁÂÃÄÅǍĀĄÆÇČĆÈÉÊËĚĒĘǦÌÍÎÏĪÐĐĎĹĽŁÑŇŃÒÓÔÕÖŌ×ØŘŔŠŚŤÙÚÛÜŮŪÝΫŽŻŹÞßàáâãäåǎāąæçčćďđèéêëěēęǧìíîïīðĺľłñňńòóôõöō÷øřŕšśťùúûüůūýþÿžżźa-zA-Z0-9-\u0027\u2019ŐőŰűĞğİıŞş¡¿ªº£¢€§]*$/;
 export const ERROR_MESSAGE = 'This field may only contain letters or numbers';
@@ -39,4 +38,3 @@ export const EditUserSchema = z.object({
 	email: z.string().email().min(3),
 	avatar: ImageSchema
 });
-

@@ -7,6 +7,6 @@
 		environment in order for the Workflow to run through without errors. Example Values of these can
 		be cound in the
 		<code>.env.ci</code>
-		 file.
+		file.
 	</div>
 </section>

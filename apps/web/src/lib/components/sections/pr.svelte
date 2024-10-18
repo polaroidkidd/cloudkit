@@ -11,7 +11,7 @@
 				<code>INSTALL</code>
 				<div>
 					Installs depdendencies from <code>pnpm-lock.yaml</code>
-					 and caches them
+					and caches them
 				</div>
 			</div>
 		</div>
