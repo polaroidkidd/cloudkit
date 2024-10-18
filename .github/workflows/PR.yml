@@ -27,12 +27,12 @@ jobs:
           version: 9.12.1
       - uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: '22.9.0'
       - uses: actions/cache@v3
         id: cache-pnpm
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', '/.npmrc') }}
       - name: Install
         if: steps.cache-pnpm.outputs.cache-hit != 'true'
         run: |
@@ -50,7 +50,7 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', '/.npmrc') }}
       - name: Lint
         run: |
           pnpm lint
@@ -65,11 +65,11 @@ jobs:
           version: 9.12.1
       - uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: '22.9.0'
       - uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', '/.npmrc') }}
       - name: Check
         run: |
           pnpm check
@@ -84,11 +84,11 @@ jobs:
           version: 9.12.1
       - uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: '22.9.0'
       - uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', '/.npmrc') }}
       - name: Unit Test
         run: |
           pnpm test
@@ -104,11 +104,11 @@ jobs:
           version: 9.12.1
       - uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: '22.9.0'
       - uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', '/.npmrc') }}
       - name: Build
         env:
           IS_CI: false
@@ -128,11 +128,11 @@ jobs:
           version: 9.12.1
       - uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: '22.9.0'
       - uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', '/.npmrc') }}
       - name: Publish WebApp to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
@@ -155,11 +155,11 @@ jobs:
           version: 9.12.1
       - uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: '22.9.0'
       - uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', '/.npmrc') }}
       - name: Publish
         uses: cloudflare/wrangler-action@v3
         with:
@@ -182,11 +182,11 @@ jobs:
           version: 9.12.1
       - uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: '22.9.0'
       - uses: actions/cache@v3
         with:
           path: ./node_modules
-          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', '/.npmrc') }}
       - name: Publish
         uses: cloudflare/wrangler-action@v3
         with:
@@ -216,12 +216,12 @@ jobs:
   #         version: 9.12.1
   #     - uses: actions/setup-node@v3
   #       with:
-  #         node-version: '22'
+  #         node-version: '22.9.0'
   #         cache: 'pnpm'
   #     - uses: actions/cache@v3
   #       with:
   #         path: ./node_modules
-  #         key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+  #         key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', '/.npmrc) }}
   #     - name: Prisma Generate
   #       run: |
   #         pnpm prisma:gen:dev
