@@ -14,10 +14,9 @@
 </script>
 
 <script lang="ts">
-	import type { FORM_ACTIONS } from '/home/dle/DevWork/me/cloudkit/packages/ui-core/src/routing/index.ts';
-
 	import classNames from 'classnames';
 	import { twMerge } from 'tailwind-merge';
+	import type { FORM_ACTIONS } from '../../routing';
 
 	export let disabled: Disabled = false;
 	export let formAction: FORM_ACTIONS | null = null;
