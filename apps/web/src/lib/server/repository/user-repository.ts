@@ -1,7 +1,7 @@
 import { isDevOrCi } from '@cloudkit/ui-core';
 import { generateId } from 'lucia';
 
-import type { Image, User, UserApiPost } from '@cloudkit/ui-core';
+import type { Image, User, UserApiPost, UserWithRelations } from '@cloudkit/ui-core';
 import { Prisma } from '@prisma/client';
 import { ImageRepository } from './image-repository';
 import { db } from './prisma-client';
@@ -167,6 +167,16 @@ class UserRepository {
 				}
 			})
 			.then(Boolean);
+	}
+	findByIdWithRelations(userId: string): Promise<UserWithRelations> {
+		return db.user.findUniqueOrThrow({
+			where: {
+				id: userId
+			},
+			include: {
+				avatar: true
+			}
+		});
 	}
 }
 
