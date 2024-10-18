@@ -3,7 +3,7 @@ import { generateId } from 'lucia';
 
 import { IMAGE_API, IMAGE_API_TOKEN } from '$env/static/private';
 
-import type { CloudflareImageDeleteResponse } from '@cloudkit/ui-core';
+import type { CloudflareImageDeleteResponse, UserWithRelations } from '@cloudkit/ui-core';
 import { isDevOrCi } from '@cloudkit/ui-core';
 import { db } from './prisma-client';
 
@@ -119,7 +119,7 @@ class ImageRepository {
 	 * @param {NonNullable<Prisma.ImageUpdateInput>} data - The data to update the image with.
 	 * @returns {Promise<Image>} A Promise that resolves to the updated image.
 	 */
-	async update({ data, image }: { data: Image; image: File }): Promise<Image> {
+	async update({ data, image }: { data: UserWithRelations; image: File }): Promise<Image> {
 		await this.patchToImageService(image, data.id);
 
 		if (!data.avatar) {

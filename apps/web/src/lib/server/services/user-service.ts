@@ -1,4 +1,4 @@
-import type { User } from '@cloudkit/ui-core';
+import type { User, UserApiPost } from '@cloudkit/ui-core';
 import { UserRepository } from '../repository/user-repository';
 
 // TODO implement ZenStack to manage access
@@ -13,7 +13,7 @@ class UserService {
 		return this._instanceCache;
 	}
 
-	async createUser(data: User): Promise<User> {
+	async createUser(data: UserApiPost & { avatar: File }): Promise<User> {
 		return UserRepository.create(data);
 	}
 	async updateUser(data: User): Promise<User> {

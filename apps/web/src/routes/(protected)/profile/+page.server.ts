@@ -63,12 +63,12 @@ export const actions: Actions = {
 			return fail(400, { form: editUserForm });
 		}
 
-		const avatarEntry = await ImageRepository.findByUserId(user.id);
+		const userWithRelations = await UserRepository.findByIdWithRelations(user.id);
 
 		const avatar = formData.get('avatar');
-		if (avatar instanceof File && avatarEntry !== null) {
+		if (avatar instanceof File && userWithRelations !== null) {
 			const image = await ImageRepository.update({
-				data: avatarEntry,
+				data: userWithRelations,
 				image: avatar
 			});
 

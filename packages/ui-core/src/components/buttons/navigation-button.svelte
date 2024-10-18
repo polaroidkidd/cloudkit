@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { Variant, Fill} from "./simple-button.svelte";
 	import { page } from '$app/stores';
 	import classNames from 'classnames';
 	import { twMerge } from 'tailwind-merge';
 	import { IconArrowRight } from '../icons';
+	import type { Fill, Variant } from "./simple-button.svelte";
 	export let href:string;
 	export let variant: Variant = undefined;
 	export let fill: Fill = undefined;
@@ -47,15 +47,7 @@
 				'variant-ringed-secondary': variant === 'secondary' && fill === 'ringed',
 				'variant-ringed-tertiary': variant === 'tertiary' && fill === 'ringed',
 				'variant-ringed-success': variant === 'success' && fill === 'ringed',
-				'variant-ringed-warning': variant === 'warning' && fill === 'ringed',
-				'variant-ringed-error': variant === 'error' && fill === 'glass',
-				'variant-glass-surface': variant === 'surface' && fill === 'glass',
-				'variant-glass-primary': variant === 'primary' && fill === 'glass',
-				'variant-glass-secondary': variant === 'secondary' && fill === 'glass',
-				'variant-glass-tertiary': variant === 'tertiary' && fill === 'glass',
-				'variant-glass-success': variant === 'success' && fill === 'glass',
-				'variant-glass-warning': variant === 'warning' && fill === 'glass',
-				'variant-glass-error': variant === 'error' && fill === 'glass'
+				'variant-ringed-warning': variant === 'warning' && fill === 'ringed'
 			},
 			clazz
 		)

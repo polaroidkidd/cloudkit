@@ -2,7 +2,42 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
-			"$app/*": [".svelte-kit/dev/runtime/app/*"]
-		}
-	}
+			"$app/*": [
+				"../../apps/web/.svelte-kit/dev/runtime/app/*"
+			]
+		},
+		"verbatimModuleSyntax": true,
+		"isolatedModules": true,
+		"lib": [
+			"esnext",
+			"DOM",
+			"DOM.Iterable"
+		],
+		"moduleResolution": "bundler",
+		"module": "esnext",
+		"noEmit": true,
+		"target": "esnext",
+		"allowJs": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true
+
+	},
+	"include": [
+		"./vite.config.js",
+		"./vite.config.ts",
+		"./src/**/*.js",
+		"./src/**/*.ts",
+		"./src/**/*.svelte",
+		"./tests/**/*.js",
+		"./tests/**/*.ts",
+		"./tests/**/*.svelte"
+	],
+	"exclude": [
+		"./node_modules/**",
+	]
 }

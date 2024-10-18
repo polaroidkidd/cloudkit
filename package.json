@@ -9,10 +9,10 @@
 		"dev:storybook": "turbo run @cloudkit/styleguide#storybook",
 		"dev": "dotenv -e .env.development -- turbo run dev",
 		"dev:api": "turbo run @cloudkit/swagger-ui#dev",
-		"check": "turbo run @cloudkit/web#check",
 		"prepare": "husky",
 		"clean": "rimraf --glob .svelte-kit build dist .turbo",
-		"lint": "turbo run lint -- --fix"
+		"lint": "turbo run lint -- --fix",
+		"check": "turbo run check"
 	},
 	"devDependencies": {
 		"@types/node": "22.7.6",

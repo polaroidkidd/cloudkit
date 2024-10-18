@@ -65,6 +65,10 @@
 		},
 		"lint":{
 			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"]
+		},
+		"check":{
+			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"],
+			"cache": false
 		}
 	}
 }
