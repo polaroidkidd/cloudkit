@@ -14,7 +14,9 @@
 		"lint": "turbo run lint -- --fix",
 		"check": "turbo run check",
 		"test": "turbo run test",
-		"sync": "turbo run sync"
+		"sync": "turbo run sync",
+		"build:local": "dotenv -e .env.production -- turbo run build",
+		"build": "turbo run build" 
 	},
 	"devDependencies": {
 		"@types/node": "22.7.6",
