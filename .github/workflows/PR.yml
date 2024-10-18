@@ -85,7 +85,7 @@ jobs:
         run: |
           pnpm check
   UNIT_TEST:
-    name: Run Unit Tests
+    name: Unit Tests
     runs-on: ubuntu-latest
     needs: INSTALL
     steps:
