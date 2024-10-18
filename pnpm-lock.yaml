@@ -155,7 +155,7 @@ importers:
   apps/swagger-ui:
     dependencies:
       '@cloudkit/service-contract':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../packages/service-contract
       swagger-ui:
         specifier: ^5.17.14

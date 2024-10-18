@@ -136,7 +136,7 @@ jobs:
 
   ################ PUBLISH #################
   PUBLISH_WEBAPP:
-    name: Publish WebApp to Feature Branch
+    name: Publish WebApp
     environment: PREVIEW
     runs-on: ubuntu-latest
     needs: [INSTALL, BUILD, LINT, VERIFY, UNIT_TEST]
@@ -167,7 +167,7 @@ jobs:
           wranglerVersion: '3'
 
   PUBLISH_SWAGGER_UI:
-    name: Publish Swagger UI to Feature Branch
+    name: Publish Swagger UI
     environment: PREVIEW
     runs-on: ubuntu-latest
     needs: [INSTALL, BUILD, LINT, VERIFY, UNIT_TEST]
@@ -198,7 +198,7 @@ jobs:
           wranglerVersion: '3'
   
   PUBLISH_STORYBOOK:
-    name: Publish Storybook to Feature Branch
+    name: Publish Storybook
     environment: PREVIEW
     runs-on: ubuntu-latest
     needs: [INSTALL, BUILD, LINT, VERIFY, UNIT_TEST]
