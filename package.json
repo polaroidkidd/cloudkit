@@ -12,7 +12,9 @@
 		"prepare": "husky",
 		"clean": "rimraf --glob .svelte-kit build dist .turbo",
 		"lint": "turbo run lint -- --fix",
-		"check": "turbo run check"
+		"check": "turbo run check",
+		"test": "turbo run test",
+		"sync": "turbo run sync"
 	},
 	"devDependencies": {
 		"@types/node": "22.7.6",

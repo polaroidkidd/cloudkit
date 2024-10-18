@@ -6,7 +6,6 @@ export enum MODAL_PUBLIC {
 	CREATE_ERROR = 'createError'
 }
 
-
 export const authenticateModalConfig: ModalSettings = {
 	type: 'component',
 	component: MODAL_PUBLIC.LOG_IN
@@ -16,7 +15,6 @@ export const registerModalConfig: ModalSettings = {
 	type: 'component',
 	component: MODAL_PUBLIC.REGISTER
 };
-
 
 export function getErrorModal(errorMessage: string): ModalSettings {
 	return {
@@ -46,7 +44,6 @@ export function getConfirmationModalConfig({
 	};
 }
 
-
 export function openConfirmationModal({
 	title,
 	body,
@@ -61,4 +58,3 @@ export function openConfirmationModal({
 		})
 	);
 }
-

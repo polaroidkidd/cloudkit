@@ -8,7 +8,7 @@
 				Create a <code>.env.development</code>
 				file (you can just copy the
 				<code>.env.example</code>
-				 file)
+				file)
 			</span>
 		</li>
 		<li class="text-xl pb-2">
@@ -23,8 +23,7 @@
 			<span class="badge-icon p-4 variant-soft-primary">3.</span>
 			<span>
 				Run <code>pnpm prep</code>
-				. This will generate the prisma schema, push it to the DB and seed the PSQL & Thumbor
-				containers
+				. This will generate the prisma schema, push it to the DB and seed the PSQL & Thumbor containers
 			</span>
 		</li>
 		<li class="text-xl pb-2">
@@ -39,7 +38,7 @@
 			<span class="badge-icon p-4 variant-soft-primary">6.</span>
 			<span>
 				Run the <code>pnpm psql:seed</code>
-				 command which will generate a admin user and 10 random users.
+				command which will generate a admin user and 10 random users.
 			</span>
 		</li>
 		<li class="text-xl pb-2">

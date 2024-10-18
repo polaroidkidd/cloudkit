@@ -12,7 +12,7 @@
 		<code>.env.example</code>
 		file, as these are used to run the e2e tests against the docker containers. The
 		<code>PREVIEW</code>
-		 values need to be set values from the relevant services.
+		values need to be set values from the relevant services.
 	</p>
 	<p class="text-xl mb-4">
 		In addition to these you'll have to configure <code>CLOUDFLARE_API_TOKEN</code>
@@ -20,9 +20,9 @@
 		<code>CLOUDFLARE_ACCOUNT_ID</code>
 		to enable preview & production publishing. You can optain the
 		<code>CLOUDFLARE_API_TOKEN</code>
-		 in the cloudflare dashboard. Create a new token which allows editing for Cloudflare Pages. Then
-		set up a Pages Project. The Github Action should then deply accordingly. You can also assign it to
-		a domain if you use cloudlfare to manage your domains (I highly reccomend this, it makes life so
-		much easier).
+		in the cloudflare dashboard. Create a new token which allows editing for Cloudflare Pages. Then set
+		up a Pages Project. The Github Action should then deply accordingly. You can also assign it to a
+		domain if you use cloudlfare to manage your domains (I highly reccomend this, it makes life so much
+		easier).
 	</p>
 </section>

@@ -1,10 +1,7 @@
 <script lang="ts">
-
 	import classNames from 'classnames';
 	import Typography from '../typography/typography.svelte';
 	import type { HTMLInputTypeAttribute } from './input-types';
-
-
 
 	export let labelText: string;
 	export let fieldName: string;

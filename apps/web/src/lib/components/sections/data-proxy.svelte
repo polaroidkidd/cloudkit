@@ -8,8 +8,8 @@
 		>
 			Data Proxy
 		</a>
-		, which does some prisma magic and then you can use Prisma in Edge Functions. This is why there
-		are two prisma schemas. The "normal" way of defining your data source is this
+		, which does some prisma magic and then you can use Prisma in Edge Functions. This is why there are
+		two prisma schemas. The "normal" way of defining your data source is this
 	</p>
 
 	<pre class="text-xl">

@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
 	export type Disabled = boolean;
 	export type Size = 'sm' | 'md' | 'lg' | 'xl';
-	export type Variant = 
+	export type Variant =
 		| 'surface'
 		| 'primary'
 		| 'secondary'
@@ -13,7 +13,6 @@
 	export type Fill = 'filled' | 'ghost' | 'soft' | 'ringed' | undefined;
 </script>
 
-
 <script lang="ts">
 	import type { FORM_ACTIONS } from '/home/dle/DevWork/me/cloudkit/packages/ui-core/src/routing/index.ts';
 
@@ -24,8 +23,8 @@
 	export let formAction: FORM_ACTIONS | null = null;
 	export let ariaLabel: string | null = null;
 	export let type: 'button' | 'reset' | 'submit' | null | undefined = null;
-	export let size: Size  = 'md';
-	export let variant:Variant = undefined;
+	export let size: Size = 'md';
+	export let variant: Variant = undefined;
 	export let fill: Fill = undefined;
 	let clazz = '';
 	export { clazz as class };

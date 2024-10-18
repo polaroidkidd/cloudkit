@@ -3,8 +3,8 @@
 	import classNames from 'classnames';
 	import { twMerge } from 'tailwind-merge';
 	import { IconArrowRight } from '../icons';
-	import type { Fill, Variant } from "./simple-button.svelte";
-	export let href:string;
+	import type { Fill, Variant } from './simple-button.svelte';
+	export let href: string;
 	export let variant: Variant = undefined;
 	export let fill: Fill = undefined;
 	let clazz = '';

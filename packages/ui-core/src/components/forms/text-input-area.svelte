@@ -2,7 +2,6 @@
 	import classNames from 'classnames';
 	import Typography from '../typography/typography.svelte';
 
-
 	export let fieldName: string;
 	export let value: string;
 	export let maxLength = 500;

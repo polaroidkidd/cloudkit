@@ -8,7 +8,6 @@
 	import { createEventDispatcher } from 'svelte';
 	import Typography from '../typography/typography.svelte';
 
-
 	const dispatch = createEventDispatcher();
 
 	export let labelText: string;

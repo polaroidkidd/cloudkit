@@ -69,6 +69,14 @@
 		"check":{
 			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"],
 			"cache": false
+		},
+		"test":{
+			"cache": false,
+			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"]
+		},
+		"sync":{
+			"cache": false,
+			"dependsOn": ["@cloudkit/db-schema#generate"]
 		}
 	}
 }

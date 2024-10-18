@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
 
-	
-	
 	import type { Image } from '@cloudkit/db-schema';
 	import classNames from 'classnames';
 	import { twMerge } from 'tailwind-merge';
@@ -33,9 +31,7 @@
 	bind:this={image}
 	{width}
 	{height}
-	srcset={dev
-		? url
-		: [`${url}/xs`, `${url}/sm`, `${url}/md`, `${url}/lg`, `${url}/xl`].join(', ')}
+	srcset={dev ? url : [`${url}/xs`, `${url}/sm`, `${url}/md`, `${url}/lg`, `${url}/xl`].join(', ')}
 	sizes={sizes
 		? sizes
 				?.map(({ maxWidth, widthSlot }) => `(max-width: ${maxWidth}px) ${widthSlot}px`)
