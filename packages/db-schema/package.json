@@ -16,7 +16,7 @@
 		}
 	},
 	"scripts": {
-		"gen": "prisma generate --schema ./prisma/schema.prisma && pnpm format",
+		"generate": "prisma generate --schema ./prisma/schema.prisma && pnpm format",
 		"push": "prisma db push --schema ./prisma/schema.prisma && pnpm format",
 		"push:manual": "dotenv -e ../../.env.development -- prisma db push --schema ./prisma/schema.prisma && pnpm format",
 		"studio:": "prisma studio --schema ./prisma/schema.prisma && pnpm format",

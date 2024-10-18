@@ -3,10 +3,10 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
-		port: 3001
+		port: 4100
 	},
 	preview: {
-		port: 3001
+		port: 4100
 	},
 	optimizeDeps: {
 		esbuildOptions: {

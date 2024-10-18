@@ -7,7 +7,7 @@
 		"build:api": "turbo run @cloudkit/service-contract#build",
 		"build:prod:api": "turbo run @cloudkit/swagger-ui#build",
 		"dev:storybook": "turbo run @cloudkit/styleguide#storybook",
-		"dev": "turbo run @cloudkit/api-mocks#start && dotenv -e .env.development -- turbo run @cloudkit/web#dev",
+		"dev": "dotenv -e .env.development -- turbo run @cloudkit/web#dev",
 		"dev:api": "turbo run @cloudkit/swagger-ui#dev",
 		"check": "turbo run @cloudkit/web#check",
 		"prepare": "husky",

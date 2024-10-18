@@ -1,7 +1,7 @@
 networks:
   cloudkit-net:
-    labels:
-      - cloudkit-net
+    name: cloudkit-net
+    driver: bridge
 services:
   img:
     image: ghcr.io/minimalcompact/thumbor
@@ -31,7 +31,7 @@ services:
     networks:
       - cloudkit-net
     ports:
-      - '6501:6501'
+      - '7501:6501'
 
   # redis:
   #   image: redis:6.2
@@ -51,6 +51,6 @@ services:
       - POSTGRES_PASSWORD=pass123
       - POSTGRES_DB=cloudkit-db
     ports:
-      - 6500:5432
+      - 7500:5432
     volumes:
       - ./sk-db-dump.sql:/docker-entrypoint-initdb.d/sk-db-dump.sql

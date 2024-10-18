@@ -6,7 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "storybook dev -p 3002",
+		"dev": "storybook dev -p 4200",
 		"build-storybook": "storybook build"
 	},
 	"keywords": [],
