@@ -14,15 +14,28 @@
 		"@cloudkit/web#dev": {
 			"cache": false,
 			"persistent": true,
-			"dependsOn": ["@cloudkit/db-schema#push"],
+			"dependsOn": ["@cloudkit/db-schema#push", "@cloudkit/swagger-ui#sync", "@cloudkit/api-mocks#start"],
 			"passThroughEnv": ["DATABASE_URL"]
+		},
+		"@cloudkit/styleguide#dev":{
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["@cloudkit/web#sync", "@cloudkit/swagger-ui#sync"]
+		},
+		"@cloudkit/swagger-ui#dev": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["@cloudkit/service-contract#build"]
 		},
 		"@cloudkit/db-schema#push": {
 			"cache": false,
-			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/db-schema#gen"]
+			"dependsOn": ["@cloudkit/service-contract#build"]
 		},
-		"@cloudkit/db-schema#gen": {
-			"cache": false,
+		"@cloudkit/db-schema#generate": {
+			"outputs": [
+				" ./../../node_modules/.pnpm/@prisma+client@5.19.1_prisma@5.20.0/node_modules/@prisma/client"
+			],
+			"inputs": ["./prisma/dev.schema.prisma", "./prisma/prod.schema.prisma", "./src/utils/form-schemas.ts"],
 			"dependsOn": []
 		},
 		"@cloudkit/api-mocks#start": {
@@ -31,27 +44,19 @@
 		},
 		"@cloudkit/web#check": {
 			"cache": false,
-			"dependsOn": ["@cloudkit/db-schema#gen"]
+			"dependsOn": ["@cloudkit/db-schema#generate"]
 		},
 		"@cloudkit/service-contract#build": {
-			"cache": false,
-			"dependsOn": ["@cloudkit/db-schema#gen"]
-		},
-		"@cloudkit/swagger-ui#dev": {
-			"cache": false,
-			"persistent": true,
-			"dependsOn": ["@cloudkit/service-contract#build"]
+			"outputs": ["./dist"],
+			"inputs": ["./src/index.ts", "./src/models.ts"],
+			"dependsOn": ["@cloudkit/db-schema#generate"]
 		},
 		"@cloudkit/swagger-ui#build": {
-			"cache": false,
+			"outputs": ["./svelte-kit"],
 			"dependsOn": ["@cloudkit/service-contract#build"]
 		},
-		"@cloudkit/styleguide#storybook": {
-			"cache": false,
-			"dependsOn": ["@cloudkit/web#sync", "@cloudkit/swagger-ui#sync"]
-		},
 		"@cloudkit/web#sync": {
-			"cache": false,
+			"outputs": ["./.svelte-kit"],
 			"dependsOn": []
 		},
 		"@cloudkit/swagger-ui#sync": {
