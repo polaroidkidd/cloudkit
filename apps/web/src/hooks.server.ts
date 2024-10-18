@@ -3,7 +3,6 @@ import { auth } from '@lib/server/auth/lucia';
 import { type Handle, redirect } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const tick = Date.now();
 	await auth.deleteExpiredSessions();
 	const sessionId = event.cookies.get(auth.sessionCookieName);
 	if (!sessionId) {

@@ -62,6 +62,9 @@
 		"@cloudkit/swagger-ui#sync": {
 			"cache": false,
 			"outputs": ["./svelte-kit"]
+		},
+		"lint":{
+			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"]
 		}
 	}
 }

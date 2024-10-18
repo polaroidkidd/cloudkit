@@ -13,7 +13,7 @@ export const UPLOAD_FILTERS = {
 
 
 
-// eslint-disable-next-line turbo/no-undeclared-env-vars
+
 export const isDevOrCi = dev || import.meta.env.MODE === 'ci';
 
 export const UPLOAD_OPTIONS = {
