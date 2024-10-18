@@ -1,3 +1,5 @@
+name: cloudkit
+
 networks:
   cloudkit-net:
     name: cloudkit-net
@@ -52,5 +54,5 @@ services:
       - POSTGRES_DB=cloudkit-db
     ports:
       - 7500:5432
-    volumes:
-      - ./sk-db-dump.sql:/docker-entrypoint-initdb.d/sk-db-dump.sql
+    # volumes:
+    #   - ./sk-db-dump.sql:/docker-entrypoint-initdb.d/sk-db-dump.sql
