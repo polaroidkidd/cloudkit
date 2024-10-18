@@ -64,7 +64,7 @@
 			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"]
 		},
 		"check":{
-			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"],
+			"dependsOn": ["@cloudkit/service-contract#build","@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"],
 			"cache": false
 		},
 		"test":{
