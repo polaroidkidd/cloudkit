@@ -37,8 +37,11 @@
 		<div class="text-xl pb-2 flex gap-2">
 			<span class="badge-icon p-4 variant-soft-primary mr-5">4.</span>
 			<div class="flex flex-col gap-3">
-				<code>E2E_TEST</code>
-				<div>Launches docker containers, seeds the database and thumbor and runs all e2e tests</div>
+				<code>PUBLISH</code>
+				<div>
+					There are three publish jobs. One for the web-app, one for the swagger-ui and one for the
+					storybook.
+				</div>
 			</div>
 		</div>
 	</div>
