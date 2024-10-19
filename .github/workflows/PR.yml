@@ -136,13 +136,20 @@ jobs:
         run: |
           pnpm turbo @cloudkit/web#build
       - name: Publish
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          packageManager: pnpm
+          projectName: cloudkit
           workingDirectory: ./apps/web/
-          command: pages deploy ./.svelte-kit/cloudflare
+          directory: ./.svelte-kit/cloudflare
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: Switch what branch you are publishing to.
+          # By default this will be the branch which triggered this workflow
+          branch: ${{ github.head_ref }}
+          # Optional: Change the working directory
+          # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
           wranglerVersion: '3'
   PUBLISH_STORYBOOK:
     name: Publish Storybook
@@ -171,13 +178,20 @@ jobs:
         run: |
           pnpm turbo run @cloudkit/styleguide#build
       - name: Publish
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          packageManager: pnpm
+          projectName: cloudkit-styleguide
           workingDirectory: ./apps/styleguide/
-          command: pages deploy ./storybook-static
+          directory: ./storybook-static
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: Switch what branch you are publishing to.
+          # By default this will be the branch which triggered this workflow
+          branch: ${{ github.head_ref }}
+          # Optional: Change the working directory
+          # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
           wranglerVersion: '3'
 
   PUBLISH_SWAGGER:
@@ -207,13 +221,20 @@ jobs:
         run: |
           pnpm turbo run @cloudkit/swagger-ui#build
       - name: Publish
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          packageManager: pnpm
+          projectName: cloudkit-api
           workingDirectory: ./apps/swagger-ui/
-          command: pages deploy ./.svelte-kit/cloudflare
+          directory: ./.svelte-kit/cloudflare
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: Switch what branch you are publishing to.
+          # By default this will be the branch which triggered this workflow
+          branch: ${{ github.head_ref }}
+          # Optional: Change the working directory
+          # Optional: Change the Wrangler version, allows you to point to a specific version or a tag such as `beta`
           wranglerVersion: '3'
 
 
