@@ -134,33 +134,86 @@ jobs:
         env:
           IS_CI: false
         run: |
-          pnpm build
-      - name: Publish WebApp
+          pnpm turbo @cloudkit/web#build
+      - name: Publish
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           packageManager: pnpm
           workingDirectory: ./apps/web/
-          command: pages deploy .svelte-kit/cloudflare --project-name=cloudkit
+          command: pages deploy ./.svelte-kit/cloudflare
           wranglerVersion: '3'
-      - name: Publish Swagger UI
-        uses: cloudflare/wrangler-action@v3
+  PUBLISH_STORYBOOK:
+    name: Publish Storybook
+    environment: PREVIEW
+    runs-on: ubuntu-latest
+    needs: [INSTALL, LINT, VERIFY, UNIT_TEST]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          packageManager: pnpm
-          workingDirectory: ./apps/swagger-ui/
-          command: pages deploy .svelte-kit/cloudflare --project-name=cloudkit-api
-          wranglerVersion: '3'
-      - name: Publish Storybook
+          version: 9.12.1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22.9.0'
+      - uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', '/.npmrc') }}
+      - name: Install Module Packages
+        run: |
+          pnpm i --frozen-lockfile
+          pnpm sync
+      - name: Build
+        env:
+          IS_CI: false
+        run: |
+          pnpm turbo run @cloudkit/styleguide#build
+      - name: Publish
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           packageManager: pnpm
           workingDirectory: ./apps/styleguide/
-          command: pages deploy storybook-static --project-name=cloudkit-styleguide
+          command: pages deploy ./storybook-static
+          wranglerVersion: '3'
+
+  PUBLISH_SWAGGER:
+    name: Publish Swagger UI
+    environment: PREVIEW
+    runs-on: ubuntu-latest
+    needs: [INSTALL, LINT, VERIFY, UNIT_TEST]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9.12.1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22.9.0'
+      - uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', '/.npmrc') }}
+      - name: Install Module Packages
+        run: |
+          pnpm i --frozen-lockfile
+          pnpm sync
+      - name: Build
+        env:
+          IS_CI: false
+        run: |
+          pnpm turbo run @cloudkit/swagger-ui#build
+      - name: Publish
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          packageManager: pnpm
+          workingDirectory: ./apps/swagger-ui/
+          command: pages deploy ./.svelte-kit/cloudflare
           wranglerVersion: '3'
 
 

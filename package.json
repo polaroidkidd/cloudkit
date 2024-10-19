@@ -15,7 +15,7 @@
 		"check": "turbo run check",
 		"test": "turbo run test",
 		"sync": "turbo run sync",
-		"build:local": "dotenv -e .env.production -- turbo run build",
+		"build:local": "dotenv -e .env.development -- turbo run build",
 		"build": "turbo run build" 
 	},
 	"devDependencies": {
