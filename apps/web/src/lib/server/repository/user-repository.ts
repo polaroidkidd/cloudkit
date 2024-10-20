@@ -90,7 +90,7 @@ class UserRepository {
 		}
 		const { id: imageId, url } = await ImageRepository.postToImageService(data.avatar);
 		const hashedPassword = await new Scrypt().hash(data.password);
-
+		console.info('hashedPassword: ', hashedPassword);
 		return db.user.create({
 			data: {
 				id: id,

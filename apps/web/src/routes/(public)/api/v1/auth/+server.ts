@@ -8,14 +8,16 @@ export const DELETE: RequestHandler = async () => {
 };
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	await auth.validateSession(cookies.get(auth.sessionCookieName) ?? '');
+	const data = await request.formData()
 
-	const data = await request.formData();
-	const { success, data: postData } = RegisterUserSchema.safeParse(data);
-
+	const { success, data: postData, error } = RegisterUserSchema.safeParse(data);
+	
 	if (success && postData) {
 		const userExists = await UserRepository.exists(postData.email);
+	
 		if (!userExists) {
-			UserRepository.create(postData);
+			const createdUser = await UserRepository.create(postData);
+	
 		} else {
 			return new Response(null, { status: 409 });
 		}

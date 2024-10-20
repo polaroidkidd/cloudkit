@@ -135,14 +135,18 @@ class ImageRepository {
 		const id = generateId(31);
 
 		if (isDevOrCi) {
-			await fetch(`${IMAGE_API}/${id}`, {
-				method: 'PUT',
-				headers: {
-					'Content-prefix': 'image/webp',
-					Slug: `${`${IMAGE_API}/${id}`}.webp`
-				},
-				body: image
-			});
+			try {
+				await fetch(`${IMAGE_API}/${id}`, {
+					method: 'PUT',
+					headers: {
+						'Content-prefix': 'image/webp',
+						Slug: `${`${IMAGE_API}/${id}`}.webp`
+					},
+					body: image
+				});
+			} catch (e) {
+				console.info('error posting to image service');
+			}
 
 			return { url: `${IMAGE_API}/${id}`, id: id };
 		} else {
