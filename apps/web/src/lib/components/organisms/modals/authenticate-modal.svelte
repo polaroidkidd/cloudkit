@@ -2,11 +2,11 @@
 </script>
 
 <script lang="ts">
-	import { AuthenticateSchema, Button, FORM_ACTIONS, TextInput } from '@cloudkit/ui-core';
+	import { Button, FORM_ACTIONS, TextInput } from '@cloudkit/ui-core';
 
+	import { IconLoading } from '@cloudkit/ui-core';
 	import { getModalStore } from '@skeletonlabs/skeleton';
 	import type { ActionResult } from '@sveltejs/kit';
-	import { IconLoading } from '@cloudkit/ui-core';
 	import classNames from 'classnames';
 	import { onMount } from 'svelte';
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';
@@ -14,15 +14,16 @@
 
 	import { Typography } from '@cloudkit/ui-core';
 
-	import { getErrorModal, isDevOrCi, authenticateModalConfig } from '@cloudkit/ui-core';
-	import { zod } from 'sveltekit-superforms/adapters';
+	import { authenticateModalConfig, getErrorModal, isDevOrCi } from '@cloudkit/ui-core';
+	import { AuthenticateUserSchema } from '@lib/client/auth/schemas';
+	import { valibot } from 'sveltekit-superforms/adapters';
 
-	export let formData: SuperValidated<Infer<typeof AuthenticateSchema>>;
+	export let formData: SuperValidated<Infer<typeof AuthenticateUserSchema>>;
 	const modalStore = getModalStore();
 	let isSubmitting = false;
 	const { form, errors, enhance } = superForm(formData, {
 		validationMethod: 'onblur',
-		validators: zod(AuthenticateSchema),
+		validators: valibot(AuthenticateUserSchema),
 		taintedMessage: null,
 		multipleSubmits: 'abort',
 		onSubmit: () => {

@@ -17,11 +17,6 @@
 	}
 </script>
 
-{#if invalidData}
-	<Typography variant="div" class="pl-5 text-error-500">
-		{invalidData}
-	</Typography>
-{/if}
 <div class={clazz}>
 	<label for={fieldName} class="label pl-5">
 		<Typography weight="extrabold" class="pb-5">
@@ -30,13 +25,18 @@
 	</label>
 	<input
 		use:typeAction
-		class={classNames('input', 'bg-primary-50', 'py-2', 'px-5', 'mb-3')}
+		class={classNames('input', 'bg-primary-50', 'py-2', 'px-5', { 'input-error': invalidData })}
 		name={fieldName}
 		bind:value
 		data-invalid={invalidData}
 		{autocomplete}
 		placeholder={placeHolder}
 	/>
+	{#if invalidData}
+		<Typography variant="div" class="text-error-500">
+			{invalidData}
+		</Typography>
+	{/if}
 </div>
 
 <style>

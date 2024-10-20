@@ -1,48 +1,36 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { Button, FORM_ACTIONS, RegistrationSchema, TextInput } from '@cloudkit/ui-core';
+	import { Button, isDevOrCi, TextInput } from '@cloudkit/ui-core';
 
-	import { FileDropzone, getModalStore } from '@skeletonlabs/skeleton';
-	import type { ActionResult } from '@sveltejs/kit';
 	import { convertFileToBase64, IconCheckTrue, IconLoading, IconUpload } from '@cloudkit/ui-core';
+	import { RegisterUserSchema } from '@lib/client/auth/schemas';
+	import { FileDropzone, getModalStore } from '@skeletonlabs/skeleton';
 	import classNames from 'classnames';
 	import { onMount } from 'svelte';
-	import type { Infer, SuperValidated } from 'sveltekit-superforms';
-	import { superForm } from 'sveltekit-superforms/client';
+	import { valibotClient } from 'sveltekit-superforms/adapters';
+	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms/client';
 
-	import { getErrorModal, isDevOrCi, PATHS } from '@cloudkit/ui-core';
-	import { zod } from 'sveltekit-superforms/adapters';
+	import { createQuery } from '@tanstack/svelte-query';
+	export let formData: SuperValidated<Infer<typeof RegisterUserSchema>>;
 
-	export let formData: SuperValidated<Infer<typeof RegistrationSchema>>;
 	const modalStore = getModalStore();
 	let isSubmitting = false;
 
-	const { form, errors, enhance } = superForm(formData, {
+	const { form, errors, enhance, validateForm } = superForm(formData, {
 		validationMethod: 'onblur',
 		SPA: true,
-		validators: zod(RegistrationSchema),
+
+		validators: valibotClient(RegisterUserSchema),
 		clearOnSubmit: 'none',
 		taintedMessage: null,
 		multipleSubmits: 'abort',
+		onUpdate: async () => {
+			const { valid } = await validateForm();
+			if (valid) {
+				createQuery({
+					queryKey: ['USER'],
 
-		onSubmit: async ({ formData }) => {
-			isSubmitting = true;
-			if (fileList === undefined) {
-				const resp = await fetch('https://picsum.photos/736');
-				const image = (await resp.blob()) as unknown as File;
-				formData.set('avatar', image);
-			} else {
-				formData.set('avatar', fileList[0]);
-			}
-			$form.imgVariations.forEach((logo: string) => formData.append('imgVariations', logo));
-		},
-		onResult: ({ result }) => {
-			if (result.status !== 204) {
-				modalStore.clear();
-				let message = result as ActionResult & { data: { message: string } };
-				modalStore.trigger(getErrorModal(message.data.message));
-			} else {
-				goto(PATHS.PROFILE);
+					queryFn: async () => {}
+				});
 			}
 		}
 	});
@@ -64,7 +52,7 @@
 	}
 	onMount(() => {
 		if (isDevOrCi) {
-			$form.avatar = undefined;
+			$form.avatar = '';
 			$form.lastName = 'test123@dle.dev';
 			$form.firstName = 'test123@dle.dev';
 			$form.email = 'test123@dle.dev';
@@ -75,7 +63,6 @@
 </script>
 
 <form
-	action={FORM_ACTIONS.REGISTER}
 	use:enhance
 	method="POST"
 	enctype="multipart/form-data"

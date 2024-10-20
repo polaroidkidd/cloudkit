@@ -73,11 +73,10 @@ export { MEMBER_STATUS, UPLOAD_FILTERS, UPLOAD_OPTIONS, isDevOrCi } from './cons
 export {
 	ACCEPTED_IMAGE_TYPES,
 	ALLOWED_STRINGS,
-	AuthenticateSchema,
+	ERROR_MESSAGE,
 	EditUserSchema,
 	ImageSchema,
-	MAX_FILE_SIZE,
-	RegistrationSchema
+	MAX_FILE_SIZE
 } from './schemas';
 
 // ROUTING

@@ -273,7 +273,7 @@ importers:
         specifier: ^0.6.1
         version: 0.6.1(@sveltejs/kit@2.7.1(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))
       sveltekit-superforms:
-        specifier: ^2.17.0
+        specifier: ^2.19.1
         version: 2.19.1(@sveltejs/kit@2.7.1(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))(@types/json-schema@7.0.15)(svelte@4.2.19)
       tailwind-merge:
         specifier: ^2.5.2
@@ -504,7 +504,7 @@ importers:
         specifier: ^4.2.19
         version: 4.2.19
       sveltekit-superforms:
-        specifier: ^2.17.0
+        specifier: ^2.19.1
         version: 2.19.1(@sveltejs/kit@2.7.1(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))(@types/json-schema@7.0.15)(svelte@4.2.19)
       tailwind-merge:
         specifier: ^2.5.2

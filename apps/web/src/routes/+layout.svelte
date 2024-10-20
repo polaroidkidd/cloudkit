@@ -5,6 +5,11 @@
 
 	import { IconDLE } from '@cloudkit/ui-core';
 	import { setInitialClassState } from '@skeletonlabs/skeleton';
+	import { QueryClientProvider } from '@tanstack/svelte-query';
+	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
+	import type { LayoutData } from './$types';
+
+	export let data: LayoutData;
 </script>
 
 <svelte:head>
@@ -20,7 +25,10 @@
 </svelte:head>
 
 <main class="container max-w-6xl mt-20 px-5 mx-auto mb-10">
-	<slot />
+	<QueryClientProvider client={data.queryClient}>
+		<slot />
+		<SvelteQueryDevtools />
+	</QueryClientProvider>
 </main>
 <footer class="w-full flex items-center justify-center container max-w-6xl mx-auto">
 	<div class=" px-4 flex flex-col max-w-4xl w-full">

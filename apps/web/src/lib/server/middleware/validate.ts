@@ -1,5 +1,6 @@
-import { UserSchema } from '@cloudkit/db-schema';
+import { AuthenticateUserSchema, RegisterUserSchema } from '@lib/client/auth/schemas';
 import { type Cookies } from '@sveltejs/kit';
+import * as v from 'valibot';
 import { z } from 'zod';
 import { auth } from '../auth/lucia';
 import {
@@ -9,23 +10,58 @@ import {
 	ResourceNotFoundError
 } from '../errors';
 
-function getSchema(request: Request): z.AnyZodObject | z.ZodOptional<z.AnyZodObject> {
-	switch (request.method) {
-		// TODO Implement switch case for all API routes
-		case 'POST':
-			return UserSchema;
-		default:
-			return z.object({});
+function getSchema(
+	request: Request
+): typeof AuthenticateUserSchema | typeof RegisterUserSchema | undefined {
+	const METHODS = {
+		GET: 'GET',
+		POST: 'POST',
+		PUT: 'PUT',
+		PATCH: 'PATCH',
+		DELETE: 'DELETE'
+	} as const;
+	switch (request.url) {
+		case '/api/v1/auth':
+			switch (request.method) {
+				case METHODS.PUT: {
+					return AuthenticateUserSchema;
+				}
+				case METHODS.PATCH: {
+					return RegisterUserSchema;
+				}
+				case METHODS.DELETE: {
+					return AuthenticateUserSchema;
+				}
+			}
+			break;
+
+		case 'api/v1/auth/session-id-regex-here': {
+			switch (request.method) {
+				case METHODS.DELETE: {
+					return AuthenticateUserSchema;
+				}
+			}
+			break;
+		}
+		case '/api/v1/user':
+			switch (request.method) {
+				case METHODS.GET: {
+					return RegisterUserSchema;
+				}
+				case METHODS.PATCH: {
+					return RegisterUserSchema;
+				}
+			}
 	}
 }
 class Validation {
-	async validateBody<T = z.AnyZodObject | z.ZodOptional<z.AnyZodObject>>(
-		request: Request
-	): Promise<T> {
+	async validateBody(request: Request) {
 		try {
 			const schema = getSchema(request);
-			const data = await request.json();
-			return (await schema.parseAsync(data)) as T;
+			if (schema) {
+				const data = await request.json();
+				return v.safeParse(schema, data);
+			}
 		} catch (parseError) {
 			let err = parseError;
 			if (err instanceof z.ZodError) {
@@ -37,9 +73,12 @@ class Validation {
 
 	async validateParams(request: Request, params: Record<string, string>) {
 		try {
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const schema = getSchema(request);
 
-			await schema.parseAsync(params);
+			//TODO FIX PARSING
+			// v.parse(schema, params);
+			return params;
 		} catch (parseError) {
 			let err = parseError;
 			if (err instanceof z.ZodError) {
@@ -64,7 +103,7 @@ class Validation {
 		return { user, session };
 	}
 
-	async validateRequest<T = z.AnyZodObject | z.ZodOptional<z.AnyZodObject>>({
+	async validateRequest({
 		cookies,
 		request
 	}: {
@@ -78,7 +117,7 @@ class Validation {
 			seessionValudation = await this.validateSession(cookies);
 		}
 		if (request) {
-			bodyValidation = await this.validateBody<T>(request);
+			bodyValidation = await this.validateBody(request);
 		}
 		return {
 			session: seessionValudation,

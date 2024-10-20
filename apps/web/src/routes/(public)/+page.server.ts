@@ -1,20 +1,21 @@
 import { SERVER_FORM_ACTIONS } from '@cloudkit/ui-core';
 
-import { AuthenticateSchema, PATHS, RegistrationSchema } from '@cloudkit/ui-core';
+import { PATHS } from '@cloudkit/ui-core';
 
 import { auth } from '@lib/server/auth/lucia';
 import { UserRepository } from '@lib/server/repository/user-repository';
 import { fail } from '@sveltejs/kit';
 import { Scrypt } from 'lucia';
-import { zod } from 'sveltekit-superforms/adapters';
+import { valibot } from 'sveltekit-superforms/adapters';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
 
+import { AuthenticateUserSchema, RegisterUserSchema } from '@lib/client/auth/schemas';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
 	[SERVER_FORM_ACTIONS.REGISTER]: async ({ request, cookies }) => {
 		const formData = await request.formData();
-		const signUp = await superValidate(formData, zod(RegistrationSchema));
+		const signUp = await superValidate(formData, valibot(RegisterUserSchema));
 		if (!signUp.valid) {
 			return fail(400, { form: signUp });
 		}
@@ -59,7 +60,7 @@ export const actions: Actions = {
 		}
 	},
 	[SERVER_FORM_ACTIONS.AUTHENTICATE]: async ({ request, cookies }) => {
-		const signIn = await superValidate(request, zod(AuthenticateSchema));
+		const signIn = await superValidate(request, valibot(AuthenticateUserSchema));
 		if (!signIn.valid) {
 			return fail(400, { form: signIn });
 		}
