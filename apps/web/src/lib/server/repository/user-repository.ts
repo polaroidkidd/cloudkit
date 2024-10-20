@@ -1,8 +1,10 @@
 import { isDevOrCi } from '@cloudkit/ui-core';
-import { generateId } from 'lucia';
+import { generateId, Scrypt } from 'lucia';
 
-import type { Image, User, UserApiPost, UserWithRelations } from '@cloudkit/ui-core';
+import type { Image, User, UserWithRelations } from '@cloudkit/ui-core';
+import type { RegisterUserSchema } from '@lib/client/auth/schemas';
 import { Prisma } from '@prisma/client';
+import type { Infer, SuperValidated } from 'sveltekit-superforms/server';
 import { ImageRepository } from './image-repository';
 import { db } from './prisma-client';
 
@@ -81,19 +83,18 @@ class UserRepository {
 		return true;
 	}
 
-	async create(data: UserApiPost & { avatar: File }): Promise<User> {
+	async create(data: SuperValidated<Infer<typeof RegisterUserSchema>>['data']): Promise<User> {
 		const id = generateId(31);
 		if (!data.avatar) {
 			throw new Error('No avatar found in user');
 		}
-		const { id: imageId, url } = await ImageRepository.postToImageService(
-			data.avatar as unknown as File
-		);
+		const { id: imageId, url } = await ImageRepository.postToImageService(data.avatar);
+		const hashedPassword = await new Scrypt().hash(data.password);
 
 		return db.user.create({
 			data: {
 				id: id,
-				hashedPassword: data.hashedPassword,
+				hashedPassword: hashedPassword,
 				email: data.email,
 				firstName: data.firstName,
 				lastName: data.lastName,

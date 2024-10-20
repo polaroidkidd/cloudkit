@@ -1,14 +1,25 @@
-import { Validate } from '@lib/server/middleware/validate';
+import { RegisterUserSchema } from '@lib/client/auth/schemas';
+import { auth } from '@lib/server/auth/lucia';
+import { UserRepository } from '@lib/server/repository/user-repository';
 import type { RequestHandler } from '@sveltejs/kit';
 
 export const DELETE: RequestHandler = async () => {
 	return new Response(null, { status: 500 });
 };
 export const POST: RequestHandler = async ({ request, cookies }) => {
-	const { body } = await Validate.validateRequest({ request, cookies });
-	// eslint-disable-next-line no-console
-	console.info('body: ', body);
+	await auth.validateSession(cookies.get(auth.sessionCookieName) ?? '');
 
+	const data = await request.formData();
+	const { success, data: postData } = RegisterUserSchema.safeParse(data);
+
+	if (success && postData) {
+		const userExists = await UserRepository.exists(postData.email);
+		if (!userExists) {
+			UserRepository.create(postData);
+		} else {
+			return new Response(null, { status: 409 });
+		}
+	}
 	/*
 			const formData = await request.formData();
 		const signUp = await superValidate(formData, zod(RegistrationSchema));

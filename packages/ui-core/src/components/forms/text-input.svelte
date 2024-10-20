@@ -1,5 +1,6 @@
 <script lang="ts">
 	import classNames from 'classnames';
+	import { twMerge } from 'tailwind-merge';
 	import Typography from '../typography/typography.svelte';
 	import type { HTMLInputTypeAttribute } from './input-types';
 
@@ -17,8 +18,8 @@
 	}
 </script>
 
-<div class={clazz}>
-	<label for={fieldName} class="label pl-5">
+<div class={twMerge(classNames(clazz, 'pt-5'))}>
+	<label for={fieldName} class="label pl-5 pb-1">
 		<Typography weight="extrabold" class="pb-5">
 			{labelText}
 		</Typography>

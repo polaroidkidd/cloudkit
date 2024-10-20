@@ -131,7 +131,7 @@ class ImageRepository {
 		});
 	}
 
-	async postToImageService(image: File): Promise<{ url: string; id: string }> {
+	async postToImageService(image: string): Promise<{ url: string; id: string }> {
 		const id = generateId(31);
 
 		if (isDevOrCi) {

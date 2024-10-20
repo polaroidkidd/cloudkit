@@ -66,6 +66,35 @@ registry.registerPath({
 });
 
 registry.registerPath({
+	method: 'delete',
+	path: '/api/v1/user',
+	description: 'Retrieves the currently logged in user',
+	tags: [Tags.User],
+	security: [{ [sessionCookie.name]: [] }],
+
+	responses: {
+		200: {
+			description: 'Retrieves the currently logged in user',
+			content: {
+				'application/json': {
+					schema: UserDTO.openapi(Components.User)
+				}
+			}
+		},
+
+		401: {
+			description: 'Invalid Session.'
+		},
+		403: {
+			description: 'Access denied.'
+		},
+		404: {
+			description: 'Resource not found.'
+		}
+	}
+});
+
+registry.registerPath({
 	method: 'get',
 	path: '/api/v1/user/{userId}',
 	description: 'Retrieves a specific User',
@@ -177,23 +206,9 @@ registry.registerPath({
 	tags: [Tags.Auth],
 	security: [{ [sessionCookie.name]: [] }],
 
-	request: {
-		body: {
-			content: {
-				'application/json': {
-					schema: UserDTO.openapi(Components.User)
-				}
-			}
-		}
-	},
 	responses: {
 		200: {
-			description: 'The newly created user.',
-			content: {
-				'application/json': {
-					schema: UserDTO.openapi(Components.User)
-				}
-			}
+			description: 'Session Deleted.'
 		},
 
 		401: {
@@ -226,12 +241,7 @@ registry.registerPath({
 	},
 	responses: {
 		200: {
-			description: 'The newly created user.',
-			content: {
-				'application/json': {
-					schema: UserDTO.openapi(Components.User)
-				}
-			}
+			description: 'Session Deleted'
 		},
 
 		401: {

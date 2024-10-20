@@ -1,19 +1,37 @@
 <script lang="ts">
 	import { Button, isDevOrCi, TextInput } from '@cloudkit/ui-core';
+	import { AxiosError } from 'axios';
 
-	import { convertFileToBase64, IconCheckTrue, IconLoading, IconUpload } from '@cloudkit/ui-core';
+	import { IconCheckTrue, IconLoading, IconUpload } from '@cloudkit/ui-core';
+	import { AuthApiService } from '@lib/api/auth-service-api';
 	import { RegisterUserSchema } from '@lib/client/auth/schemas';
+	import { fetchRandomAvatarQueryConfig } from '@lib/queries/fetch-random-avatar-query-config';
+
 	import { FileDropzone, getModalStore } from '@skeletonlabs/skeleton';
+	import { createMutation, createQuery } from '@tanstack/svelte-query';
 	import classNames from 'classnames';
 	import { onMount } from 'svelte';
+	import { setError, superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms/client';
 
-	import { createQuery } from '@tanstack/svelte-query';
 	export let formData: SuperValidated<Infer<typeof RegisterUserSchema>>;
 
 	const modalStore = getModalStore();
-	let isSubmitting = false;
+	const fetchRandomAvatarQuery = createQuery(fetchRandomAvatarQueryConfig);
+	const createUserMutation = createMutation({
+		mutationFn: async (form: SuperValidated<Infer<typeof RegisterUserSchema>>) => {
+			return AuthApiService.createNewUser(form.data);
+		},
+
+		onError: async ({ response }: AxiosError) => {
+			if (response?.status === 409) {
+				return { status: response.status };
+			}
+		}
+		// 	$createUserMutation.reset();
+		// }
+	});
+	const { mutateAsync: createUser } = $createUserMutation;
 
 	const { form, errors, enhance, validateForm } = superForm(formData, {
 		validationMethod: 'onblur',
@@ -23,14 +41,24 @@
 		clearOnSubmit: 'none',
 		taintedMessage: null,
 		multipleSubmits: 'abort',
-		onUpdate: async () => {
+		onUpdate: async ({ form }) => {
 			const { valid } = await validateForm();
 			if (valid) {
-				createQuery({
-					queryKey: ['USER'],
-
-					queryFn: async () => {}
-				});
+				if (!form.data.avatar) {
+					const { data: converted } = await $fetchRandomAvatarQuery.refetch();
+					if (converted) {
+						form.data.avatar = converted;
+					}
+				}
+				try {
+					await createUser(form);
+				} catch (e) {
+					if (e instanceof AxiosError) {
+						if (e.status === 409) {
+							setError(form, 'email', 'Email Already Taken');
+						}
+					}
+				}
 			}
 		}
 	});
@@ -41,23 +69,13 @@
 	}
 	let fileList: FileList;
 
-	async function processImage(file: File) {
-		if (fileList !== undefined) {
-			$form.avatar = await convertFileToBase64(file);
-		}
-	}
-
-	$: if (fileList !== undefined && fileList.length > 0) {
-		processImage(fileList[0]);
-	}
 	onMount(() => {
 		if (isDevOrCi) {
-			$form.avatar = '';
-			$form.lastName = 'test123@dle.dev';
-			$form.firstName = 'test123@dle.dev';
+			$form.lastName = 'Daniel';
+			$form.firstName = 'Tester';
 			$form.email = 'test123@dle.dev';
-			$form.password = 'test123@dle.dev';
-			$form.confirmPassword = 'test123@dle.dev';
+			$form.password = 'password';
+			$form.confirmPassword = 'password';
 		}
 	});
 </script>
@@ -115,6 +133,7 @@
 		name="logo"
 		bind:files={fileList}
 		accept="image/png, image/jpeg, image/webp"
+		class="mt-5"
 	>
 		<svelte:fragment slot="lead">
 			<div class="flex justify-center">
@@ -147,14 +166,19 @@
 		<Button
 			type="reset"
 			ariaLabel="Close Contact Modal"
-			disabled={isSubmitting}
+			disabled={$createUserMutation.isPending}
 			on:click={closeModal}
 			variant="warning"
 		>
 			Cancel
 		</Button>
-		<Button type="submit" variant="tertiary" disabled={isSubmitting} ariaLabel="Confirm Signing Up">
-			{#if isSubmitting}
+		<Button
+			type="submit"
+			variant="tertiary"
+			disabled={$createUserMutation.isPending}
+			ariaLabel="Confirm Signing Up"
+		>
+			{#if $createUserMutation.isPending}
 				<IconLoading class="h-6" />
 			{:else}
 				Register
