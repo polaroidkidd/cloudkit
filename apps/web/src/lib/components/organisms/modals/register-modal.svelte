@@ -19,6 +19,7 @@
 
 	const { form, errors, enhance } = superForm(formData, {
 		validationMethod: 'onblur',
+		SPA: true,
 		validators: zod(RegistrationSchema),
 		clearOnSubmit: 'none',
 		taintedMessage: null,

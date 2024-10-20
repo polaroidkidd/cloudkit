@@ -27,7 +27,8 @@ const Components = {
 } as const;
 
 const Tags = {
-	User: 'User'
+	User: 'User',
+	Auth: 'Auth'
 };
 const sessionCookie = registry.registerComponent('securitySchemes', 'cookieAuth', {
 	type: 'apiKey',
@@ -97,9 +98,121 @@ registry.registerPath({
 
 registry.registerPath({
 	method: 'put',
-	path: '/api/v1/user',
-	description: 'Creates a new user',
-	tags: [Tags.User],
+	path: '/api/v1/auth',
+	description: 'Creates a new session for a user (authenticate)',
+	tags: [Tags.Auth],
+	security: [{ [sessionCookie.name]: [] }],
+
+	request: {
+		body: {
+			content: {
+				'application/json': {
+					schema: UserDTO.openapi(Components.User)
+				}
+			}
+		}
+	},
+	responses: {
+		200: {
+			description: 'The newly created user.',
+			content: {
+				'application/json': {
+					schema: UserDTO.openapi(Components.User)
+				}
+			}
+		},
+
+		401: {
+			description: 'Invalid Session.'
+		},
+		403: {
+			description: 'Access denied.'
+		},
+		404: {
+			description: 'Resource not found.'
+		}
+	}
+});
+registry.registerPath({
+	method: 'post',
+	path: '/api/v1/auth',
+	description: 'Creates a new user (register)',
+	tags: [Tags.Auth],
+	security: [{ [sessionCookie.name]: [] }],
+
+	request: {
+		body: {
+			content: {
+				'application/json': {
+					schema: UserDTO.openapi(Components.User)
+				}
+			}
+		}
+	},
+	responses: {
+		200: {
+			description: 'The newly created user.',
+			content: {
+				'application/json': {
+					schema: UserDTO.openapi(Components.User)
+				}
+			}
+		},
+
+		401: {
+			description: 'Invalid Session.'
+		},
+		403: {
+			description: 'Access denied.'
+		},
+		404: {
+			description: 'Resource not found.'
+		}
+	}
+});
+registry.registerPath({
+	method: 'delete',
+	path: '/api/v1/auth',
+	description: 'Close all sessions (log me out everywhere)',
+	tags: [Tags.Auth],
+	security: [{ [sessionCookie.name]: [] }],
+
+	request: {
+		body: {
+			content: {
+				'application/json': {
+					schema: UserDTO.openapi(Components.User)
+				}
+			}
+		}
+	},
+	responses: {
+		200: {
+			description: 'The newly created user.',
+			content: {
+				'application/json': {
+					schema: UserDTO.openapi(Components.User)
+				}
+			}
+		},
+
+		401: {
+			description: 'Invalid Session.'
+		},
+		403: {
+			description: 'Access denied.'
+		},
+		404: {
+			description: 'Resource not found.'
+		}
+	}
+});
+
+registry.registerPath({
+	method: 'delete',
+	path: '/api/v1/auth/{session}',
+	description: 'Close a specific sessions (log me out here)',
+	tags: [Tags.Auth],
 	security: [{ [sessionCookie.name]: [] }],
 
 	request: {
