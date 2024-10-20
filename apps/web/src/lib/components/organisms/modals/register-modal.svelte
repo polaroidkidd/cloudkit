@@ -41,7 +41,7 @@
 				let message = result as ActionResult & { data: { message: string } };
 				modalStore.trigger(getErrorModal(message.data.message));
 			} else {
-				goto(PATHS.COLLECTIONS);
+				goto(PATHS.PROFILE);
 			}
 		}
 	});

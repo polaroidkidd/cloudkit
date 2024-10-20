@@ -243,7 +243,7 @@ importers:
         specifier: 0.5.15
         version: 0.5.15(tailwindcss@3.4.14)
       '@tanstack/svelte-query':
-        specifier: ^5.54.2
+        specifier: ^5.59.13
         version: 5.59.13(svelte@4.2.19)
       '@tanstack/svelte-query-devtools':
         specifier: ^5.55.1
@@ -269,6 +269,9 @@ importers:
       svelte:
         specifier: ^4.2.19
         version: 4.2.19
+      sveltekit-rate-limiter:
+        specifier: ^0.6.1
+        version: 0.6.1(@sveltejs/kit@2.7.1(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))
       sveltekit-superforms:
         specifier: ^2.17.0
         version: 2.19.1(@sveltejs/kit@2.7.1(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))(@types/json-schema@7.0.15)(svelte@4.2.19)
@@ -1460,6 +1463,10 @@ packages:
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
+    engines: {node: '>=12'}
+
+  '@isaacs/ttlcache@1.4.1':
+    resolution: {integrity: sha512-RQgQ4uQ+pLbqXfOmieB91ejmLwvSgv9nLx6sT6sD83s7umBypgg+OIBOBbEUiJXrfpnp9j0mRhYYdzp9uqq3lA==}
     engines: {node: '>=12'}
 
   '@istanbuljs/load-nyc-config@1.1.0':
@@ -5705,6 +5712,11 @@ packages:
     resolution: {integrity: sha512-sWJRa4qOfRdSORSVw9GhfDEwsbsYsegnDzBevUCF6k/Eis/QqCu9lJ6I0+d/E2wOWCjOhlcJ3+jl/Iur+5mmCw==}
     engines: {node: '>=10.0.0'}
 
+  sveltekit-rate-limiter@0.6.1:
+    resolution: {integrity: sha512-5b0ZAuJsGeFt3k8qe+SvPZXeg8f0XVcnUnL/5cOZVh1tLoi8NE9bDOtAkGN3L+66hjSkbBayhd7FVyjN4DV7pw==}
+    peerDependencies:
+      '@sveltejs/kit': 1.x || 2.x
+
   sveltekit-superforms@2.19.1:
     resolution: {integrity: sha512-P3R3S8o+0UGHtVqmisb13aFVuIyTCsFdxh/2C/fvoR9/JKeBrhzJ/chI7GdByoXE5fr2DtanocGXmP3PRTcpvw==}
     peerDependencies:
@@ -7013,6 +7025,8 @@ snapshots:
       strip-ansi-cjs: strip-ansi@6.0.1
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
+
+  '@isaacs/ttlcache@1.4.1': {}
 
   '@istanbuljs/load-nyc-config@1.1.0':
     dependencies:
@@ -12105,6 +12119,11 @@ snapshots:
       htmlparser2-svelte: 4.1.0
     transitivePeerDependencies:
       - supports-color
+
+  sveltekit-rate-limiter@0.6.1(@sveltejs/kit@2.7.1(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0))):
+    dependencies:
+      '@isaacs/ttlcache': 1.4.1
+      '@sveltejs/kit': 2.7.1(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0))
 
   sveltekit-superforms@2.19.1(@sveltejs/kit@2.7.1(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))(svelte@4.2.19)(vite@5.4.9(@types/node@22.7.6)(sass@1.80.1)(terser@5.36.0)))(@types/json-schema@7.0.15)(svelte@4.2.19):
     dependencies:

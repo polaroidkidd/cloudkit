@@ -58,7 +58,7 @@ export const actions: Actions = {
 			});
 		}
 	},
-	[SERVER_FORM_ACTIONS.LOGIN]: async ({ request, cookies }) => {
+	[SERVER_FORM_ACTIONS.AUTHENTICATE]: async ({ request, cookies }) => {
 		const signIn = await superValidate(request, zod(AuthenticateSchema));
 		if (!signIn.valid) {
 			return fail(400, { form: signIn });

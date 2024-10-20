@@ -62,10 +62,6 @@
 					Profile
 				</NavigationButton>
 
-				<NavigationButton variant="tertiary" fill="ghost" href={PATHS.COLLECTIONS}>
-					Collctions
-				</NavigationButton>
-
 				<form
 					class="mt-auto"
 					action={FORM_ACTIONS.SIGN_OUT}
