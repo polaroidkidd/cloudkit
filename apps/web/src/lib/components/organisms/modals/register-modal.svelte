@@ -6,7 +6,7 @@
 	import { FileDropzone, getModalStore } from '@skeletonlabs/skeleton';
 	import classNames from 'classnames';
 	import { onMount } from 'svelte';
-	import { valibotClient } from 'sveltekit-superforms/adapters';
+	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms/client';
 
 	import { createQuery } from '@tanstack/svelte-query';
@@ -19,7 +19,7 @@
 		validationMethod: 'onblur',
 		SPA: true,
 
-		validators: valibotClient(RegisterUserSchema),
+		validators: zodClient(RegisterUserSchema),
 		clearOnSubmit: 'none',
 		taintedMessage: null,
 		multipleSubmits: 'abort',

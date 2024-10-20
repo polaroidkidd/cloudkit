@@ -6,7 +6,7 @@ import { auth } from '@lib/server/auth/lucia';
 import { UserRepository } from '@lib/server/repository/user-repository';
 import { fail } from '@sveltejs/kit';
 import { Scrypt } from 'lucia';
-import { valibot } from 'sveltekit-superforms/adapters';
+import { zod } from 'sveltekit-superforms/adapters';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
 
 import { AuthenticateUserSchema, RegisterUserSchema } from '@lib/client/auth/schemas';
@@ -15,7 +15,7 @@ import type { Actions } from './$types';
 export const actions: Actions = {
 	[SERVER_FORM_ACTIONS.REGISTER]: async ({ request, cookies }) => {
 		const formData = await request.formData();
-		const signUp = await superValidate(formData, valibot(RegisterUserSchema));
+		const signUp = await superValidate(formData, zod(RegisterUserSchema));
 		if (!signUp.valid) {
 			return fail(400, { form: signUp });
 		}
@@ -60,7 +60,7 @@ export const actions: Actions = {
 		}
 	},
 	[SERVER_FORM_ACTIONS.AUTHENTICATE]: async ({ request, cookies }) => {
-		const signIn = await superValidate(request, valibot(AuthenticateUserSchema));
+		const signIn = await superValidate(request, zod(AuthenticateUserSchema));
 		if (!signIn.valid) {
 			return fail(400, { form: signIn });
 		}

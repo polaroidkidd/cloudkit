@@ -16,14 +16,14 @@
 
 	import { authenticateModalConfig, getErrorModal, isDevOrCi } from '@cloudkit/ui-core';
 	import { AuthenticateUserSchema } from '@lib/client/auth/schemas';
-	import { valibot } from 'sveltekit-superforms/adapters';
+	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	export let formData: SuperValidated<Infer<typeof AuthenticateUserSchema>>;
 	const modalStore = getModalStore();
 	let isSubmitting = false;
 	const { form, errors, enhance } = superForm(formData, {
 		validationMethod: 'onblur',
-		validators: valibot(AuthenticateUserSchema),
+		validators: zodClient(AuthenticateUserSchema),
 		taintedMessage: null,
 		multipleSubmits: 'abort',
 		onSubmit: () => {

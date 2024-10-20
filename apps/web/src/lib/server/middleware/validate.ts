@@ -1,6 +1,5 @@
 import { AuthenticateUserSchema, RegisterUserSchema } from '@lib/client/auth/schemas';
 import { type Cookies } from '@sveltejs/kit';
-import * as v from 'valibot';
 import { z } from 'zod';
 import { auth } from '../auth/lucia';
 import {
@@ -10,9 +9,7 @@ import {
 	ResourceNotFoundError
 } from '../errors';
 
-function getSchema(
-	request: Request
-): typeof AuthenticateUserSchema | typeof RegisterUserSchema | undefined {
+function getSchema(request: Request): z.AnyZodObject | z.ZodOptional<z.AnyZodObject> {
 	const METHODS = {
 		GET: 'GET',
 		POST: 'POST',
@@ -32,16 +29,18 @@ function getSchema(
 				case METHODS.DELETE: {
 					return AuthenticateUserSchema;
 				}
+				default:
+					return z.object({});
 			}
-			break;
 
 		case 'api/v1/auth/session-id-regex-here': {
 			switch (request.method) {
 				case METHODS.DELETE: {
 					return AuthenticateUserSchema;
 				}
+				default:
+					return z.object({});
 			}
-			break;
 		}
 		case '/api/v1/user':
 			switch (request.method) {
@@ -51,17 +50,21 @@ function getSchema(
 				case METHODS.PATCH: {
 					return RegisterUserSchema;
 				}
+				default:
+					return z.object({});
 			}
+		default:
+			return z.object({});
 	}
 }
 class Validation {
-	async validateBody(request: Request) {
+	async validateBody<T = z.AnyZodObject | z.ZodOptional<z.AnyZodObject>>(
+		request: Request
+	): Promise<T> {
 		try {
 			const schema = getSchema(request);
-			if (schema) {
-				const data = await request.json();
-				return v.safeParse(schema, data);
-			}
+			const data = await request.json();
+			return (await schema.parseAsync(data)) as T;
 		} catch (parseError) {
 			let err = parseError;
 			if (err instanceof z.ZodError) {
@@ -73,12 +76,9 @@ class Validation {
 
 	async validateParams(request: Request, params: Record<string, string>) {
 		try {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const schema = getSchema(request);
 
-			//TODO FIX PARSING
-			// v.parse(schema, params);
-			return params;
+			await schema.parseAsync(params);
 		} catch (parseError) {
 			let err = parseError;
 			if (err instanceof z.ZodError) {
@@ -103,8 +103,9 @@ class Validation {
 		return { user, session };
 	}
 
-	async validateRequest({
+	async validateRequest<T = z.AnyZodObject | z.ZodOptional<z.AnyZodObject>>({
 		cookies,
+
 		request
 	}: {
 		cookies?: Cookies;
@@ -117,7 +118,7 @@ class Validation {
 			seessionValudation = await this.validateSession(cookies);
 		}
 		if (request) {
-			bodyValidation = await this.validateBody(request);
+			bodyValidation = await this.validateBody<T>(request);
 		}
 		return {
 			session: seessionValudation,

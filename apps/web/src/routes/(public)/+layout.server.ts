@@ -1,5 +1,5 @@
 import type { Infer, SuperValidated } from 'sveltekit-superforms';
-import { valibot } from 'sveltekit-superforms/adapters';
+import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms/server';
 
 import { AuthenticateUserSchema, RegisterUserSchema } from '@lib/client/auth/schemas';
@@ -9,11 +9,11 @@ let authenticate: SuperValidated<Infer<typeof AuthenticateUserSchema>> | null = 
 let register: SuperValidated<Infer<typeof RegisterUserSchema>> | null = null;
 export const load = (async ({ url }) => {
 	if (authenticate === null) {
-		authenticate = await superValidate(valibot(AuthenticateUserSchema));
+		authenticate = await superValidate(zod(AuthenticateUserSchema));
 	}
 
 	if (register === null) {
-		register = await superValidate(valibot(RegisterUserSchema));
+		register = await superValidate(zod(RegisterUserSchema));
 	}
 
 	const { pathname } = url;
