@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"lib": ["dom", "dom.iterable", "esnext", "scripthost"],
+		"allowJs": false,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"strict": true,
+		"noUnusedLocals": true,
+		"noImplicitReturns": true,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": true,
+		"newLine": "lf"
+	}
+}

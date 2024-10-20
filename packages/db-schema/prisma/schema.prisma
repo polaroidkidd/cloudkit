@@ -1,0 +1,61 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+generator zod {
+  provider                         = "zod-prisma-types"
+  createOptionalDefaultValuesTypes = true
+  createRelationValuesTypes        = true
+  writeNullishInModelTypes         = true
+  output                           = "./../src/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+/// @zod.import(["import { ALLOWED_STRINGS, ERROR_MESSAGE } from '../utils';"])
+model User {
+  id             String       @id @unique @default(uuid())
+  /// @zod.string.email().min(3)
+  email          String       @unique
+  hashedPassword String
+  /// @zod.string.min(1).max(32).regex(ALLOWED_STRINGS, ERROR_MESSAGE)
+  firstName      String
+  /// @zod.string.min(1).max(32).regex(ALLOWED_STRINGS, ERROR_MESSAGE)
+  lastName       String
+  verified       Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now())
+  avatar         Image?
+
+  sessions       Session[]
+  firstTime      Boolean      @default(true)
+
+  @@index(fields: [id], type: Hash)
+}
+
+
+model Image {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  url       String   @unique
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String?  @unique
+
+
+
+  @@index(fields: [id], type: Hash)
+
+  @@index(fields: [userId], type: Hash)
+}

@@ -1,0 +1,4 @@
+{
+	"*.{cjs}": [
+		"prettier --config ../../.prettierrc --write --cache ./index.cjs"
+	]}

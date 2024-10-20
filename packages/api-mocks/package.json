@@ -1,0 +1,15 @@
+{
+	"name": "@cloudkit/api-mocks",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"db:dump": "docker exec -i cloudkit-db /bin/bash -c \"PGPASSWORD=pass123 pg_dump --username admin cloudkit-db\" > ./cloudkit-db-dump.sql",
+		"db:restore": "docker exec -i cloudkit-db /bin/bash -c \"PGPASSWORD=pass123 psql --username admin cloudkit-db\" < ./cloudkit-db-dump.sql",
+		"db:seed": "pnpm prisma:gen:dev && pnpm prisma:push:dev && dotenv -e .env.development -- node prisma/seed.js",
+		"start": "docker compose up -d",
+		"stop": "docker compose stop"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC"
+}
