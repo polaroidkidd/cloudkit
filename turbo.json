@@ -14,7 +14,7 @@
 		"@cloudkit/web#dev": {
 			"cache": false,
 			"persistent": true,
-			"dependsOn": ["@cloudkit/db-schema#push", "@cloudkit/swagger-ui#sync", "@cloudkit/api-mocks#start"],
+			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/db-schema#push"],
 			"passThroughEnv": ["DATABASE_URL"]
 		},
 		"@cloudkit/web#build": {
@@ -40,7 +40,7 @@
 		},
 		"@cloudkit/db-schema#push": {
 			"cache": false,
-			"dependsOn": ["@cloudkit/service-contract#build"]
+			"dependsOn": [ "@cloudkit/api-mocks#start", "@cloudkit/service-contract#build"]
 		},
 		"@cloudkit/db-schema#generate": {
 			"cache": false,
