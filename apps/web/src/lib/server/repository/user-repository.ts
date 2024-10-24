@@ -83,7 +83,9 @@ class UserRepository {
 		return true;
 	}
 
-	async create(data: SuperValidated<Infer<typeof RegisterUserSchema>>['data']): Promise<User> {
+	async create(
+		data: SuperValidated<Infer<typeof RegisterUserSchema>>['data']
+	): Promise<UserWithRelations> {
 		const id = generateId(31);
 		if (!data.avatar) {
 			throw new Error('No avatar found in user');

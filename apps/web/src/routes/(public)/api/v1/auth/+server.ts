@@ -4,6 +4,7 @@ import { UserRepository } from '@lib/server/repository/user-repository';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 import { PATHS } from '@cloudkit/ui-core';
+import { UserService } from '@lib/server/services/user-service';
 
 export const DELETE: RequestHandler = async () => {
 	return new Response(null, { status: 500 });
@@ -21,7 +22,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 		const userExists = await UserRepository.exists(postData.email);
 
 		if (!userExists) {
-			const created = await UserRepository.create(postData);
+			const created = await UserService.createUser(postData);
 			const session = await auth.createSession(created.id, {});
 			const sessionCookie = auth.createSessionCookie(session.id);
 			cookies.set(sessionCookie.name, sessionCookie.value, {

@@ -1,4 +1,4 @@
-import type { User } from '@cloudkit/ui-core';
+import type { User, UserWithRelations } from '@cloudkit/ui-core';
 import { UserRepository } from '../repository/user-repository';
 import type { RegisterUserSchema } from '@lib/client/auth/schemas';
 import type { Infer, SuperValidated } from 'sveltekit-superforms/server';
@@ -15,7 +15,9 @@ class UserService {
 		return this._instanceCache;
 	}
 
-	async createUser(data: SuperValidated<Infer<typeof RegisterUserSchema>>['data']): Promise<User> {
+	async createUser(
+		data: SuperValidated<Infer<typeof RegisterUserSchema>>['data']
+	): Promise<UserWithRelations> {
 		return UserRepository.create(data);
 	}
 
