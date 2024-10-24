@@ -2,25 +2,38 @@ import { RegisterUserSchema } from '@lib/client/auth/schemas';
 import { auth } from '@lib/server/auth/lucia';
 import { UserRepository } from '@lib/server/repository/user-repository';
 import type { RequestHandler } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
+import { PATHS } from '@cloudkit/ui-core';
 
 export const DELETE: RequestHandler = async () => {
 	return new Response(null, { status: 500 });
 };
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	await auth.validateSession(cookies.get(auth.sessionCookieName) ?? '');
-	const data = await request.formData()
 
-	const { success, data: postData, error } = RegisterUserSchema.safeParse(data);
-	
+	const data = await request.formData();
+	const {
+		success,
+		error,
+		data: postData
+	} = RegisterUserSchema.safeParse(Object.fromEntries(data.entries()));
 	if (success && postData) {
 		const userExists = await UserRepository.exists(postData.email);
-	
+
 		if (!userExists) {
-			const createdUser = await UserRepository.create(postData);
-	
+			const created = await UserRepository.create(postData);
+			const session = await auth.createSession(created.id, {});
+			const sessionCookie = auth.createSessionCookie(session.id);
+			cookies.set(sessionCookie.name, sessionCookie.value, {
+				path: PATHS.ROOT,
+				...sessionCookie.attributes
+			});
+			return json(created);
 		} else {
 			return new Response(null, { status: 409 });
 		}
+	} else {
+		console.error('errors:', error);
 	}
 	/*
 			const formData = await request.formData();

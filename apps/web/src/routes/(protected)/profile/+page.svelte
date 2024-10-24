@@ -2,7 +2,6 @@
 	import UserDetails from '@components/molecues/user/user-details.svelte';
 
 	import type { PageData } from './$types';
-
 	export let data: PageData;
 	const { editUserForm } = data;
 </script>

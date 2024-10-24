@@ -27,8 +27,7 @@ export const load = (async (event) => {
 		zod(EditUserSchema)
 	);
 	return {
-		editUserForm,
-		user
+		editUserForm
 	};
 }) satisfies PageServerLoad;
 

@@ -9,9 +9,15 @@ export function initUserStore<T extends UserWithRelations = UserWithRelations>(u
 	return store;
 }
 
-export function getUserStore<T extends Record<string, string | number | boolean>>() {
+export function getUserStore<
+	T extends Record<string, string | number | boolean> = NonNullable<unknown>
+>(storeExtension?: T) {
 	const userStore: Writable<UserWithRelations & T> = getContext(STORE_CONTEXTS.User);
-	getContext(STORE_CONTEXTS.User);
-
+	if (storeExtension) {
+		userStore.update((user) => ({
+			...user,
+			...storeExtension
+		}));
+	}
 	return userStore;
 }

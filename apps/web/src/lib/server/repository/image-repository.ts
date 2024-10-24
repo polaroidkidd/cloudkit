@@ -131,7 +131,7 @@ class ImageRepository {
 		});
 	}
 
-	async postToImageService(image: string): Promise<{ url: string; id: string }> {
+	async postToImageService(image: string | File): Promise<{ url: string; id: string }> {
 		const id = generateId(31);
 
 		if (isDevOrCi) {
@@ -145,6 +145,7 @@ class ImageRepository {
 					body: image
 				});
 			} catch (e) {
+				// eslint-disable-next-line no-console
 				console.info('error posting to image service');
 			}
 
@@ -161,9 +162,9 @@ class ImageRepository {
 				},
 				body: form
 			});
-			const resppnse = await workerResponse.json();
+			const response = await workerResponse.json();
 
-			return { url: `${IMAGE_API}/${resppnse.result.id}`, id: resppnse.result.id };
+			return { url: `${IMAGE_API}/${response.result.id}`, id: response.result.id };
 		}
 	}
 

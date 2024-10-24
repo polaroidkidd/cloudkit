@@ -37,11 +37,8 @@
 
 	export let editUserForm;
 
-	const userStore = getUserStore<{ isBase64: boolean }>();
-	userStore.update((cs) => ({
-		...cs,
-		isBase64: false
-	}));
+	const userStore = getUserStore<{ isBase64: boolean }>({ isBase64: false });
+
 	const { form, enhance, errors, tainted } = superForm(editUserForm, {
 		validationMethod: 'onblur',
 		validators: zod(EditUserSchema),

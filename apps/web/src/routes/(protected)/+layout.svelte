@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { initUserStore } from '$lib/stores/index';
-	import { type User } from '@cloudkit/ui-core';
+
 	import ProtectedNavbar from '@components/organisms/navbar/protected-navbar.svelte';
 	import {
 		arrow,
@@ -22,7 +22,7 @@
 	initializeStores();
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow, autoPlacement });
 
-	initUserStore<User>({
+	initUserStore({
 		...data.user,
 		...(data.user?.avatar && {
 			...data.user.avatar

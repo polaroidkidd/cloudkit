@@ -1,5 +1,7 @@
-import type { User, UserApiPost } from '@cloudkit/ui-core';
+import type { User } from '@cloudkit/ui-core';
 import { UserRepository } from '../repository/user-repository';
+import type { RegisterUserSchema } from '@lib/client/auth/schemas';
+import type { Infer, SuperValidated } from 'sveltekit-superforms/server';
 
 // TODO implement ZenStack to manage access
 class UserService {
@@ -13,12 +15,14 @@ class UserService {
 		return this._instanceCache;
 	}
 
-	async createUser(data: UserApiPost & { avatar: File }): Promise<User> {
+	async createUser(data: SuperValidated<Infer<typeof RegisterUserSchema>>['data']): Promise<User> {
 		return UserRepository.create(data);
 	}
+
 	async updateUser(data: User): Promise<User> {
 		return UserRepository.updateFromSession({ ...data, firstTime: false });
 	}
+
 	async deleteUser(data: User): Promise<boolean> {
 		return UserRepository.deleteById(data.id);
 	}

@@ -2,6 +2,8 @@ import type { AuthenticateUserSchema, RegisterUserSchema } from '@lib/client/aut
 import axios from 'axios';
 import type { Infer, SuperValidated } from 'sveltekit-superforms/client';
 import { ApiServiceBase } from './base-api-service';
+import type { UserWithRelations } from '@cloudkit/ui-core';
+import type { AxiosResponse } from 'axios';
 
 class AuthApiService extends ApiServiceBase {
 	constructor() {
@@ -13,7 +15,10 @@ class AuthApiService extends ApiServiceBase {
 	}
 	createNewUser(data: SuperValidated<Infer<typeof RegisterUserSchema>>['data']) {
 		// We have to use a separate axios config here because the default config would convert the avatar to an base64 encoded string
-		return axios.postForm('/api/v1/auth', data);
+		return axios.postForm<
+			SuperValidated<Infer<typeof RegisterUserSchema>>['data'],
+			AxiosResponse<UserWithRelations>
+		>('/api/v1/auth', data);
 	}
 	deleteSession() {
 		return this.http.delete('');

@@ -20,7 +20,7 @@
 		"push": "prisma db push --schema ./prisma/schema.prisma && pnpm format",
 		"push:prod": "dotenv -e ../../.env.production -- prisma db push --schema ./prisma/schema.prisma",
 		"push:manual": "dotenv -e ../../.env.development -- prisma db push --schema ./prisma/schema.prisma && pnpm format",
-		"studio:": "prisma studio --schema ./prisma/schema.prisma && pnpm format",
+		"studio:": "dotenv -e ../../.env.development -- prisma studio --schema ./prisma/schema.prisma && pnpm format",
 		"format": "prettier --config ../../.prettierrc --write ."
 	},
 	"dependencies": {

@@ -1,8 +1,8 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { ImageOptionalDefaultsSchema, UserOptionalDefaultsSchema } from '@cloudkit/db-schema';
-import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from '@cloudkit/db-schema/form';
 
 import { z } from 'zod';
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from '@cloudkit/db-schema/src/utils';
 extendZodWithOpenApi(z);
 
 export const UserDTO = UserOptionalDefaultsSchema;

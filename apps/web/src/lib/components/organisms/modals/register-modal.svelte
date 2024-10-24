@@ -1,8 +1,13 @@
 <script lang="ts">
-	import { Button, isDevOrCi, TextInput } from '@cloudkit/ui-core';
+	import {
+		Button,
+		IconCheckTrue,
+		IconLoading,
+		IconUpload,
+		isDevOrCi,
+		TextInput
+	} from '@cloudkit/ui-core';
 	import { AxiosError } from 'axios';
-
-	import { IconCheckTrue, IconLoading, IconUpload } from '@cloudkit/ui-core';
 	import { AuthApiService } from '@lib/api/auth-service-api';
 	import { RegisterUserSchema } from '@lib/client/auth/schemas';
 	import { fetchRandomAvatarQueryConfig } from '@lib/queries/fetch-random-avatar-query-config';
@@ -11,11 +16,12 @@
 	import { createMutation, createQuery } from '@tanstack/svelte-query';
 	import classNames from 'classnames';
 	import { onMount } from 'svelte';
-	import { setError, superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
+	import { type Infer, setError, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
+	import { getUserStore } from '@lib/stores';
 
 	export let formData: SuperValidated<Infer<typeof RegisterUserSchema>>;
-
+	const userStore = getUserStore();
 	const modalStore = getModalStore();
 	const fetchRandomAvatarQuery = createQuery(fetchRandomAvatarQueryConfig);
 	const createUserMutation = createMutation({
@@ -27,6 +33,10 @@
 			if (response?.status === 409) {
 				return { status: response.status };
 			}
+		},
+		onSuccess: ({ data }) => {
+			userStore.set(data);
+			closeModal();
 		}
 		// 	$createUserMutation.reset();
 		// }
@@ -67,6 +77,7 @@
 		modalStore.clear();
 		document?.body.classList.remove('overflow-hidden');
 	}
+
 	let fileList: FileList;
 
 	onMount(() => {
