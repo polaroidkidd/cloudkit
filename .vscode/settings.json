@@ -106,5 +106,17 @@
 		"width",
 		"zIndex"
 	],
-	"terminal.integrated.scrollback": 100000
+	"terminal.integrated.scrollback": 100000,
+
+	"editor.codeActionsOnSave": {
+		"source.fixAll": "always"
+	},
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		{
+			"language": "svelte",
+			"autoFix": true
+		}
+	]
 }

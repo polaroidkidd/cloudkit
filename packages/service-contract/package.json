@@ -1,0 +1,35 @@
+{
+	"name": "@cloudkit/service-contract",
+	"version": "0.0.1",
+	"main": "./dist/cloudkit-openapi-docs.json",
+	"author": "Daniel Einars",
+	"description": "OpenAPI Spec for cloudkit",
+	"exports": {
+		".": {
+			"import": "./dist/cloudkit-openapi-docs.json",
+			"require": "./dist/cloudkit-openapi-docs.json"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/polaroidkidd/cloudkit.dle.dev.git"
+	},
+	"scripts": {
+		"build": "pnpm dist && pnpm format",
+		"dist": "tsx ./src/index.ts",
+		"format": "prettier --config ../../.prettierrc --write ."
+	},
+	"keywords": [
+		"cloudkit",
+		"openapi"
+	],
+	"license": "ISC",
+	"dependencies": {
+		"@asteasolutions/zod-to-openapi": "^7.1.1",
+		"@cloudkit/db-schema": "workspace:^",
+		"@cloudkit/eslint-config": "workspace:^",
+		"tsx": "^4.19.0",
+		"yaml": "^2.5.1",
+		"zod": "^3.23.8"
+	}
+}
