@@ -150,15 +150,16 @@ registry.registerPath({
 				}
 			}
 		},
-
-		401: {
-			description: 'Invalid Session.'
-		},
 		403: {
-			description: 'Access denied.'
+			description: 'Username or Password is invalid.'
 		},
-		404: {
-			description: 'Resource not found.'
+		400: {
+			description: 'Invalid input.',
+			content: {
+				'application/text': {
+					schema: ZodErrorSchemaDTO
+				}
+			}
 		}
 	}
 });

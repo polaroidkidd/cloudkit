@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, FORM_ACTIONS, TextInput } from '@cloudkit/ui-core';
+	import { Button, FORM_ACTIONS, getErrorModal, PATHS, TextInput } from '@cloudkit/ui-core';
 
 	import { IconLoading } from '@cloudkit/ui-core';
 	import { getModalStore } from '@skeletonlabs/skeleton';
@@ -10,6 +10,7 @@
 
 	import { Typography } from '@cloudkit/ui-core';
 
+	import { goto } from '$app/navigation';
 	import { isDevOrCi } from '@cloudkit/ui-core';
 	import { AuthApiService } from '@lib/api/auth-service-api';
 	import { AuthenticateUserSchema } from '@lib/client/auth/schemas';
@@ -17,6 +18,7 @@
 	import { createMutation } from '@tanstack/svelte-query';
 	import type { AxiosError } from 'axios';
 	import { zodClient } from 'sveltekit-superforms/adapters';
+	import type { ZodError } from 'zod';
 
 	export let formData: SuperValidated<Infer<typeof AuthenticateUserSchema>>;
 	const modalStore = getModalStore();
@@ -27,15 +29,17 @@
 			return AuthApiService.createNewSession(form.data);
 		},
 
-		onError: async ({ response }: AxiosError) => {
-			if (response?.status === 409) {
-				return { status: response.status };
+		onError: async ({ response }: AxiosError<ZodError>) => {
+			modalStore.close();
+			if (response?.data.issues[0].message) {
+				modalStore.trigger(getErrorModal(response?.data.issues[0].message));
 			}
 			$createNewSession.reset();
 		},
 		onSuccess: ({ data }) => {
 			userStore.set(data);
 			closeModal();
+			goto(PATHS.PROFILE);
 		}
 	});
 

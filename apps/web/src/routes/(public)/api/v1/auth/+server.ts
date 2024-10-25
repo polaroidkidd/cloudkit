@@ -6,7 +6,7 @@ import { UserService } from '@lib/server/services/user-service';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 import { Scrypt } from 'lucia';
-
+import * as z from 'zod';
 export const DELETE: RequestHandler = async () => {
 	return new Response(null, { status: 500 });
 };
@@ -42,15 +42,18 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 export const PUT: RequestHandler = async ({ request, cookies }) => {
 	const formData = await request.json();
 
-	const { success, data } = AuthenticateUserSchema.safeParse(formData);
-	if (!success) {
-		return new Response(null, { status: 500 });
+	const { success, data, error } = AuthenticateUserSchema.safeParse(formData);
+	if (!success && error) {
+		return json(error, {
+			status: 400
+		});
 	}
 
 	const userExists = await UserRepository.exists(data.email);
 
 	if (!userExists) {
-		return new Response(null, { status: 500 });
+		const error: Partial<ZodError> = new z.ZodError();
+		return json(error, { status: 400 });
 	}
 	const user = await UserRepository.findByEmail(data.email);
 	const validPassword = await new Scrypt().verify(user.hashedPassword, data.password);
