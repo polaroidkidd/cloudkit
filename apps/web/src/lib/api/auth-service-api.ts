@@ -1,9 +1,9 @@
+import type { UserWithRelations } from '@cloudkit/ui-core';
 import type { AuthenticateUserSchema, RegisterUserSchema } from '@lib/client/auth/schemas';
+import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 import type { Infer, SuperValidated } from 'sveltekit-superforms/client';
 import { ApiServiceBase } from './base-api-service';
-import type { UserWithRelations } from '@cloudkit/ui-core';
-import type { AxiosResponse } from 'axios';
 
 class AuthApiService extends ApiServiceBase {
 	constructor() {

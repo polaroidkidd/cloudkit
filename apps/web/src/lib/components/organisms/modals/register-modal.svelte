@@ -7,18 +7,18 @@
 		isDevOrCi,
 		TextInput
 	} from '@cloudkit/ui-core';
-	import { AxiosError } from 'axios';
 	import { AuthApiService } from '@lib/api/auth-service-api';
 	import { RegisterUserSchema } from '@lib/client/auth/schemas';
 	import { fetchRandomAvatarQueryConfig } from '@lib/queries/fetch-random-avatar-query-config';
+	import { AxiosError } from 'axios';
 
+	import { getUserStore } from '@lib/stores';
 	import { FileDropzone, getModalStore } from '@skeletonlabs/skeleton';
 	import { createMutation, createQuery } from '@tanstack/svelte-query';
 	import classNames from 'classnames';
 	import { onMount } from 'svelte';
 	import { type Infer, setError, superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
-	import { getUserStore } from '@lib/stores';
 
 	export let formData: SuperValidated<Infer<typeof RegisterUserSchema>>;
 	const userStore = getUserStore();
@@ -33,13 +33,12 @@
 			if (response?.status === 409) {
 				return { status: response.status };
 			}
+			$createUserMutation.reset();
 		},
 		onSuccess: ({ data }) => {
 			userStore.set(data);
 			closeModal();
 		}
-		// 	$createUserMutation.reset();
-		// }
 	});
 	const { mutateAsync: createUser } = $createUserMutation;
 

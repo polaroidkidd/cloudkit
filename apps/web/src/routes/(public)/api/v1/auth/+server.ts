@@ -1,10 +1,11 @@
-import { RegisterUserSchema } from '@lib/client/auth/schemas';
+import { PATHS } from '@cloudkit/ui-core';
+import { AuthenticateUserSchema, RegisterUserSchema } from '@lib/client/auth/schemas';
 import { auth } from '@lib/server/auth/lucia';
 import { UserRepository } from '@lib/server/repository/user-repository';
+import { UserService } from '@lib/server/services/user-service';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
-import { PATHS } from '@cloudkit/ui-core';
-import { UserService } from '@lib/server/services/user-service';
+import { Scrypt } from 'lucia';
 
 export const DELETE: RequestHandler = async () => {
 	return new Response(null, { status: 500 });
@@ -36,54 +37,33 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 	} else {
 		console.error('errors:', error);
 	}
-	/*
-			const formData = await request.formData();
-		const signUp = await superValidate(formData, zod(RegistrationSchema));
-		if (!signUp.valid) {
-			return fail(400, { form: signUp });
-		}
-
-		if (signUp.data.password !== signUp.data.confirmPassword) {
-			return setError(signUp, 'confirmPassword', 'Passwords do not match');
-		}
-
-		try {
-			const userExists = await UserRepository.exists(signUp.data.email);
-			if (!userExists) {
-				const hashedPassword = await new Scrypt().hash(signUp.data.password);
-
-				const avatar = formData.get('avatar') as File;
-				if (avatar instanceof File) {
-					const created = await UserRepository.create({
-						email: signUp.data.email.toLowerCase(),
-						firstName: signUp.data.firstName,
-						lastName: signUp.data.lastName,
-						hashedPassword: hashedPassword,
-
-						avatar: avatar,
-						verified: false,
-						firstTime: true
-					});
-					const session = await auth.createSession(created.id, {});
-					const sessionCookie = auth.createSessionCookie(session.id);
-					cookies.set(sessionCookie.name, sessionCookie.value, {
-						path: PATHS.ROOT,
-						...sessionCookie.attributes
-					});
-				} else {
-					return setError(signUp, 'avatar', 'Avatar has to be a valid file');
-				}
-			} else {
-				return setError(signUp, 'email', 'E-Mail already taken');
-			}
-		} catch (e) {
-			return fail(503, {
-				message: 'An unknown error occurred. Please try again later.'
-			});
-		}
-	*/
 	return new Response(null, { status: 500 });
 };
-export const PUT: RequestHandler = async () => {
-	return new Response(null, { status: 500 });
+export const PUT: RequestHandler = async ({ request, cookies }) => {
+	const formData = await request.json();
+
+	const { success, data } = AuthenticateUserSchema.safeParse(formData);
+	if (!success) {
+		return new Response(null, { status: 500 });
+	}
+
+	const userExists = await UserRepository.exists(data.email);
+
+	if (!userExists) {
+		return new Response(null, { status: 500 });
+	}
+	const user = await UserRepository.findByEmail(data.email);
+	const validPassword = await new Scrypt().verify(user.hashedPassword, data.password);
+
+	if (!validPassword) {
+		return new Response(null, { status: 500 });
+	}
+	const session = await auth.createSession(user.id, {});
+	const sessionCookie = auth.createSessionCookie(session.id);
+	cookies.set(sessionCookie.name, sessionCookie.value, {
+		path: PATHS.ROOT,
+		...sessionCookie.attributes
+	});
+
+	return json(user);
 };

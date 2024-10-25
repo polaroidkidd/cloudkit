@@ -1,12 +1,8 @@
-<script lang="ts" context="module">
-</script>
-
 <script lang="ts">
 	import { Button, FORM_ACTIONS, TextInput } from '@cloudkit/ui-core';
 
 	import { IconLoading } from '@cloudkit/ui-core';
 	import { getModalStore } from '@skeletonlabs/skeleton';
-	import type { ActionResult } from '@sveltejs/kit';
 	import classNames from 'classnames';
 	import { onMount } from 'svelte';
 	import type { Infer, SuperValidated } from 'sveltekit-superforms';
@@ -14,28 +10,46 @@
 
 	import { Typography } from '@cloudkit/ui-core';
 
-	import { authenticateModalConfig, getErrorModal, isDevOrCi } from '@cloudkit/ui-core';
+	import { isDevOrCi } from '@cloudkit/ui-core';
+	import { AuthApiService } from '@lib/api/auth-service-api';
 	import { AuthenticateUserSchema } from '@lib/client/auth/schemas';
+	import { getUserStore } from '@lib/stores';
+	import { createMutation } from '@tanstack/svelte-query';
+	import type { AxiosError } from 'axios';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 
 	export let formData: SuperValidated<Infer<typeof AuthenticateUserSchema>>;
 	const modalStore = getModalStore();
-	let isSubmitting = false;
-	const { form, errors, enhance } = superForm(formData, {
+	const userStore = getUserStore();
+
+	const createNewSession = createMutation({
+		mutationFn: async (form: SuperValidated<Infer<typeof AuthenticateUserSchema>>) => {
+			return AuthApiService.createNewSession(form.data);
+		},
+
+		onError: async ({ response }: AxiosError) => {
+			if (response?.status === 409) {
+				return { status: response.status };
+			}
+			$createNewSession.reset();
+		},
+		onSuccess: ({ data }) => {
+			userStore.set(data);
+			closeModal();
+		}
+	});
+
+	const { form, errors, enhance, validateForm } = superForm(formData, {
+		SPA: true,
 		validationMethod: 'onblur',
 		validators: zodClient(AuthenticateUserSchema),
 		taintedMessage: null,
 		multipleSubmits: 'abort',
-		onSubmit: () => {
-			isSubmitting = true;
-		},
-		onResult: ({ result }) => {
-			if (result.status !== 204) {
-				isSubmitting = false;
-				modalStore.clear();
-				let message = result as ActionResult & { data: { form: { message: string } } };
-				modalStore.trigger(getErrorModal(message.data.form.message));
-				modalStore.trigger(authenticateModalConfig);
+
+		onUpdate: async ({ form }) => {
+			const { valid } = await validateForm();
+			if (valid) {
+				await $createNewSession.mutateAsync(form);
 			}
 		}
 	});
@@ -48,7 +62,7 @@
 	if (isDevOrCi) {
 		onMount(() => {
 			$form.email = 'test123@dle.dev';
-			$form.password = 'test123@dle.dev';
+			$form.password = 'password';
 		});
 	}
 </script>
@@ -85,14 +99,19 @@
 		<Button
 			type="reset"
 			ariaLabel="Close Contact Modal"
-			disabled={isSubmitting}
+			disabled={$createNewSession.isPending}
 			on:click={closeModal}
 			variant="warning"
 		>
 			Cancel
 		</Button>
-		<Button type="submit" disabled={isSubmitting} ariaLabel="Confirm Sign In" variant="tertiary">
-			{#if isSubmitting}
+		<Button
+			type="submit"
+			disabled={$createNewSession.isPending}
+			ariaLabel="Confirm Sign In"
+			variant="tertiary"
+		>
+			{#if $createNewSession.isPending}
 				<IconLoading class="h-6" />
 			{:else}
 				<Typography>Sign In</Typography>
