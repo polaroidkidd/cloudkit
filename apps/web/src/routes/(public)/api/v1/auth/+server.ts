@@ -52,8 +52,7 @@ export const PUT: RequestHandler = async ({ request, cookies }) => {
 	const userExists = await UserRepository.exists(data.email);
 
 	if (!userExists) {
-		const error: Partial<ZodError> = new z.ZodError();
-		return json(error, { status: 400 });
+		return json({ message: 'computer sais no' }, { status: 400 });
 	}
 	const user = await UserRepository.findByEmail(data.email);
 	const validPassword = await new Scrypt().verify(user.hashedPassword, data.password);
