@@ -3,18 +3,8 @@
 	"version": "1.0.0",
 	"description": "",
 	"type": "module",
-	"main": "./src/generated/index.ts",
-	"types": "./src/generated/index.ts",
-	"exports": {
-		".": {
-			"types": "./src/generated/index.ts",
-			"default": "./src/generated/index.ts"
-		},
-		"./form": {
-			"types": "./src/utils/index.ts",
-			"default": "./src/utils/index.ts"
-		}
-	},
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
 	"scripts": {
 		"generate": "prisma generate --schema ./prisma/schema.prisma && pnpm format",
 		"push": "prisma db push --schema ./prisma/schema.prisma && pnpm format",
