@@ -6,10 +6,7 @@ import { UserService } from '@lib/server/services/user-service';
 import type { RequestHandler } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
 import { Scrypt } from 'lucia';
-import * as z from 'zod';
-export const DELETE: RequestHandler = async () => {
-	return new Response(null, { status: 500 });
-};
+
 export const POST: RequestHandler = async ({ request, cookies }) => {
 	await auth.validateSession(cookies.get(auth.sessionCookieName) ?? '');
 
@@ -68,4 +65,17 @@ export const PUT: RequestHandler = async ({ request, cookies }) => {
 	});
 
 	return json(user);
+};
+export const DELETE = async ({ locals, cookies }) => {
+	if (!locals.session) {
+		return new Response(null, { status: 401 });
+	}
+	await auth.invalidateSession(locals.session.id);
+	const sessionCookie = auth.createBlankSessionCookie();
+	cookies.set(sessionCookie.name, sessionCookie.value, {
+		path: PATHS.ROOT,
+		...sessionCookie.attributes
+	});
+
+	return new Response(null, { status: 200 });
 };

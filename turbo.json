@@ -23,12 +23,12 @@
 			"dependsOn": ["@cloudkit/db-schema#generate", "@cloudkit/swagger-ui#sync"],
 			"passThroughEnv": ["DATABASE_URL"]
 		},
-		"@cloudkit/styleguide#build":{
+		"@cloudkit/styleguide#build": {
 			"cache": false,
 			"persistent": true,
 			"dependsOn": ["@cloudkit/web#sync", "@cloudkit/swagger-ui#sync"]
 		},
-		"@cloudkit/styleguide#dev":{
+		"@cloudkit/styleguide#dev": {
 			"cache": false,
 			"persistent": true,
 			"dependsOn": ["@cloudkit/web#sync", "@cloudkit/swagger-ui#sync"]
@@ -40,7 +40,7 @@
 		},
 		"@cloudkit/db-schema#push": {
 			"cache": false,
-			"dependsOn": [ "@cloudkit/api-mocks#start", "@cloudkit/service-contract#build"]
+			"dependsOn": ["@cloudkit/api-mocks#start", "@cloudkit/service-contract#build"]
 		},
 		"@cloudkit/db-schema#generate": {
 			"cache": false,
@@ -71,22 +71,26 @@
 			"cache": false,
 			"outputs": ["./svelte-kit"]
 		},
-		"lint":{
+		"lint": {
 			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"]
 		},
-		"check":{
-			"dependsOn": ["@cloudkit/service-contract#build","@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"],
+		"check": {
+			"dependsOn": [
+				"@cloudkit/service-contract#build",
+				"@cloudkit/swagger-ui#sync",
+				"@cloudkit/web#sync"
+			],
 			"cache": false
 		},
-		"test":{
+		"test": {
 			"cache": false,
 			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"]
 		},
-		"sync":{
+		"sync": {
 			"cache": false,
 			"dependsOn": ["@cloudkit/db-schema#generate"]
 		},
-		"build":{
+		"build": {
 			"cache": false,
 			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"]
 		}

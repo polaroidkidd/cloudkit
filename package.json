@@ -16,7 +16,8 @@
 		"test": "turbo run test",
 		"sync": "turbo run sync",
 		"build:local": "dotenv -e .env.development -- turbo run build",
-		"build": "turbo run build"
+		"build": "turbo run build",
+		"studio":"pnpm --filter=@cloudkit/db-schema studio"
 	},
 	"devDependencies": {
 		"@types/node": "22.7.6",

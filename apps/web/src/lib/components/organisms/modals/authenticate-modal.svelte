@@ -14,7 +14,7 @@
 	import { isDevOrCi } from '@cloudkit/ui-core';
 	import { AuthApiService } from '@lib/api/auth-service-api';
 	import { AuthenticateUserSchema } from '@lib/client/auth/schemas';
-	import { getUserStore } from '@lib/stores';
+	import { initUserStore } from '@lib/stores';
 	import { createMutation } from '@tanstack/svelte-query';
 	import type { AxiosError } from 'axios';
 	import { zodClient } from 'sveltekit-superforms/adapters';
@@ -22,7 +22,7 @@
 
 	export let formData: SuperValidated<Infer<typeof AuthenticateUserSchema>>;
 	const modalStore = getModalStore();
-	const userStore = getUserStore();
+	const userStore = initUserStore(null);
 
 	const createNewSession = createMutation({
 		mutationFn: async (form: SuperValidated<Infer<typeof AuthenticateUserSchema>>) => {

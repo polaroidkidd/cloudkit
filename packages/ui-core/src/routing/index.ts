@@ -14,7 +14,6 @@ export enum SERVER_FORM_ACTIONS {
 	SIGN_OUT = 'signOut',
 	UPDATE_USER = 'updateUser',
 	DELETE_USER = 'deleteUser',
-
 	ONBOARDING_COMPLETED = 'onboardingCompleted'
 }
 

@@ -3,8 +3,8 @@ import { writable, type Writable } from 'svelte/store';
 import { STORE_CONTEXTS } from './constants';
 import type { UserWithRelations } from '@cloudkit/ui-core';
 
-export function initUserStore<T extends UserWithRelations = UserWithRelations>(user: T) {
-	const store = writable<T>(user);
+export function initUserStore<T extends UserWithRelations = UserWithRelations>(user: T | null) {
+	const store = writable<T | null>(user);
 	setContext(STORE_CONTEXTS.User, store);
 	return store;
 }

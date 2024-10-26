@@ -1,14 +1,16 @@
 <script lang="ts">
-	import { Avatar, Button, FORM_ACTIONS, IconMenu, PATHS } from '@cloudkit/ui-core';
+	import { goto } from '$app/navigation';
+	import { Avatar, Button, IconMenu, PATHS } from '@cloudkit/ui-core';
 	import { Drawer, type DrawerSettings, getDrawerStore, LightSwitch } from '@skeletonlabs/skeleton';
+	import { createMutation } from '@tanstack/svelte-query';
 	import classNames from 'classnames';
 
-	import { enhance } from '$app/forms';
 	import { getUserStore } from '@lib/stores';
 
 	import { NavigationButton, Typography } from '@cloudkit/ui-core';
 
 	import { IconLoading } from '@cloudkit/ui-core';
+	import { AuthApiService } from '@lib/api/auth-service-api';
 
 	const drawerStore = getDrawerStore();
 
@@ -26,7 +28,18 @@
 	}
 
 	const user = getUserStore<{ isBase64: boolean }>();
-	let formLoading = false;
+
+	const deleteSessionMutation = createMutation({
+		mutationFn: async () => {
+			return AuthApiService.deleteSession();
+		},
+		onError: (error) => {
+			console.error('error: ', error);
+		},
+		onSuccess: () => {
+			goto(PATHS.ROOT);
+		}
+	});
 </script>
 
 <nav
@@ -62,26 +75,19 @@
 					Profile
 				</NavigationButton>
 
-				<form
-					class="mt-auto"
-					action={FORM_ACTIONS.SIGN_OUT}
-					use:enhance={() => {
-						formLoading = true;
-						return async ({ update }) => {
-							formLoading = false;
-							update();
-						};
-					}}
-					method="POST"
+				<Button
+					disabled={$deleteSessionMutation.isPending}
+					class="w-full"
+					fill="ghost"
+					variant="warning"
+					on:click={() => $deleteSessionMutation.mutate()}
 				>
-					<Button disabled={formLoading} class="w-full" fill="ghost" variant="warning">
-						{#if formLoading}
-							<IconLoading class="h-6 fill-surafce dark:fill-surface-50" />
-						{:else}
-							<Typography>Sign Out</Typography>
-						{/if}
-					</Button>
-				</form>
+					{#if $deleteSessionMutation.isPending}
+						<IconLoading class="h-6 fill-surafce dark:fill-surface-50" />
+					{:else}
+						<Typography>Sign Out</Typography>
+					{/if}
+				</Button>
 			</div>
 		</Drawer>
 	</div>
