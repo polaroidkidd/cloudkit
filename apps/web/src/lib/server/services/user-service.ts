@@ -1,7 +1,7 @@
 import type { User, UserWithRelations } from '@cloudkit/ui-core';
-import { UserRepository } from '../repository/user-repository';
 import type { RegisterUserSchema } from '@lib/client/auth/schemas';
 import type { Infer, SuperValidated } from 'sveltekit-superforms/server';
+import { UserRepository } from '../repository/user-repository';
 
 // TODO implement ZenStack to manage access
 class UserService {
@@ -25,7 +25,7 @@ class UserService {
 		return UserRepository.updateFromSession({ ...data, firstTime: false });
 	}
 
-	async deleteUser(data: User): Promise<boolean> {
+	async deleteUser(data: UserWithRelations): Promise<boolean> {
 		return UserRepository.deleteById(data.id);
 	}
 }

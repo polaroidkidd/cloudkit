@@ -36,7 +36,6 @@
 	}
 </script>
 
+<Modal components={modalComponentRegistry} regionBackdrop="backdrop-blur-lg" />
 <PublicNavbar />
 <slot />
-
-<Modal components={modalComponentRegistry} regionBackdrop="backdrop-blur-lg" />

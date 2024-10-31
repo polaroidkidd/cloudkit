@@ -11,8 +11,8 @@ class UserApiService extends ApiServiceBase {
 		return this.http.get('/');
 	}
 
-	deleteUser(collectionId: string) {
-		return this.http.delete(`/${collectionId}`);
+	deleteCurrentUser() {
+		return this.http.delete('/');
 	}
 
 	updateUser(data: SuperValidated<Infer<typeof RegisterUserSchema>>['data']) {

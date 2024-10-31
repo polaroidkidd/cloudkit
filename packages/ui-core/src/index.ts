@@ -85,6 +85,7 @@ export { FORM_ACTIONS, PATHS, PATH_GROUPS, SERVER_FORM_ACTIONS } from './routing
 // MODALS
 export {
 	MODAL_PUBLIC,
+	MODAL_PROTECTED,
 	authenticateModalConfig,
 	getConfirmationModalConfig,
 	getErrorModal,

@@ -2,7 +2,6 @@ import { SERVER_FORM_ACTIONS } from '@cloudkit/ui-core';
 
 import { EditUserSchema, PATHS } from '@cloudkit/ui-core';
 
-import { auth } from '@lib/server/auth/lucia';
 import { ImageRepository } from '@lib/server/repository/image-repository';
 import { UserRepository } from '@lib/server/repository/user-repository';
 import { fail, redirect } from '@sveltejs/kit';
@@ -32,25 +31,6 @@ export const load = (async (event) => {
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
-	[SERVER_FORM_ACTIONS.DELETE_USER]: async ({ locals, cookies }) => {
-		const sessionId = cookies.get(auth.sessionCookieName);
-		if (!sessionId) {
-			locals.user = null;
-			locals.session = null;
-			cookies.delete(auth.sessionCookieName, { path: PATHS.ROOT });
-			redirect(302, PATHS.ROOT);
-		}
-
-		const { session, user } = await auth.validateSession(sessionId);
-		if (session && user) {
-			await UserRepository.deleteById(user.id);
-
-			await auth.invalidateSession(sessionId);
-
-			redirect(302, PATHS.ROOT);
-		}
-		return new Response('Error Deleting Account', { status: 500 });
-	},
 	[SERVER_FORM_ACTIONS.UPDATE_USER]: async ({ request, locals }) => {
 		const user = locals.user;
 		if (!user) {
@@ -84,19 +64,5 @@ export const actions: Actions = {
 		return {
 			editUserForm
 		};
-	},
-
-	[SERVER_FORM_ACTIONS.SIGN_OUT]: async ({ locals, cookies }) => {
-		if (!locals.session) {
-			return fail(401);
-		}
-		await auth.invalidateSession(locals.session.id);
-		const sessionCookie = auth.createBlankSessionCookie();
-		cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: PATHS.ROOT,
-			...sessionCookie.attributes
-		});
-
-		redirect(302, PATHS.ROOT);
 	}
 };

@@ -6,6 +6,10 @@ export enum MODAL_PUBLIC {
 	CREATE_ERROR = 'createError'
 }
 
+export enum MODAL_PROTECTED {
+	CREATE_ERROR = 'createError'
+}
+
 export const authenticateModalConfig: ModalSettings = {
 	type: 'component',
 	component: MODAL_PUBLIC.LOG_IN

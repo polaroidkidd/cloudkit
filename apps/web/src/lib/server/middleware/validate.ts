@@ -57,7 +57,7 @@ function getSchema(request: Request): z.AnyZodObject | z.ZodOptional<z.AnyZodObj
 			return z.object({});
 	}
 }
-class Validation {
+class RequestValidator {
 	async validateBody<T = z.AnyZodObject | z.ZodOptional<z.AnyZodObject>>(
 		request: Request
 	): Promise<T> {
@@ -95,7 +95,7 @@ class Validation {
 	 * @throws {Error} If the session is invalid
 	 * //TODO Remove with implementation of zen stack
 	 */
-	async validateSession(cookies: Cookies): Promise<ReturnType<typeof auth.validateSession> | void> {
+	async validateSession(cookies: Cookies): Promise<ReturnType<typeof auth.validateSession>> {
 		const { user, session } = await auth.validateSession(cookies.get(auth.sessionCookieName) ?? '');
 		if (!user) {
 			throw new InvalidSessionError();
@@ -152,5 +152,5 @@ class Validation {
 	}
 }
 
-const frozen = Object.freeze(new Validation());
-export { frozen as Validate };
+const frozen = Object.freeze(new RequestValidator());
+export { frozen as RequestValidator };

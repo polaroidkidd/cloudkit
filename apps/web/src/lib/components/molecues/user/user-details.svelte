@@ -1,22 +1,26 @@
 <script lang="ts">
-	import { getUserStore } from '@lib/stores';
 	import {
 		Avatar,
 		EditUserSchema,
+		getErrorModal,
 		IconCheckFalse,
 		IconCheckTrue,
 		IconEdit,
 		IconLoading,
+		PATHS,
 		TextEdit
 	} from '@cloudkit/ui-core';
+	import { getUserStore } from '@lib/stores';
 
-	import type { ActionResult } from '@sveltejs/kit';
 	import { convertFileToBase64, FORM_ACTIONS } from '@cloudkit/ui-core';
+	import type { ActionResult } from '@sveltejs/kit';
 	import classNames from 'classnames';
 
-	import { invalidateAll } from '$app/navigation';
-	import { getModalStore } from '@skeletonlabs/skeleton';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { Button, openConfirmationModal } from '@cloudkit/ui-core';
+	import { UserApiService } from '@lib/api/user-service-api';
+	import { getModalStore } from '@skeletonlabs/skeleton';
+	import { createMutation } from '@tanstack/svelte-query';
 	import { zod } from 'sveltekit-superforms/adapters';
 	import { superForm } from 'sveltekit-superforms/client';
 
@@ -106,22 +110,28 @@
 		$userStore.isBase64
 	].some(Boolean);
 	const modalStore = getModalStore();
+
+	const deleteUserMutation = createMutation({
+		mutationFn: async () => {
+			await UserApiService.deleteCurrentUser();
+		},
+		onError: () => {
+			getErrorModal('Something went wrong. Please try again. If the error persists');
+		},
+		onSuccess: () => {
+			goto(PATHS.ROOT);
+		},
+		onSettled: () => {
+			document?.body.classList.remove('overflow-hidden');
+		}
+	});
 	function openConfirm() {
 		openConfirmationModal({
 			title: 'Confirm',
 			body: 'Are you sure you want to delete your account? This cannot be undone.',
 			callback: async (r: unknown) => {
 				if (r) {
-					const data = new FormData();
-
-					const response = await fetch(FORM_ACTIONS.DELETE_USER, {
-						method: 'POST',
-						body: data
-					});
-					if (response.status === 200) {
-						invalidateAll();
-					}
-					document?.body.classList.remove('overflow-hidden');
+					$deleteUserMutation.mutate();
 				}
 			},
 			modalStore
