@@ -155,8 +155,7 @@ class ImageRepository {
 
 			form.append('file', new Blob([image]));
 			form.append('id', id);
-			// eslint-disable-next-line no-console
-			console.info('PUBLIC_IMAGE_API_URL: ', PUBLIC_IMAGE_API_URL);
+
 			const workerResponse = await fetch(PUBLIC_IMAGE_API_URL, {
 				method: 'POST',
 				headers: {
@@ -165,8 +164,7 @@ class ImageRepository {
 				body: form
 			});
 			const response = await workerResponse.json();
-			// eslint-disable-next-line no-console
-			console.info('response: ', response);
+
 			return { url: `${PUBLIC_IMAGE_API_URL}/${response.result.id}`, id: response.result.id };
 		}
 	}
