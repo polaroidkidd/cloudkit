@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
-. "$(dirname "$0")/_/husky.sh"
 
 pnpm lint-staged
-pnpm check
+
+if git diff --cached --name-only | grep -q '\.svelte$'; then
+    pnpm run -r --filter=@cloudkit/web check
+    pnpm run -r --filter=@cloudkit/ui-core check
+fi

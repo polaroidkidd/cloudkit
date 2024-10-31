@@ -1,0 +1,98 @@
+{
+	"$schema": "https://turborepo.org/schema.json",
+	"daemon": false,
+	"globalDependencies": [".env.development", "tsconfig-base.json", "pnpm-lock.yaml"],
+	"globalEnv": [
+		"DATABASE_URL",
+		"IMAGE_API",
+		"IMAGE_API_TOKEN",
+		"IMAGE_API_ACCOUNT_IDENTIFIER",
+		"IS_CI",
+		"SEED_DEV"
+	],
+	"tasks": {
+		"@cloudkit/web#dev": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/db-schema#push"],
+			"passThroughEnv": ["DATABASE_URL"]
+		},
+		"@cloudkit/web#build": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["@cloudkit/db-schema#generate", "@cloudkit/swagger-ui#sync"],
+			"passThroughEnv": ["DATABASE_URL"]
+		},
+		"@cloudkit/styleguide#build": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["@cloudkit/web#sync", "@cloudkit/swagger-ui#sync"]
+		},
+		"@cloudkit/styleguide#dev": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["@cloudkit/web#sync", "@cloudkit/swagger-ui#sync"]
+		},
+		"@cloudkit/swagger-ui#dev": {
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["@cloudkit/service-contract#build"]
+		},
+		"@cloudkit/db-schema#push": {
+			"cache": false,
+			"dependsOn": ["@cloudkit/api-mocks#start", "@cloudkit/service-contract#build"]
+		},
+		"@cloudkit/db-schema#generate": {
+			"cache": false,
+			"dependsOn": []
+		},
+		"@cloudkit/api-mocks#start": {
+			"cache": false,
+			"dependsOn": []
+		},
+		"@cloudkit/web#check": {
+			"cache": false,
+			"dependsOn": ["@cloudkit/db-schema#generate"]
+		},
+		"@cloudkit/service-contract#build": {
+			"outputs": ["./dist"],
+			"inputs": ["./src/index.ts", "./src/models.ts"],
+			"dependsOn": ["@cloudkit/db-schema#generate"]
+		},
+		"@cloudkit/swagger-ui#build": {
+			"outputs": ["./svelte-kit"],
+			"dependsOn": ["@cloudkit/service-contract#build"]
+		},
+		"@cloudkit/web#sync": {
+			"outputs": ["./.svelte-kit"],
+			"dependsOn": []
+		},
+		"@cloudkit/swagger-ui#sync": {
+			"cache": false,
+			"outputs": ["./svelte-kit"]
+		},
+		"lint": {
+			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"]
+		},
+		"check": {
+			"dependsOn": [
+				"@cloudkit/service-contract#build",
+				"@cloudkit/swagger-ui#sync",
+				"@cloudkit/web#sync"
+			],
+			"cache": false
+		},
+		"test": {
+			"cache": false,
+			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"]
+		},
+		"sync": {
+			"cache": false,
+			"dependsOn": ["@cloudkit/db-schema#generate"]
+		},
+		"build": {
+			"cache": false,
+			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"]
+		}
+	}
+}

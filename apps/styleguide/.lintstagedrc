@@ -1,0 +1,4 @@
+{
+	"*.{js,ts,svelte,css,scss,postcss,md,json,yml}": [
+		"prettier --config ../../.prettierrc --write --cache ./src"
+	]}

@@ -9,32 +9,52 @@ on:
   schedule:
     - cron: '0 5 * * *'
 env:
-  DATABASE_URL: ${{ secrets.DATABASE_URL }}
-  DIRECT_DATABASE_URL: ${{ secrets.DIRECT_DATABASE_URL }}
-  REDIS_TOKEN: ${{ secrets.REDIS_TOKEN }}
-  REDIS_URL: ${{ secrets.REDIS_URL }}
-  IMAGE_API_TOKEN: ${{ secrets.IMAGE_API_TOKEN }}
-  IMAGE_API: ${{ secrets.IMAGE_API }}
-  PUBLIC_IMAGE_DELIVERY: ${{ secrets.PUBLIC_IMAGE_DELIVERY }}
-  IS_CI: true
+  DIRECT_DATABASE_URL: ${{secrets.DIRECT_DATABASE_URL}}
+  DATABASE_URL: ${{secrets.DATABASE_URL}}
+  PUBLIC_IMAGE_API_URL: ${{secrets.PUBLIC_IMAGE_API_URL}}
+  IMAGE_API_TOKEN: ${{secrets.IMAGE_API_TOKEN}}
+  IMAGE_API_ACCOUNT_IDENTIFIER: ${{secrets.IMAGE_API_ACCOUNT_IDENTIFIER}}
+  IS_CI: ${{secrets.IS_CI}}
+  ENVIRONMENT: ${{secrets.ENVIRONMENT}}
+  CLOUDFLARE_ACCOUNT_ID: ${{secrets.CLOUDFLARE_ACCOUNT_ID}}
+  CLOUDFLARE_API_TOKEN: ${{secrets.CLOUDFLARE_API_TOKEN}}
 
 jobs:
+  INSTALL:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9.1.1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - uses: actions/cache@v3
+        id: cache-pnpm
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', './prisma/dev.schema.prisma', './prisma/prod.schema.prisma') }}
+      - name: Install
+        if: steps.cache-pnpm.outputs.cache-hit != 'true'
+        run: |
+          pnpm i --frozen-lockfile
+          pnpm prisma:gen:ci
   PUBLISH:
     name: Publish to Production
     environment: PRODUCTION
     runs-on: ubuntu-latest
+    needs: INSTALL
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v3
         with:
-          version: 8.9.2
-      - uses: actions/setup-node@v3
+          version: 9.1.1
+      - uses: actions/cache@v3
         with:
-          node-version: '20'
-          cache: 'pnpm'
-      - name: Install
-        run: |
-          pnpm install
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml', './prisma/dev.schema.prisma', './prisma/prod.schema.prisma') }}
       - name: Build
         env:
           IS_CI: false
@@ -48,7 +68,6 @@ jobs:
           projectName: cloudkit
           directory: ./.svelte-kit/cloudflare
           # Optional: Enable this if you want to have GitHub Deployments triggered
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           # Optional: Switch what branch you are publishing to.
           # By default this will be the branch which triggered this workflow
           # branch: master
