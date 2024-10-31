@@ -6,7 +6,7 @@
 	"main": "./src/index.ts",
 	"types": "./src/index.ts",
 	"scripts": {
-		"generate": "prisma generate --schema ./prisma/schema.prisma && pnpm format",
+		"generate": "prisma generate --no-engine --schema ./prisma/schema.prisma && pnpm format",
 		"push": "prisma db push --schema ./prisma/schema.prisma && pnpm format",
 		"push:prod": "dotenv -e ../../.env.production -- prisma db push --schema ./prisma/schema.prisma",
 		"push:manual": "dotenv -e ../../.env.development -- prisma db push --schema ./prisma/schema.prisma && pnpm format",
