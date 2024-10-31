@@ -134,7 +134,7 @@ class ImageRepository {
 	async postToImageService(image: string | File): Promise<{ url: string; id: string }> {
 		const id = generateId(31);
 
-		if (!isDevOrCi) {
+		if (isDevOrCi) {
 			try {
 				await fetch(`${PUBLIC_IMAGE_API_URL}/${id}`, {
 					method: 'PUT',
