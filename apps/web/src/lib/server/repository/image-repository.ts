@@ -1,8 +1,8 @@
 import type { Image } from '@cloudkit/ui-core';
 import { generateId } from 'lucia';
 
-import { IMAGE_API, IMAGE_API_TOKEN } from '$env/static/private';
-
+import { IMAGE_API_TOKEN } from '$env/static/private';
+import { PUBLIC_IMAGE_API_URL } from '$env/static/public';
 import type { CloudflareImageDeleteResponse, UserWithRelations } from '@cloudkit/ui-core';
 import { isDevOrCi } from '@cloudkit/ui-core';
 import { db } from './prisma-client';
@@ -63,7 +63,7 @@ class ImageRepository {
 		await this.postToImageService(image);
 		const id = generateId(31);
 
-		return db.image.create({ data: { id: id, url: `${IMAGE_API}/${id}` } });
+		return db.image.create({ data: { id: id, url: `${PUBLIC_IMAGE_API_URL}/${id}` } });
 	}
 
 	async deleteFromCloudflare(url: string): Promise<CloudflareImageDeleteResponse> {
@@ -134,13 +134,13 @@ class ImageRepository {
 	async postToImageService(image: string | File): Promise<{ url: string; id: string }> {
 		const id = generateId(31);
 
-		if (isDevOrCi) {
+		if (!isDevOrCi) {
 			try {
-				await fetch(`${IMAGE_API}/${id}`, {
+				await fetch(`${PUBLIC_IMAGE_API_URL}/${id}`, {
 					method: 'PUT',
 					headers: {
 						'Content-prefix': 'image/webp',
-						Slug: `${`${IMAGE_API}/${id}`}.webp`
+						Slug: `${`${PUBLIC_IMAGE_API_URL}/${id}`}.webp`
 					},
 					body: image
 				});
@@ -149,13 +149,13 @@ class ImageRepository {
 				console.info('error posting to image service');
 			}
 
-			return { url: `${IMAGE_API}/${id}`, id: id };
+			return { url: `${PUBLIC_IMAGE_API_URL}/${id}`, id: id };
 		} else {
 			const form = new FormData();
 
 			form.append('file', new Blob([image]));
 			form.append('id', id);
-			const workerResponse = await fetch(IMAGE_API, {
+			const workerResponse = await fetch(PUBLIC_IMAGE_API_URL, {
 				method: 'POST',
 				headers: {
 					Authorization: `Bearer ${IMAGE_API_TOKEN}`
@@ -164,17 +164,17 @@ class ImageRepository {
 			});
 			const response = await workerResponse.json();
 
-			return { url: `${IMAGE_API}/${response.result.id}`, id: response.result.id };
+			return { url: `${PUBLIC_IMAGE_API_URL}/${response.result.id}`, id: response.result.id };
 		}
 	}
 
 	async patchToImageService(image: File, id: string): Promise<string> {
 		if (isDevOrCi) {
-			await fetch(`${IMAGE_API}/${id}`, {
+			await fetch(`${PUBLIC_IMAGE_API_URL}/${id}`, {
 				method: 'PUT',
 				headers: {
 					'Content-prefix': 'image/webp',
-					Slug: `${IMAGE_API}/${id}.webp`
+					Slug: `${PUBLIC_IMAGE_API_URL}/${id}.webp`
 				},
 				body: image
 			});
@@ -196,7 +196,7 @@ class ImageRepository {
 
 			form.append('file', new Blob([image]));
 			form.append('id', id);
-			const workerResponse = await fetch(IMAGE_API, {
+			const workerResponse = await fetch(PUBLIC_IMAGE_API_URL, {
 				method: 'POST',
 				headers: {
 					Authorization: `Bearer ${IMAGE_API_TOKEN}`

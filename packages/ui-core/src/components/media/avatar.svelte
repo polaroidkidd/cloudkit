@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_IMAGE_API_URL } from '$env/static/public';
 	import { Avatar } from '@skeletonlabs/skeleton';
 	export let width = '';
 	export let src: string;
@@ -9,7 +10,7 @@
 	export let updatedAt: Date;
 	$: url = isBase64
 		? src
-		: `${src}${src.includes('img.cloudkit.fyi') ? (isLarge ? '/lg' : '/sm') : ''}`;
+		: `${src}${src.includes(PUBLIC_IMAGE_API_URL) ? (isLarge ? '/lg' : '/sm') : ''}`;
 </script>
 
 {#if src !== null}
