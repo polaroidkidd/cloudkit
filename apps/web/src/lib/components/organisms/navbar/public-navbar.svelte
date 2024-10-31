@@ -6,7 +6,6 @@
 	import {
 		authenticateModalConfig,
 		Button,
-		isDevOrCi,
 		registerModalConfig,
 		Typography
 	} from '@cloudkit/ui-core';
@@ -40,11 +39,10 @@
 		<Button fill="filled" variant="tertiary" on:click={openLogInModal} class="my-1 ml-auto">
 			<Typography>Sign In</Typography>
 		</Button>
-		{#if isDevOrCi}
-			<Button fill="filled" variant="tertiary" on:click={openRegistrationModal} class="my-1 ml-2">
-				<Typography>Register</Typography>
-			</Button>
-		{/if}
+
+		<Button fill="filled" variant="tertiary" on:click={openRegistrationModal} class="my-1 ml-2">
+			<Typography>Register</Typography>
+		</Button>
 	</div>
 </nav>
 
