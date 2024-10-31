@@ -116,7 +116,10 @@
 			await UserApiService.deleteCurrentUser();
 		},
 		onError: () => {
-			getErrorModal('Something went wrong. Please try again. If the error persists');
+			modalStore.clear();
+			modalStore.trigger(
+				getErrorModal('Something went wrong. Please try again. If the error persists')
+			);
 		},
 		onSuccess: () => {
 			goto(PATHS.ROOT);
@@ -125,6 +128,7 @@
 			document?.body.classList.remove('overflow-hidden');
 		}
 	});
+
 	function openConfirm() {
 		openConfirmationModal({
 			title: 'Confirm',

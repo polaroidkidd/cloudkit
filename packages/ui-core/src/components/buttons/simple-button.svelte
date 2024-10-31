@@ -16,10 +16,11 @@
 <script lang="ts">
 	import classNames from 'classnames';
 	import { twMerge } from 'tailwind-merge';
-	import { FORM_ACTIONS } from '../../routing';
+
+	import type { FORM_ACTIONS } from '../../routing';
 
 	export let disabled: Disabled = false;
-	export let formAction: typeof FORM_ACTIONS | null = null;
+	export let formAction: FORM_ACTIONS | null = null;
 	export let ariaLabel: string | null = null;
 	export let type: 'button' | 'reset' | 'submit' | null | undefined = null;
 	export let size: Size = 'md';
