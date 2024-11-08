@@ -2,9 +2,15 @@
 	"name": "@cloudkit/api-domain",
 	"version": "1.0.0",
 	"description": "Types for cloudkit's API",
-	"main": "index.js",
+	"main": "./generated/cloudkit-service.ts",
 	"scripts": {
-		"gen": "tsx ./src/index.ts"
+		"gen": "redocly bundle && node generate-types.mjs"
+	},
+	"exports": {
+		".": {
+			"import": "./generated/cloudkit-service.ts",
+			"require": "./generated/cloudkit-service.ts"
+		}
 	},
 	"keywords": [
 		"cloudkit",
@@ -19,6 +25,20 @@
 		"@cloudkit/eslint-config": "workspace:^",
 		"tsx": "^4.19.0",
 		"yaml": "^2.5.1",
-		"zod": "^3.23.8"
+		"zod": "^3.23.8",
+		"cross-env": "^7.0.3",
+		"openapi-typescript": "^7.0.0-next.8",
+		"@apidevtools/swagger-parser": "10.1.0",
+		"@redocly/cli": "^1.10.3",
+		"@stoplight/spectral": "^5.9.1",
+		"better-console": "^1.0.1",
+		"js-yaml": "^4.0.0",
+		"live-server": "^1.2.1",
+		"openapi-types": "^7.2.3",
+		"replace-in-file": "^6.3.5",
+		"rimraf": "^5.0.5",
+		"run-git-command": "^1.2.3",
+		"simple-git": "^3.24.0",
+		"swagger2openapi": "^7.0.5"
 	}
 }

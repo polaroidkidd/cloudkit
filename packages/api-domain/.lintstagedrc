@@ -1,6 +1,6 @@
 {
 	"*.{js,ts,svelte,css,scss,postcss,md,json,yml}": [
-		"prettier --config ../../.prettierrc --write --cache ./src"
+		"prettier --config ../../.prettierrc --write --cache ./generated"
 	],
-	"*.{ts,svelte,css,scss,yml}": ["eslint --cache --fix"]
+	"*.{ts,svelte,css,scss,yml}": ["eslint --cache --fix ./generated/**/*.ts"]
 }

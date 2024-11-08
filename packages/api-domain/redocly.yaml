@@ -1,0 +1,19 @@
+extends:
+  - recommended
+
+rules:
+  info-license: off
+  no-server-example.com: off
+
+apis:
+  cloudkitng@v1:
+    root: ./../service-contract/dist/cloudkit-openapi-docs.json
+    output: ./target/cloudkit-service.yaml 
+
+theme:
+  openapi:
+    schemaExpansionLevel: 2
+    generateCodeSamples:
+      languages:
+        - lang: Java
+        - lang: Node.js
