@@ -19,11 +19,11 @@ replace.sync({
 // Delete the generated folder and create a new one
 // eslint-disable-next-line no-console
 console.log("Deleting the generated folder and creating a new one");
-if (!fs.existsSync("./generated")) {
-  fs.mkdirSync("./generated");
+if (!fs.existsSync("./src/generated")) {
+  fs.mkdirSync("./src/generated");
 } else {
-  fs.rmSync("./generated", { recursive: true });
-  fs.mkdirSync("./generated");
+  fs.rmSync("./src/generated", { recursive: true });
+  fs.mkdirSync("./src/generated");
 }
 
 const redoc = await loadConfig({ configPath: "redocly.yaml" });
@@ -38,7 +38,7 @@ for (const path of paths) {
   });
   const contents = astToString(ast);
   fs.writeFileSync(
-    `./generated/${path.split("/").at(-1).split(".")[0]}.ts`,
+    `./src/generated/${path.split("/").at(-1).split(".")[0]}.ts`,
     contents
   );
 }

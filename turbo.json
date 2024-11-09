@@ -93,6 +93,10 @@
 		"build": {
 			"cache": false,
 			"dependsOn": ["@cloudkit/swagger-ui#sync", "@cloudkit/web#sync"]
+		},
+		"@cloudkit/api-domain#generate": {
+			"cache": false,
+			"dependsOn": ["@cloudkit/service-contract#build"]
 		}
 	}
 }

@@ -4,7 +4,7 @@
 	"description": "Types for cloudkit's API",
 	"main": "./generated/cloudkit-service.ts",
 	"scripts": {
-		"gen": "redocly bundle && node generate-types.mjs"
+		"generate": "redocly bundle && node generate-types.mjs"
 	},
 	"exports": {
 		".": {
