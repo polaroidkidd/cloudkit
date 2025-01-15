@@ -14,11 +14,11 @@
 	"author": "Daniel Einars",
 	"license": "ISC",
 	"dependencies": {
-		"@asteasolutions/zod-to-openapi": "^7.1.1",
+		"@asteasolutions/zod-to-openapi": "^7.3.0",
 		"@cloudkit/db-schema": "workspace:^",
 		"@cloudkit/eslint-config": "workspace:^",
-		"tsx": "^4.19.0",
-		"yaml": "^2.5.1",
-		"zod": "^3.23.8"
+		"tsx": "^4.19.2",
+		"yaml": "^2.7.0",
+		"zod": "^3.24.1"
 	}
 }
